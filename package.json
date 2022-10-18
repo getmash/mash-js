@@ -2,7 +2,13 @@
   "name": "mash-js",
   "description": "Earn more for what you build, create and develop. Gain more customers because there’s no commitment barrier.",
   "author": "Mash Contributors",
-  "keywords": ["lightning", "bitcoin", "creators", "mash", "monetize"],
+  "keywords": [
+    "lightning",
+    "bitcoin",
+    "creators",
+    "mash",
+    "monetize"
+  ],
   "packageManager": "yarn@3.2.3",
   "workspaces": [
     "packages/*"

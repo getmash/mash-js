@@ -2,7 +2,9 @@
   "name": "@mash/post-message",
   "version": "0.0.0",
   "description": " window.postMessage wrapper that creates a bi-directional communication tunnel over window.postMessage",
-  "keywords": ["post message"],
+  "keywords": [
+    "post message"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {

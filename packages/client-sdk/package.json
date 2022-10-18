@@ -2,7 +2,13 @@
   "name": "@mash/client-sdk",
   "version": "0.0.0",
   "description": "Mash Client SDK to interact with the Mash Wallet on a site",
-  "keywords": ["lightning", "bitcoin", "creators", "mash", "monetize"],
+  "keywords": [
+    "lightning",
+    "bitcoin",
+    "creators",
+    "mash",
+    "monetize"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.js",
   "dependencies": {

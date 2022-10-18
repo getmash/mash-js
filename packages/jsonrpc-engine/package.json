@@ -2,7 +2,10 @@
   "name": "@mash/jsonrpc-engine",
   "version": "0.0.0",
   "description": "JsonRPC wrapper over  window.postMessage to allow a structured method to call functions through window.postMessage",
-  "keywords": ["post message", "jsonrpc"],
+  "keywords": [
+    "post message",
+    "jsonrpc"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
