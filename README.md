@@ -16,6 +16,6 @@ Our objective at Mash is to make it easy for you to earn for your amazing creati
 
 If you haven’t created your account, it’s best to head to https://wallet.getmash.com/earn 
 
-If you are a developer looking to add Mash to your site the best place to start is too integrate the Mask SDK into your site. The SDK is bundled as a NPM pkg can be found [here](./packages/client-sdk)
+If you are a developer looking to add Mash to your site the best place to start is too integrate the Mask SDK into your site. The SDK is bundled as a NPM pkg and can be found [here](./packages/client-sdk)
 
 If you are looking for more general guide on how to integrate Mash, please visit our [public guides](https://guides.getmash.com)
