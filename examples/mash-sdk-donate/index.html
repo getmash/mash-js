@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+          .container {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            
+            position: relative;
+            margin: 0 auto;
+            
+            height: 100vh;
+            width: 100%;
+            max-width: 600px;
+            
+          }
+
+          .hide {
+            display: none;
+          }
+
+        </style>
+    </head>
+    <body>
+        <script type="module" defer>
+          import Mash from "@mash/client-sdk"
+          const mash = new Mash()
+
+          /**
+           * Loads the Mash Wallet on the page.
+           */ 
+          mash.init({ id: "74feb975-6069-447c-87b9-50b2dbec9435" }).then(() => {
+            const btn = document.getElementById("donate-wallet")
+            btn.onclick = () => {
+              /**
+               * Triggers donation flow through Mash Wallet 
+               */
+              mash.donate().then(() => alert("Donation Flow Completed")).catch(() => {
+                alert("cancelled by user")
+              })
+            }
+          })
+        </script>
+        <div class="container">
+          <button id="donate-wallet">Donate</button>
+        </div>
+    </body>
+</html>

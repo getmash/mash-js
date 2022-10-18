@@ -1,0 +1,323 @@
+import PostMessageEngine from "@mash/post-message";
+
+import { WalletPosition } from "./types";
+
+export enum Targets {
+  HostSiteFrame = "@mash/host-site-iframe",
+  Wallet = "@mash/wallet",
+}
+
+/* MediaQuery breakpoint to trigger mobile layout for Wallet */
+const FULLSCREEN_THRESHOLD = 480;
+/* Max Width for Wallet in Desktop layout */
+const MAX_CONTENT_WIDTH = 428;
+/* Max Height for Wallet in Desktop layout */
+const MAX_CONTENT_HEIGHT = 628;
+/* Min Width for Wallet when closed */
+const MIN_CONTENT_WIDTH = 100;
+/* Min Height for Wallet when closed */
+const MIN_CONTENT_HEIGHT = 100;
+/* Max Height of a notifcation */
+const MAX_HEIGHT_NOTIFICATION = 140;
+/* Max amount the Wallet can be moved */
+const MAX_SHIFT_UP = 150;
+/* Max amount the Wallet can be moved */
+const MAX_SHIFT_LEFT = 350;
+/* Max Width of a screen to allow Wallet position change */
+const POSITION_THRESHOLD = 800;
+
+const CONTAINER_STYLE = {
+  position: "fixed",
+  bottom: "0",
+  right: "0",
+  "margin-right": "20px",
+  "margin-bottom": "20px",
+  height: `${MIN_CONTENT_HEIGHT}px`,
+  width: `${MIN_CONTENT_WIDTH}px`,
+  "z-index": 2147483647,
+};
+
+const IFRAME_STYLE = {
+  border: "none",
+  width: "100%",
+  height: "100%",
+};
+
+export type EventMessage<T = Record<string, unknown>> = {
+  name: string;
+  metadata: T;
+};
+
+type OnLoadCallback = (iframe: HTMLIFrameElement) => void;
+
+/**
+ * Converts a dict of styles into HTML acceptable style string
+ * @param styles Record<string, string|number>
+ * @returns string
+ */
+export function toHTMLStyle(styles: Record<string, string | number>): string {
+  return Object.keys(styles).reduce((str, key) => {
+    const style = styles[key];
+    return (str += `${key}:${style};`);
+  }, "");
+}
+
+export enum Events {
+  WalletOpened = "wallet:open",
+  WalletClosed = "wallet:close",
+  WalletLoaded = "wallet:loaded",
+  LayoutChanged = "layout:changed",
+  NotificationUpdate = "notifications:update",
+}
+
+export const IFRAME_NAME = "mash_wallet";
+
+export default class IFrame {
+  readonly src: URL;
+  mounted = false;
+
+  private open = false;
+  private notificationCount = 0;
+
+  private shiftUp = 0;
+  private shiftLeft = 0;
+
+  private container: HTMLDivElement;
+  private iframe: HTMLIFrameElement;
+  private engine: PostMessageEngine<EventMessage> | null = null;
+
+  constructor(src: string) {
+    this.src = new URL(src);
+
+    this.container = document.createElement("div");
+    this.container.setAttribute("class", "mash mash-root");
+    this.container.setAttribute("style", toHTMLStyle(CONTAINER_STYLE));
+
+    this.iframe = document.createElement("iframe");
+    this.iframe.setAttribute("class", "mash-this.iframe");
+    this.iframe.setAttribute("style", toHTMLStyle(IFRAME_STYLE));
+    this.iframe.setAttribute("src", src);
+    this.iframe.setAttribute("title", "Mash Wallet");
+    this.iframe.setAttribute("name", IFRAME_NAME);
+    this.iframe.allowFullscreen = true;
+  }
+
+  /**
+   * Set height and width of the div container holding the iframe
+   * @param height number
+   * @param width number
+   * @param unit string
+   */
+  private setContainerSize = (
+    height: number,
+    width: number,
+    unit: "%" | "px",
+    margin: boolean,
+  ) => {
+    this.container.style.height = `${height}${unit}`;
+    this.container.style.width = `${width}${unit}`;
+
+    if (margin) {
+      this.container.style.marginRight = "20px";
+      this.container.style.marginBottom = "20px";
+    } else {
+      this.container.style.marginRight = "0";
+      this.container.style.marginBottom = "0";
+    }
+  };
+
+  /**
+   * Resize the iframe container based on open state, notification count and
+   * dimensions of the page
+   */
+  private resize = () => {
+    const mediaQuery = this.getMediaQuery();
+
+    if (this.open) {
+      if (mediaQuery.matches) {
+        this.setContainerSize(100, 100, "%", false);
+        return;
+      }
+      this.setContainerSize(MAX_CONTENT_HEIGHT, MAX_CONTENT_WIDTH, "px", true);
+      return;
+    }
+
+    // Get min acceptable width, if the screen is smaller then the MAX, then
+    // use that as the width
+    const maxWidth = Math.min(MAX_CONTENT_WIDTH, window.innerWidth);
+
+    // Calculate MAX height that can be used based on notifications
+    const maxHeight = this.notificationCount * MAX_HEIGHT_NOTIFICATION;
+
+    // Calculate height, by takin the MAX between the maxHeight calculated above
+    // and the MIN content height of the container. If any notifications exists,
+    // the height will be influenced by them
+    const height = Math.max(maxHeight, MIN_CONTENT_HEIGHT);
+
+    // Calculate width based on if any notifications exists. If notifications exist
+    // we must make the width larger to accomodate notifications
+    const width = this.notificationCount === 0 ? MIN_CONTENT_WIDTH : maxWidth;
+    this.setContainerSize(
+      height,
+      width,
+      "px",
+      mediaQuery.matches ? false : true,
+    );
+  };
+
+  /**
+   * Retrieve mediaQueryList for the given mediaQuery that changes the layout
+   * of the iframe container
+   * @returns void
+   */
+  private getMediaQuery() {
+    return window.matchMedia(`(max-width: ${FULLSCREEN_THRESHOLD}px)`);
+  }
+
+  /**
+   * Checks if the current screen supports a position change for the Wallet
+   */
+  private getPositionMediaQuery() {
+    return window.matchMedia(`(max-width: ${POSITION_THRESHOLD}px)`);
+  }
+
+  /**
+   * MediaQuery listener that triggers whenever a change is detected. Notify the
+   * Wallet of changes and resize the iframe container as required
+   * @param mq MediaQueryListEvent
+   */
+  private onMediaQueryChanged = (mq: MediaQueryListEvent) => {
+    this.resize();
+    this.engine?.send({
+      name: Events.LayoutChanged,
+      metadata: { mode: mq.matches ? "mobile" : "web" },
+    });
+  };
+
+  /**
+   * MediaQuery listener that triggers whenever a change is detected. Notify the
+   * Wallet of changes and changes the iframes position as required
+   */
+  private onPositionMediaQueryChanged = () => {
+    if (!this.getPositionMediaQuery().matches) {
+      // Setting the bottom parameter with the shiftUp specified since
+      // that moves the wallet closer to the top by the pixels specified
+      // Same logic applies to left / right positioning
+      this.container.style.bottom = `${this.shiftUp}px`;
+      this.container.style.right = `${this.shiftLeft}px`;
+    } else {
+      this.container.style.bottom = "0";
+      this.container.style.right = "0";
+    }
+  };
+
+  /**
+   * Setup all listeners required for the iframe
+   */
+  private setupListeners() {
+    this.getMediaQuery().addEventListener("change", this.onMediaQueryChanged);
+  }
+
+  /**
+   * Sets the position of the fab if specified
+   * @param up number
+   * @param left number
+   */
+  private setPosition(up?: number, left?: number) {
+    this.shiftUp = up ?? 0;
+    this.shiftLeft = left ?? 0;
+
+    if (this.shiftUp < 0) {
+      this.shiftUp = 0;
+    } else if (this.shiftUp > MAX_SHIFT_UP) {
+      this.shiftUp = MAX_SHIFT_UP;
+    }
+
+    if (this.shiftLeft < 0) {
+      this.shiftLeft = 0;
+    } else if (this.shiftLeft > MAX_SHIFT_LEFT) {
+      this.shiftLeft = MAX_SHIFT_LEFT;
+    }
+
+    this.onPositionMediaQueryChanged();
+  }
+
+  /**
+   * Setup post message tunnel between the host site and the Mash Wallet
+   * @param onLoadCallback OnLoadCallback
+   */
+  private setupPostMessageEngine = (onLoadCallback: OnLoadCallback) => {
+    this.engine?.listen(evt => {
+      const { data } = evt;
+
+      // If event comes in without any data, ignore it. Malformed event or
+      // something we don't care about
+      if (!data) return;
+
+      switch (data.name) {
+        case Events.WalletOpened: {
+          this.open = true;
+          this.resize();
+          break;
+        }
+        case Events.WalletClosed: {
+          this.open = false;
+          this.resize();
+          break;
+        }
+        case Events.NotificationUpdate: {
+          this.notificationCount =
+            (data.metadata.count as number | undefined) || 0;
+          this.resize();
+          break;
+        }
+        case Events.WalletLoaded: {
+          const mq = this.getMediaQuery();
+
+          this.engine?.send({
+            name: Events.LayoutChanged,
+            metadata: { mode: mq.matches ? "mobile" : "web" },
+          });
+
+          onLoadCallback(this.iframe);
+          break;
+        }
+      }
+    });
+  };
+
+  /**
+   * Mount the iframe and load the Mash Wallet. Accepts a callback that triggered
+   * when the Wallet has loaded
+   * @param onLoad OnLoadCallback
+   */
+  mount(onLoad: OnLoadCallback, position?: WalletPosition) {
+    if (!this.mounted) {
+      this.container.appendChild(this.iframe);
+      document.body.appendChild(this.container);
+      this.mounted = true;
+    }
+
+    if (position) {
+      this.setPosition(position.shiftUp, position.shiftLeft);
+      this.getPositionMediaQuery().addEventListener(
+        "change",
+        this.onPositionMediaQueryChanged,
+      );
+    }
+
+    // Must init engine here to have the correct contentWindow.
+    // If referencing this.iframe before it is mounted to the
+    // dom, it will have an incorrect reference to global scope
+    this.engine = new PostMessageEngine({
+      name: Targets.HostSiteFrame,
+      targetName: Targets.Wallet,
+      targetWindow: this.iframe.contentWindow,
+      targetOrigin: this.src.origin,
+    });
+
+    this.setupListeners();
+    this.setupPostMessageEngine(onLoad);
+    this.resize();
+  }
+}

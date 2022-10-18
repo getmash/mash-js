@@ -1,0 +1,28 @@
+name: "Release Packages"
+
+on:
+  workflow_dispatch:
+    
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # requires git history and tags for release
+          fetch-depth: 0
+      
+      - name: Install dependencies
+        shell: bash
+        run: yarn install --immutable
+    
+      - name: Build packages
+        run: yarn build
+      
+      - name: Release packages
+        run: |
+          yarn release:publish
+          git config user.name "mash-bot"
+          git config user.email "<>"
+          git push --follow-tags

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+          .container {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            
+            position: relative;
+            margin: 0 auto;
+            
+            height: 100vh;
+            width: 100%;
+            max-width: 600px;
+            
+          }
+
+          .hide {
+            display: none;
+          }
+
+        </style>
+    </head>
+    <body>
+        <script type="module" defer>
+          import Mash from "@mash/client-sdk"
+          const mash = new Mash()
+
+          /**
+           * Loads the Mash Wallet on the page.
+           */ 
+          mash.init({ id: "74feb975-6069-447c-87b9-50b2dbec9435" }).then(() => {
+            const btn = document.getElementById("unlock-btn")
+            btn.onclick = () => {
+
+              /**
+               * When user clicks the button, call mash.access() to trigger access flow.
+               * Once the wallet has completed any necessary steps from the consumer, this function
+               * will return a boolean which informs the site if the user has access to the content
+               */ 
+              mash.access("56f651c0-235d-43f6-8e16-3a8124127cb8").then(hasAccess => {
+
+                if (hasAccess) {
+                  const content = document.getElementById("content")
+                  content.setAttribute("class", "")
+
+                  const paywall = document.getElementById("paywall")
+                  paywall.setAttribute("class", "hide")
+                } else {
+                  alert("This content requires payment")
+                }
+               
+              })
+            }
+          })
+        </script>
+        <div class="container">
+          <div id="paywall"><button id="unlock-btn">Unlock</button></div>
+          <div id="content" class="hide">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent efficitur dignissim nunc, non vestibulum odio rutrum sit amet. Mauris fringilla mauris et dolor ornare, hendrerit porttitor tortor cursus. Vivamus libero eros, semper in dui a, rhoncus mollis ipsum. Maecenas malesuada ac quam sed egestas. Donec ultricies nisl erat, quis sodales lacus tincidunt ac. Nullam venenatis interdum lacus nec sollicitudin. Curabitur turpis velit, ornare sit amet massa fermentum, commodo commodo mauris. Integer maximus lectus ante, vel congue urna ultricies sed. Praesent vitae ultricies nisi, a iaculis tortor. Maecenas congue urna id mauris consectetur, sit amet condimentum magna iaculis. Donec leo nunc, mollis at velit quis, fringilla finibus ligula. Vestibulum vehicula consectetur ipsum at fringilla. Nunc at imperdiet ligula, ut sollicitudin arcu.
+            Integer a viverra justo, in faucibus mauris. Ut pharetra lacus nec nisi porta ultrices. Ut efficitur sapien sit amet arcu consectetur lacinia. Donec imperdiet ligula massa, sed dictum lacus congue sit amet. Morbi venenatis dui ultrices gravida iaculis. Praesent maximus dui nec laoreet efficitur. Ut elementum urna vitae lobortis rutrum. Fusce non mauris et lectus fermentum hendrerit. Duis quis enim efficitur, ullamcorper leo id, volutpat lectus. Nullam euismod tempor leo nec dignissim.
+            Aenean sollicitudin mauris ac odio accumsan, posuere feugiat quam consequat. Fusce mollis mollis cursus. Maecenas mauris nunc, dignissim quis eros non, posuere commodo lectus. Curabitur laoreet, tortor quis laoreet vestibulum, tellus nulla convallis diam, a imperdiet leo diam eu dui. Nam aliquam auctor ligula. Cras in lacinia mi. Duis vestibulum risus ullamcorper lectus mollis, ac rhoncus tellus luctus.
+            Morbi suscipit porta lectus, vel auctor velit lacinia id. Praesent sit amet blandit ipsum. Aenean fringilla arcu nec imperdiet porta. Mauris sed nunc pellentesque turpis dictum efficitur. Ut malesuada elementum libero. Fusce mattis efficitur purus nec hendrerit. Quisque erat nunc, euismod quis ornare quis, faucibus non elit. Etiam non justo et dolor ullamcorper maximus eu sit amet lectus. Aliquam ac nisl eu leo tincidunt rutrum non nec diam. In nibh diam, aliquam vel nibh id, finibus tempus justo. Proin hendrerit lorem non lobortis vestibulum. Quisque sed nisi sit amet leo imperdiet pretium vel eget nulla. Praesent vitae eleifend magna, et dignissim felis.
+            In est leo, porttitor eu diam nec, maximus volutpat ipsum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas at rhoncus sem. Fusce viverra odio non odio fermentum auctor. Etiam id urna ut risus varius convallis ac sed arcu. Pellentesque orci quam, porttitor in pellentesque vitae, faucibus consectetur sapien. Donec malesuada lectus sit amet orci lobortis, quis porta nibh vulputate. Phasellus ut arcu hendrerit, fermentum ligula eu, condimentum ipsum. Vestibulum ac posuere nisi. Aenean leo ante, consectetur id enim in, tincidunt suscipit nunc.
+          </div>
+        </div>
+    </body>
+</html>

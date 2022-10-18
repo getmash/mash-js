@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@mash/jsonrpc-engine": ["./packages/jsonrpc-engine"],
+      "@mash/post-message": ["./packages/post-message"]
+    }
+  },
+  "exclude": ["node_modules"],
+  "references": [
+    { "path": "packages/jsonrpc-engine" },
+    { "path": "packages/post-message" }
+  ]
+}
