@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/logo.svg" style="max-width:641.5px;max-height:323px;">
+  <img src="./assets/logo.png">
 </p>
 
 <p align="center">
@@ -10,7 +10,7 @@
 
 ![Main Status](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
 
-Our objective at Mash is to make it easy for you to earn for your amazing creations.  From enabling your users to pay-you-as-they-enjoy, boost-tip with a click or tap, and as they engage with you and the community. All for any amount, in your control.
+Our objective at Mash is to make it easy for you to earn for your amazing creations. From enabling your users to pay-you-as-they-enjoy, boost-tip with a click or tap, and as they engage with you and the community. All for any amount, in your control.
 
 ## How do I get started?
 
