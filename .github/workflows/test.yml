@@ -44,6 +44,10 @@ jobs:
       - name: Check release definition
         run: yarn release:status
 
+      - name: Buld packages
+        shell: bash
+        run: yarn build       
+
       - name: Test packages
         run: yarn test
 
