@@ -22,7 +22,7 @@
     "test:config": "jest --showConfig",
     "test:watch": "jest --watch --colors",
     "release:add": "yarn changeset add",
-    "release:status": "yarn changeset status --output",
+    "release:status": "yarn changeset status --since origin/main --output",
     "release:version": "yarn changeset version",
     "release:publish": "yarn changeset publish"
   },
