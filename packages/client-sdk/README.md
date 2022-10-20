@@ -2,7 +2,7 @@
 
 The [Mash](https://getmash.com) Client SDK is a javascript library that is used to interact with the Mash Consumer Wallet. The SDK loads the wallet and exposes functionality to complete payments or donations on a site.
 
-For more information about intergating Mash: https://guides.getmash.com/getting-started-integrating-mash
+For more information about integrating Mash: https://guides.getmash.com/getting-started-integrating-mash
 
 Complete set of guides can be found here: https://guides.getmash.com/
 
@@ -18,7 +18,7 @@ npm install @mashing/client-sdk --save
 
 ## Usage
 
-The sdk requires your earner id to be abel to initialize the Wallet on your site. If you do not have an account yet, head to https://wallet.getmash.com/earn and set things up. 
+The sdk requires your earner id to be able to initialize the Wallet on your site. If you do not have an account yet, head to https://wallet.getmash.com/earn and set things up. 
 
 ```javascript
 import Mash from "@mashing/client-sdk"
@@ -70,7 +70,7 @@ import Mash from "@mashing/client-sdk"
 
 const mash = new Mash()
 
-mash.init().then(() => {
+mash.init({ id: "59f316a2-5079-11ed-bdc3-0242ac120002" }).then(() => {
   // Mash is now intialized and ready to be used
 })
 ```
@@ -87,11 +87,11 @@ When the Mash Wallet is finished processing the access request, this function wi
 ```
 
 ```javascript
-const content = documet.getElementById("content");
+const content = document.getElementById("content");
 
-const btn = documet.getElementById("btn");
+const btn = document.getElementById("btn");
 btn.onclick = () => {
-  mash.access("resource_id")
+  mash.access("42ab4348-5079-11ed-bdc3-0242ac120002")
     .then(hasAccess => {
       if (hasAccess) {
         content.setAttribute("class", "show");
@@ -104,14 +104,14 @@ btn.onclick = () => {
 
 ### `donate(): Promise<void>`
 
-Triggers the donation flow for the current user. When this function is triggerd from the site, the Mash Wallet will open up and allow the user to give a donation. 
+Triggers the donation flow for the current user. When this function is triggered from the site, the Mash Wallet will open up and allow the user to give a donation. 
 
 ```html
 <button id="donate"> Donate Now </button>
 ```
 
 ```javascript
-const donate = documet.getElementById("donate");
+const donate = document.getElementById("donate");
 donate.onclick = () => {
   mash.donate()
     .then(() => {
@@ -130,7 +130,7 @@ This function will check if the user has setup a budget on your site. If the use
 Checking if a budget is helpful if you would like to auto-unlock content if the user has already pre-approved purchase to improve the user experience.
 
 ```javascript
-mash.userHasValidBudget("resource_id")
+mash.userHasValidBudget("42ab4348-5079-11ed-bdc3-0242ac120002")
   .then((hasBudget) => {
     if (hasBudget) {
       // logic to auto unlock content

@@ -7,16 +7,21 @@ export enum Targets {
   Wallet = "@mash/wallet",
 }
 
+enum Layout {
+  Web = "web",
+  Mobile = "mobile",
+}
+
 /* MediaQuery breakpoint to trigger mobile layout for Wallet */
 const FULLSCREEN_THRESHOLD = 480;
 /* Max Width for Wallet in Desktop layout */
-const MAX_CONTENT_WIDTH = 428;
+export const MAX_CONTENT_WIDTH = 428;
 /* Max Height for Wallet in Desktop layout */
-const MAX_CONTENT_HEIGHT = 628;
+export const MAX_CONTENT_HEIGHT = 628;
 /* Min Width for Wallet when closed */
-const MIN_CONTENT_WIDTH = 100;
+export const MIN_CONTENT_WIDTH = 100;
 /* Min Height for Wallet when closed */
-const MIN_CONTENT_HEIGHT = 100;
+export const MIN_CONTENT_HEIGHT = 100;
 /* Max Height of a notifcation */
 const MAX_HEIGHT_NOTIFICATION = 140;
 /* Max amount the Wallet can be moved */
@@ -190,7 +195,7 @@ export default class IFrame {
     this.resize();
     this.engine?.send({
       name: Events.LayoutChanged,
-      metadata: { mode: mq.matches ? "mobile" : "web" },
+      metadata: { mode: mq.matches ? Layout.Mobile : Layout.Web },
     });
   };
 
@@ -276,7 +281,7 @@ export default class IFrame {
 
           this.engine?.send({
             name: Events.LayoutChanged,
-            metadata: { mode: mq.matches ? "mobile" : "web" },
+            metadata: { mode: mq.matches ? Layout.Mobile : Layout.Web },
           });
 
           onLoadCallback(this.iframe);

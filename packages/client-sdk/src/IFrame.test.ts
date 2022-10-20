@@ -6,6 +6,10 @@ import IFrame, {
   Events,
   IFRAME_NAME,
   toHTMLStyle,
+  MAX_CONTENT_HEIGHT,
+  MAX_CONTENT_WIDTH,
+  MIN_CONTENT_HEIGHT,
+  MIN_CONTENT_WIDTH,
 } from "./IFrame";
 import MashSettings from "./types";
 
@@ -52,9 +56,9 @@ jest
       listener(evt.data);
     };
 
-    // @ts-ignore
+    // @ts-ignore ignore type of wrapped to allow mock to function
     window.addEventListener("message", wrapped, false);
-    // @ts-ignore
+    // @ts-ignore ignore type of wrapped to allow mock to function
     return () => window.removeEventListener("message", wrapped);
   });
 
@@ -93,8 +97,8 @@ describe("mash_iframe", () => {
     await sleep(100);
 
     const element = getIframe();
-    expect(element.parentElement?.style.height).toBe("628px");
-    expect(element.parentElement?.style.width).toBe("428px");
+    expect(element.parentElement?.style.height).toBe(`${MAX_CONTENT_HEIGHT}px`);
+    expect(element.parentElement?.style.width).toBe(`${MAX_CONTENT_WIDTH}px`);
   });
 
   it("trigger close event, should resize iframe correctly", async () => {
@@ -109,8 +113,8 @@ describe("mash_iframe", () => {
     await sleep(100);
 
     const element = getIframe();
-    expect(element.parentElement?.style.height).toBe("100px");
-    expect(element.parentElement?.style.width).toBe("100px");
+    expect(element.parentElement?.style.height).toBe(`${MIN_CONTENT_HEIGHT}px`);
+    expect(element.parentElement?.style.width).toBe(`${MIN_CONTENT_WIDTH}px`);
   });
 
   it("trigger 2 notifications, should resize iframe correctly", async () => {
@@ -123,7 +127,7 @@ describe("mash_iframe", () => {
 
     const element = getIframe();
     expect(element.parentElement?.style.height).toBe("280px");
-    expect(element.parentElement?.style.width).toBe("428px");
+    expect(element.parentElement?.style.width).toBe(`${MAX_CONTENT_WIDTH}px`);
   });
 });
 
