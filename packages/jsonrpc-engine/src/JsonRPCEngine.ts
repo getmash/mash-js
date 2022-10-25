@@ -1,7 +1,7 @@
 import PostMessageEngine, {
   EngineListener,
   PostMessageEngineOptions,
-} from "@mash/post-message";
+} from "@getmash/post-message";
 
 import {
   JsonRPCMessage,
