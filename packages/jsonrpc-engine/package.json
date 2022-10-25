@@ -19,6 +19,9 @@
   "devDependencies": {
     "@types/uuid": "^8.3.4"
   },
+  "files": [
+    "dist"
+  ],
   "author": "Mash <support@getmash.com> (https://getmash.com/)",
   "license": "MIT",
   "repository": {
