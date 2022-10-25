@@ -38,7 +38,7 @@ module.exports = {
         pathGroups: [
           {
             // treat path imports as internal
-            pattern: "@mash/**",
+            pattern: "@getmash/**",
             group: "internal",
           },
         ],
