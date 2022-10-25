@@ -1,0 +1,64 @@
+name: "Test Pull Request"
+
+concurrency:
+  group: ${{ github.head_ref }}-test
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [main]
+
+jobs:
+  test-pkgs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{github.event.pull_request.head.sha}}
+          fetch-depth: 0
+      
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+        shell: bash
+        
+      - name: Restore yarn cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: yarn-cache-folder-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
+          restore-keys: |
+            yarn-cache-folder-
+
+      - name: Install dependencies
+        shell: bash
+        run: yarn install --immutable
+
+      - name: Check release definition
+        run: yarn release:status
+
+      - name: Buld packages
+        shell: bash
+        run: yarn build       
+
+      - name: Test packages
+        run: yarn test
+
+      - name: Lint packages
+        run: yarn lint
+
+      - name: Post coverage
+        uses: vebr/jest-lcov-reporter@v0.2.1
+        # only post on PRs
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          update-comment: true
+          lcov-file: ./coverage/lcov.info

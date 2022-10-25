@@ -1,0 +1,22 @@
+{
+  "name": "@mash/jsonrpc-engine",
+  "version": "0.0.0",
+  "description": "JsonRPC wrapper over  window.postMessage to allow a structured method to call functions through window.postMessage",
+  "keywords": [
+    "post message",
+    "jsonrpc"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist",
+    "build": "tsc --build"
+  },
+  "dependencies": {
+    "@mash/post-message": "^0.0.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/uuid": "^8.3.4"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "mash-sdk-paywall",
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "dependencies": {
+    "@mash/client-sdk": "file:../../packages/client-sdk",
+    "@mash/jsonrpc-engine": "file:../../packages/jsonrpc-engine",
+    "@mash/post-message": "file:../../packages/post-message"
+  },
+  "devDependencies": {
+    "parcel": "^2.7.0"
+  },
+  "resolutions": {
+    "@mash/jsonrpc-engine": "file:../../packages/jsonrpc-engine",
+    "@mash/post-message": "file:../../packages/post-message"
+  }
+}

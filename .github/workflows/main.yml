@@ -1,0 +1,44 @@
+name: "Verify Main Branch"
+
+concurrency:
+  group: ${{ github.head_ref }}-test
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  verify-pkgs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+        shell: bash
+        
+      - name: Restore yarn cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: yarn-cache-folder-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
+          restore-keys: |
+            yarn-cache-folder-
+
+      - name: Install dependencies
+        shell: bash
+        run: yarn install --immutable
+
+      - name: Build packages
+        run: yarn build
+
+      - name: Test packages
+        run: yarn test
