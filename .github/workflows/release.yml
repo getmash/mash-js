@@ -17,12 +17,13 @@ jobs:
         shell: bash
         run: yarn install --immutable
     
-      - name: Build packages
-        run: yarn build
-      
-      - name: Release packages
-        run: |
-          yarn release:publish
-          git config user.name "mash-bot"
-          git config user.email "<>"
-          git push --follow-tags
+      - name: Publish to npm
+        id: changesets
+        uses: changesets/action@master
+        with:
+          publish: yarn release
+          commit: Version release
+          title: Next release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

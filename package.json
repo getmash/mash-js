@@ -24,7 +24,8 @@
     "release:add": "yarn changeset add",
     "release:status": "yarn changeset status --since origin/main --output",
     "release:version": "yarn changeset version",
-    "release:publish": "yarn changeset publish"
+    "release:publish": "yarn changeset publish",
+    "release": "yarn clean && yarn build && yarn release:publish"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.19.3",
