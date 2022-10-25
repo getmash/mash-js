@@ -1,4 +1,4 @@
-import PostMessageEngine from "@mash/post-message";
+import PostMessageEngine from "@getmash/post-message";
 
 import { WalletPosition } from "./types";
 

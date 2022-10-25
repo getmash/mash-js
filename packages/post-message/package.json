@@ -1,6 +1,6 @@
 {
-  "name": "@mash/post-message",
-  "version": "0.0.0",
+  "name": "@getmash/post-message",
+  "version": "1.0.0",
   "description": " window.postMessage wrapper that creates a bi-directional communication tunnel over window.postMessage",
   "keywords": [
     "post message"

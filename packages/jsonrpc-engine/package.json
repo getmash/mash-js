@@ -1,6 +1,6 @@
 {
-  "name": "@mash/jsonrpc-engine",
-  "version": "0.0.0",
+  "name": "@getmash/jsonrpc-engine",
+  "version": "1.0.0",
   "description": "JsonRPC wrapper over  window.postMessage to allow a structured method to call functions through window.postMessage",
   "keywords": [
     "post message",
@@ -13,7 +13,7 @@
     "build": "tsc --build"
   },
   "dependencies": {
-    "@mash/post-message": "^0.0.0",
+    "@getmash/post-message": "^1.0.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

@@ -43,14 +43,14 @@ module.exports = {
     project("jsonrpc-engine", {
       testEnvironment: "jsdom",
       moduleNameMapper: {
-        "@mash/post-message": "<rootDir>/packages/post-message/src",
+        "@getmash/post-message": "<rootDir>/packages/post-message/src",
       },
     }),
     project("client-sdk", {
       testEnvironment: "jsdom",
       moduleNameMapper: {
-        "@mash/post-message": "<rootDir>/packages/post-message/src",
-        "@mash/jsonrpc-engine": "<rootDir>/packages/jsonrpc-engine/src",
+        "@getmash/post-message": "<rootDir>/packages/post-message/src",
+        "@getmash/jsonrpc-engine": "<rootDir>/packages/jsonrpc-engine/src",
       },
     }),
   ],
