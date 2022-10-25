@@ -18,5 +18,15 @@
   },
   "devDependencies": {
     "@types/uuid": "^8.3.4"
+  },
+  "author": "Mash <support@getmash.com> (https://getmash.com/)",
+  "license": "MIT",
+  "repository": {
+    "directory": "packages/post-message",
+    "type": "git",
+    "url": "https://github.com/getmash/mash-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/getmash/mash-js/issues"
   }
 }

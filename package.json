@@ -1,7 +1,10 @@
 {
   "name": "mash-js",
   "description": "Earn more for what you build, create and develop. Gain more customers because there’s no commitment barrier.",
-  "author": "Mash Contributors",
+  "private": true,
+  "author": "Mash <support@getmash.com> (https://getmash.com/)",
+  "homepage": "https://github.com/getmash/mash-js",
+  "license": "MIT",
   "keywords": [
     "lightning",
     "bitcoin",

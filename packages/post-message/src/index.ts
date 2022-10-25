@@ -3,7 +3,6 @@ import PostMessageEngine from "./PostMessageEngine";
 export {
   PostMessageEngineOptions,
   PostMessageEvent,
-  EventMessage,
   EngineListener,
 } from "./PostMessageEngine";
 

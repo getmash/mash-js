@@ -14,5 +14,15 @@
   "dependencies": {
     "@getmash/jsonrpc-engine": "^1.0.0",
     "@getmash/post-message": "^1.0.0"
+  },
+  "author": "Mash <support@getmash.com> (https://getmash.com/)",
+  "license": "MIT",
+  "repository": {
+    "directory": "packages/post-message",
+    "type": "git",
+    "url": "https://github.com/getmash/mash-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/getmash/mash-js/issues"
   }
 }
