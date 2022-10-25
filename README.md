@@ -8,7 +8,7 @@
 
 </br>
 
-![Main Status](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+[![Verify Main Branch](https://github.com/getmash/mash-js/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/getmash/mash-js/actions/workflows/main.yml)
 
 Our objective at Mash is to make it easy for you to earn for your amazing creations. From enabling your users to pay-you-as-they-enjoy, boost-tip with a click or tap, and as they engage with you and the community. All for any amount, in your control.
 

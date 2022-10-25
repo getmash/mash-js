@@ -1,5 +1,5 @@
 {
-  "name": "@mash/client-sdk",
+  "name": "@getmash/client-sdk",
   "version": "0.0.0",
   "description": "Mash Client SDK to interact with the Mash Wallet on a site",
   "keywords": [
