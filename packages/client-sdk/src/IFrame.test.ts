@@ -1,4 +1,4 @@
-import PostMessageEngine, { PostMessageEvent } from "@mash/post-message";
+import PostMessageEngine, { PostMessageEvent } from "@getmash/post-message";
 
 import IFrame, {
   Targets,

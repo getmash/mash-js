@@ -1,5 +1,5 @@
 {
-  "name": "mash-sdk-paywall",
+  "name": "mash-sdk-donate",
   "scripts": {
     "start": "parcel index.html"
   },

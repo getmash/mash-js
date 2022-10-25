@@ -1,4 +1,4 @@
-import JsonRPCEngine from "@mash/jsonrpc-engine";
+import JsonRPCEngine from "@getmash/jsonrpc-engine";
 
 import RPCMethods from "./methods";
 import Targets from "./targets";
