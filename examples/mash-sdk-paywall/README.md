@@ -1,6 +1,6 @@
 # Mash SDK Paywall Demo
 
-This is simple example of how the Mash SDK can be used to create a content paywall.
+This is a simple example of how the Mash SDK can be used to create a content paywall.
 
 ## How to start demo
 

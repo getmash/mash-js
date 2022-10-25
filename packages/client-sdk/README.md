@@ -1,6 +1,6 @@
 # Mash Client SDK
 
-The [Mash](https://getmash.com) Client SDK is a javascript library that is used to interact with the Mash Consumer Wallet. The SDK loads the wallet and exposes functionality to complete payments or donations on a site.
+The [Mash](https://getmash.com) Client SDK is a Javascript library that is used to interact with the Mash Consumer Wallet. The SDK loads the wallet and exposes functionality to complete payments or donations on a site.
 
 For more information about integrating Mash: https://guides.getmash.com/getting-started-integrating-mash
 
@@ -18,7 +18,7 @@ npm install @mashing/client-sdk --save
 
 ## Usage
 
-The sdk requires your earner id to be able to initialize the Wallet on your site. If you do not have an account yet, head to https://wallet.getmash.com/earn and set things up. 
+The SDK requires your earner ID to be able to initialize the wallet on your site. If you do not have an account yet, head to https://wallet.getmash.com/earn and set things up. 
 
 ```javascript
 import Mash from "@mashing/client-sdk"
@@ -63,7 +63,7 @@ type MashSettings = {
 };
 ```
 
-Once the Wallet has been initalized, the `init` function will resolve.
+Once the wallet has been initalized, the `init` function will resolve.
 
 ```typescript
 import Mash from "@mashing/client-sdk"
