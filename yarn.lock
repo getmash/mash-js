@@ -1585,6 +1585,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@getmash/client-sdk@workspace:packages/client-sdk":
+  version: 0.0.0-use.local
+  resolution: "@getmash/client-sdk@workspace:packages/client-sdk"
+  dependencies:
+    "@getmash/jsonrpc-engine": ^0.0.0
+    "@getmash/post-message": ^0.0.0
+  languageName: unknown
+  linkType: soft
+
+"@getmash/jsonrpc-engine@^0.0.0, @getmash/jsonrpc-engine@workspace:packages/jsonrpc-engine":
+  version: 0.0.0-use.local
+  resolution: "@getmash/jsonrpc-engine@workspace:packages/jsonrpc-engine"
+  dependencies:
+    "@getmash/post-message": ^0.0.0
+    "@types/uuid": ^8.3.4
+    uuid: ^9.0.0
+  languageName: unknown
+  linkType: soft
+
+"@getmash/post-message@^0.0.0, @getmash/post-message@workspace:packages/post-message":
+  version: 0.0.0-use.local
+  resolution: "@getmash/post-message@workspace:packages/post-message"
+  dependencies:
+    "@types/uuid": ^8.3.4
+    uuid: ^9.0.0
+  languageName: unknown
+  linkType: soft
+
 "@humanwhocodes/config-array@npm:^0.10.5":
   version: 0.10.7
   resolution: "@humanwhocodes/config-array@npm:0.10.7"
@@ -1945,34 +1973,6 @@ __metadata:
   checksum: f5a756e5a659e0e1c33f48852d56826d170d5b10a3cdea89ce4fcaa77678d8799aa4004b30e1985c87b73dbc390b95bb6411b78336dd1e0db87c08c74b5c0e74
   languageName: node
   linkType: hard
-
-"@mash/client-sdk@workspace:packages/client-sdk":
-  version: 0.0.0-use.local
-  resolution: "@mash/client-sdk@workspace:packages/client-sdk"
-  dependencies:
-    "@mash/jsonrpc-engine": ^0.0.0
-    "@mash/post-message": ^0.0.0
-  languageName: unknown
-  linkType: soft
-
-"@mash/jsonrpc-engine@^0.0.0, @mash/jsonrpc-engine@workspace:packages/jsonrpc-engine":
-  version: 0.0.0-use.local
-  resolution: "@mash/jsonrpc-engine@workspace:packages/jsonrpc-engine"
-  dependencies:
-    "@mash/post-message": ^0.0.0
-    "@types/uuid": ^8.3.4
-    uuid: ^9.0.0
-  languageName: unknown
-  linkType: soft
-
-"@mash/post-message@^0.0.0, @mash/post-message@workspace:packages/post-message":
-  version: 0.0.0-use.local
-  resolution: "@mash/post-message@workspace:packages/post-message"
-  dependencies:
-    "@types/uuid": ^8.3.4
-    uuid: ^9.0.0
-  languageName: unknown
-  linkType: soft
 
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
