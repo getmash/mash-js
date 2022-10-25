@@ -1,10 +1,5 @@
 import { v4 as uuid } from "uuid";
 
-export type EventMessage<T = Record<string, unknown>> = {
-  name: string;
-  metadata?: T;
-};
-
 export type PostMessageEvent<TData = unknown> = {
   targetName: string;
   data?: TData;
