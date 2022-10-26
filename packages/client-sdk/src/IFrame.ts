@@ -38,12 +38,14 @@ const CONTAINER_STYLE = {
   height: `${MIN_CONTENT_HEIGHT}px`,
   width: `${MIN_CONTENT_WIDTH}px`,
   "z-index": 2147483647,
+  "background-color": "transparent !important",
 };
 
 const IFRAME_STYLE = {
   border: "none",
   width: "100%",
   height: "100%",
+  "background-color": "inherit !important",
 };
 
 export type EventMessage<T = Record<string, unknown>> = {

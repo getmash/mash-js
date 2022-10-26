@@ -1,6 +1,6 @@
 export enum FloatLocation {
-  BottomRight = "bottomRight",
-  BottomLeft = "bottomLeft",
+  BottomRight = "bottom-right",
+  BottomLeft = "bottom-left",
 }
 
 interface LocationSettings {
