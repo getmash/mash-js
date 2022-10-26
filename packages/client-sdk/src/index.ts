@@ -12,4 +12,7 @@ export {
   MobileSettings,
 } from "./settings";
 
-export { Events as IFrameEvents } from "./IFrame";
+export {
+  Events as IFrameEvents,
+  IFRAME_NAME as MashIFrameName,
+} from "./IFrame";

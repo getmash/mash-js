@@ -9,8 +9,8 @@
     "mash",
     "monetize"
   ],
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.js",
   "scripts": {
     "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist",
     "build": "tsc --build"
