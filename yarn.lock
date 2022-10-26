@@ -1589,22 +1589,22 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@getmash/client-sdk@workspace:packages/client-sdk"
   dependencies:
-    "@getmash/jsonrpc-engine": ^1.0.0
-    "@getmash/post-message": ^1.0.0
+    "@getmash/jsonrpc-engine": ^1.0.1
+    "@getmash/post-message": ^1.0.1
   languageName: unknown
   linkType: soft
 
-"@getmash/jsonrpc-engine@^1.0.0, @getmash/jsonrpc-engine@workspace:packages/jsonrpc-engine":
+"@getmash/jsonrpc-engine@^1.0.1, @getmash/jsonrpc-engine@workspace:packages/jsonrpc-engine":
   version: 0.0.0-use.local
   resolution: "@getmash/jsonrpc-engine@workspace:packages/jsonrpc-engine"
   dependencies:
-    "@getmash/post-message": ^1.0.0
+    "@getmash/post-message": ^1.0.1
     "@types/uuid": ^8.3.4
     uuid: ^9.0.0
   languageName: unknown
   linkType: soft
 
-"@getmash/post-message@^1.0.0, @getmash/post-message@workspace:packages/post-message":
+"@getmash/post-message@^1.0.1, @getmash/post-message@workspace:packages/post-message":
   version: 0.0.0-use.local
   resolution: "@getmash/post-message@workspace:packages/post-message"
   dependencies:
