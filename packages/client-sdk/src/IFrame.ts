@@ -1,6 +1,6 @@
 import PostMessageEngine from "@getmash/post-message";
 
-import { WalletPosition } from "./types";
+import { FloatLocation, WalletPosition } from "./settings";
 
 export enum Targets {
   HostSiteFrame = "@mash/host-site-iframe",
@@ -23,13 +23,11 @@ export const MIN_CONTENT_WIDTH = 100;
 /* Min Height for Wallet when closed */
 export const MIN_CONTENT_HEIGHT = 100;
 /* Max Height of a notifcation */
-const MAX_HEIGHT_NOTIFICATION = 140;
-/* Max amount the Wallet can be moved */
-const MAX_SHIFT_UP = 150;
-/* Max amount the Wallet can be moved */
-const MAX_SHIFT_LEFT = 350;
-/* Max Width of a screen to allow Wallet position change */
-const POSITION_THRESHOLD = 800;
+export const MAX_HEIGHT_NOTIFICATION = 140;
+/* Max amount the Wallet can be moved up */
+export const MAX_SHIFT_UP = 200;
+/* Max amount the Wallet can be moved horizontally */
+export const MAX_SHIFT_HORIZONTAL = 300;
 
 const CONTAINER_STYLE = {
   position: "fixed",
@@ -86,6 +84,9 @@ export default class IFrame {
 
   private shiftUp = 0;
   private shiftLeft = 0;
+  private shiftRight = 0;
+  private desktopFloatLocation = FloatLocation.BottomRight;
+  private mobileFloatLocation = FloatLocation.BottomRight;
 
   private container: HTMLDivElement;
   private iframe: HTMLIFrameElement;
@@ -124,9 +125,11 @@ export default class IFrame {
 
     if (margin) {
       this.container.style.marginRight = "20px";
+      this.container.style.marginLeft = "20px";
       this.container.style.marginBottom = "20px";
     } else {
       this.container.style.marginRight = "0";
+      this.container.style.marginLeft = "0";
       this.container.style.marginBottom = "0";
     }
   };
@@ -162,12 +165,54 @@ export default class IFrame {
     // Calculate width based on if any notifications exists. If notifications exist
     // we must make the width larger to accomodate notifications
     const width = this.notificationCount === 0 ? MIN_CONTENT_WIDTH : maxWidth;
+
     this.setContainerSize(
       height,
       width,
       "px",
       mediaQuery.matches ? false : true,
     );
+  };
+
+  /**
+   * Position the IFrame container according to user settings
+   * and screen size
+   */
+  private position = () => {
+    const mediaQuery = this.getMediaQuery();
+
+    if (mediaQuery.matches) {
+      this.container.style.bottom = "0";
+
+      switch (this.mobileFloatLocation) {
+        case FloatLocation.BottomLeft: {
+          this.container.style.right = "";
+          this.container.style.left = "0";
+          break;
+        }
+        case FloatLocation.BottomRight: {
+          this.container.style.right = "0";
+          this.container.style.left = "";
+          break;
+        }
+      }
+      return;
+    }
+
+    this.container.style.bottom = `${this.shiftUp}px`;
+
+    switch (this.desktopFloatLocation) {
+      case FloatLocation.BottomLeft: {
+        this.container.style.left = `${this.shiftRight}px`;
+        this.container.style.right = "";
+        break;
+      }
+      case FloatLocation.BottomRight: {
+        this.container.style.left = "";
+        this.container.style.right = `${this.shiftLeft}px`;
+        break;
+      }
+    }
   };
 
   /**
@@ -180,40 +225,17 @@ export default class IFrame {
   }
 
   /**
-   * Checks if the current screen supports a position change for the Wallet
-   */
-  private getPositionMediaQuery() {
-    return window.matchMedia(`(max-width: ${POSITION_THRESHOLD}px)`);
-  }
-
-  /**
    * MediaQuery listener that triggers whenever a change is detected. Notify the
    * Wallet of changes and resize the iframe container as required
    * @param mq MediaQueryListEvent
    */
   private onMediaQueryChanged = (mq: MediaQueryListEvent) => {
     this.resize();
+    this.position();
     this.engine?.send({
       name: Events.LayoutChanged,
       metadata: { mode: mq.matches ? Layout.Mobile : Layout.Web },
     });
-  };
-
-  /**
-   * MediaQuery listener that triggers whenever a change is detected. Notify the
-   * Wallet of changes and changes the iframes position as required
-   */
-  private onPositionMediaQueryChanged = () => {
-    if (!this.getPositionMediaQuery().matches) {
-      // Setting the bottom parameter with the shiftUp specified since
-      // that moves the wallet closer to the top by the pixels specified
-      // Same logic applies to left / right positioning
-      this.container.style.bottom = `${this.shiftUp}px`;
-      this.container.style.right = `${this.shiftLeft}px`;
-    } else {
-      this.container.style.bottom = "0";
-      this.container.style.right = "0";
-    }
   };
 
   /**
@@ -224,27 +246,19 @@ export default class IFrame {
   }
 
   /**
-   * Sets the position of the fab if specified
-   * @param up number
-   * @param left number
+   * Normalize shift to ensure valid value
+   * @param value number
+   * @param max number
+   * @returns number
    */
-  private setPosition(up?: number, left?: number) {
-    this.shiftUp = up ?? 0;
-    this.shiftLeft = left ?? 0;
-
-    if (this.shiftUp < 0) {
-      this.shiftUp = 0;
-    } else if (this.shiftUp > MAX_SHIFT_UP) {
-      this.shiftUp = MAX_SHIFT_UP;
+  private normalizeShift(value: number, max: number) {
+    if (value < 0) {
+      return 0;
     }
-
-    if (this.shiftLeft < 0) {
-      this.shiftLeft = 0;
-    } else if (this.shiftLeft > MAX_SHIFT_LEFT) {
-      this.shiftLeft = MAX_SHIFT_LEFT;
+    if (value > max) {
+      return max;
     }
-
-    this.onPositionMediaQueryChanged();
+    return value;
   }
 
   /**
@@ -304,10 +318,19 @@ export default class IFrame {
     }
 
     if (position) {
-      this.setPosition(position.shiftUp, position.shiftLeft);
-      this.getPositionMediaQuery().addEventListener(
-        "change",
-        this.onPositionMediaQueryChanged,
+      this.desktopFloatLocation = position.desktop.floatLocation;
+      this.mobileFloatLocation = position.mobile.floatLocation;
+      this.shiftUp = this.normalizeShift(
+        position.desktop.shiftUp,
+        MAX_SHIFT_UP,
+      );
+      this.shiftLeft = this.normalizeShift(
+        position.desktop.shiftLeft,
+        MAX_SHIFT_HORIZONTAL,
+      );
+      this.shiftRight = this.normalizeShift(
+        position.desktop.shiftRight,
+        MAX_SHIFT_HORIZONTAL,
       );
     }
 
@@ -324,5 +347,6 @@ export default class IFrame {
     this.setupListeners();
     this.setupPostMessageEngine(onLoad);
     this.resize();
+    this.position();
   }
 }

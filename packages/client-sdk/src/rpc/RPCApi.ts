@@ -1,5 +1,6 @@
 import JsonRPCEngine from "@getmash/jsonrpc-engine";
 
+import { MashSettings } from "../settings";
 import RPCMethods from "./methods";
 import Targets from "./targets";
 
@@ -39,8 +40,8 @@ class MashRPCApi {
     });
   }
 
-  init(id: string) {
-    return this.engine.call<void>(RPCMethods.Init, id);
+  init(settings: MashSettings) {
+    return this.engine.call<void>(RPCMethods.Init, settings);
   }
 
   access(resourceID: string) {
