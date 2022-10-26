@@ -2,7 +2,7 @@ import PostMessageEngine from "@getmash/post-message";
 
 import { FloatLocation, WalletPosition } from "./settings";
 
-enum Targets {
+export enum Targets {
   HostSiteFrame = "@mash/host-site-iframe",
   Wallet = "@mash/wallet",
 }
