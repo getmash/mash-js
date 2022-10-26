@@ -63,12 +63,17 @@ function validateFloatLocation(location: FloatLocation) {
 export function merge(settings: MashSettings): MergedMashSettings {
   // merge settings with default for desktop
   const desktop = Object.assign(
+    {},
     DEFAULT_DESKTOP,
     settings.position?.desktop || {},
   );
 
   // Merge settings with default for mobile
-  const mobile = Object.assign(DEFAULT_MOBILE, settings.position?.mobile || {});
+  const mobile = Object.assign(
+    {},
+    DEFAULT_MOBILE,
+    settings.position?.mobile || {},
+  );
 
   // Verify float location for mobile settings or default to BottomRight
   if (!validateFloatLocation(mobile.floatLocation)) {

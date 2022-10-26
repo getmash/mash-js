@@ -11,3 +11,5 @@ export {
   DesktopSettings,
   MobileSettings,
 } from "./settings";
+
+export { Events as IFrameEvents } from "./IFrame";
