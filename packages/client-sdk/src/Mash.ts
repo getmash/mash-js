@@ -1,6 +1,6 @@
 import IFrame from "./IFrame";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi";
-import MashSettings from "./types";
+import { MashSettings, merge } from "./settings";
 
 class Mash {
   private api: MashRPCAPI | null = null;
@@ -28,21 +28,22 @@ class Mash {
       return Promise.resolve(null);
     }
 
+    const merged = merge(settings);
+
     return new Promise((resolve, reject) => {
       const onIframeLoaded = (iframe: HTMLIFrameElement) => {
         this.api = new MashRPCAPI(this.iframe.src.origin, iframe.contentWindow);
 
         this.api
-          .init(settings.id)
+          .init(merged)
           .then(() => {
             this.initialized = true;
-
             resolve(null);
           })
           .catch(err => reject(err));
       };
 
-      this.iframe.mount(onIframeLoaded, settings.position);
+      this.iframe.mount(onIframeLoaded, merged.position);
     });
   }
 

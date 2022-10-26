@@ -10,4 +10,7 @@ export {
   JsonRPCRequest,
   JsonRPCResponse,
   JsonRPCSuccessResponse,
+  NewErrorResponse,
+  NewRequest,
+  NewSuccessResponse,
 } from "./JsonRPC";

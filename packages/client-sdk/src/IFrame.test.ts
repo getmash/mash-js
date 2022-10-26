@@ -10,16 +10,18 @@ import IFrame, {
   MAX_CONTENT_WIDTH,
   MIN_CONTENT_HEIGHT,
   MIN_CONTENT_WIDTH,
+  MAX_SHIFT_HORIZONTAL,
+  MAX_SHIFT_UP,
 } from "./IFrame";
-import MashSettings from "./types";
+import { FloatLocation, MashSettings, merge } from "./settings";
 
 const IFRAME_SOURCE = "http://localhost";
 
 const MASH_SETTINGS: MashSettings = {
   id: "123",
   position: {
-    shiftUp: 0,
-    shiftLeft: 300,
+    desktop: {},
+    mobile: {},
   },
 };
 
@@ -30,20 +32,22 @@ const sleep = (ms: number) =>
     }, ms);
   });
 
-// https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
-Object.defineProperty(window, "matchMedia", {
-  writable: true,
-  value: jest.fn().mockImplementation((query: string) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: jest.fn(), // deprecated
-    removeListener: jest.fn(), // deprecated
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  })),
-});
+function mockMatchMedia(mobile = false) {
+  // https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: jest.fn().mockImplementation((query: string) => ({
+      matches: mobile,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(), // deprecated
+      removeListener: jest.fn(), // deprecated
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  });
+}
 
 // Mock Listener to ignore _shouldIgnoreMessage check, check will never be valid since
 // we are manipulating the iframe here and not actually making calls from within the iframe
@@ -71,12 +75,21 @@ const wallet = new PostMessageEngine<EventMessage>({
 
 const getIframe = () => document.getElementsByName(IFRAME_NAME).item(0);
 
-describe("mash_iframe", () => {
+describe("IFrame", () => {
+  beforeEach(() => {
+    mockMatchMedia(false);
+  });
+
+  afterEach(() => {
+    const element = getIframe();
+    element.parentElement?.parentElement?.removeChild(element.parentElement);
+  });
+
   it("mount iframe, should exist in dom", async () => {
     const callback = jest.fn();
 
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(callback, MASH_SETTINGS.position);
+    iframe.mount(callback, merge(MASH_SETTINGS).position);
 
     wallet.send({ name: Events.WalletLoaded, metadata: {} });
 
@@ -91,7 +104,7 @@ describe("mash_iframe", () => {
   it("trigger open event, should resize iframe correctly", async () => {
     const callback = jest.fn();
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(callback, MASH_SETTINGS.position);
+    iframe.mount(callback, merge(MASH_SETTINGS).position);
 
     wallet.send({ name: Events.WalletOpened, metadata: {} });
     await sleep(100);
@@ -104,7 +117,7 @@ describe("mash_iframe", () => {
   it("trigger close event, should resize iframe correctly", async () => {
     const callback = jest.fn();
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(callback, MASH_SETTINGS.position);
+    iframe.mount(callback, merge(MASH_SETTINGS).position);
 
     wallet.send({ name: Events.WalletOpened, metadata: {} });
     await sleep(100);
@@ -120,7 +133,7 @@ describe("mash_iframe", () => {
   it("trigger 2 notifications, should resize iframe correctly", async () => {
     const callback = jest.fn();
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(callback, MASH_SETTINGS.position);
+    iframe.mount(callback, merge(MASH_SETTINGS).position);
 
     wallet.send({ name: Events.NotificationUpdate, metadata: { count: 2 } });
     await sleep(100);
@@ -128,6 +141,202 @@ describe("mash_iframe", () => {
     const element = getIframe();
     expect(element.parentElement?.style.height).toBe("280px");
     expect(element.parentElement?.style.width).toBe(`${MAX_CONTENT_WIDTH}px`);
+  });
+
+  it("desktop, position iframe on left, should have valid css settigns", async () => {
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(jest.fn(), {
+      desktop: {
+        floatLocation: FloatLocation.BottomLeft,
+        shiftLeft: 5,
+        shiftRight: 10,
+        shiftUp: 15,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    await sleep(100);
+
+    const element = getIframe();
+    expect(element.parentElement?.style.bottom).toEqual("15px");
+    expect(element.parentElement?.style.left).toEqual("10px");
+    expect(element.parentElement?.style.right).toEqual("");
+  });
+
+  it("desktop, position iframe on right, should have valid css settigns", async () => {
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(jest.fn(), {
+      desktop: {
+        floatLocation: FloatLocation.BottomRight,
+        shiftLeft: 5,
+        shiftRight: 10,
+        shiftUp: 2,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    await sleep(100);
+
+    const element = getIframe();
+    expect(element.parentElement?.style.bottom).toEqual("2px");
+    expect(element.parentElement?.style.left).toEqual("");
+    expect(element.parentElement?.style.right).toEqual("5px");
+  });
+
+  it("mobile, position iframe on left, should have valid css settigns", async () => {
+    mockMatchMedia(true);
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(jest.fn(), {
+      desktop: {
+        floatLocation: FloatLocation.BottomRight,
+        shiftLeft: 5,
+        shiftRight: 10,
+        shiftUp: 2,
+      },
+      mobile: { floatLocation: FloatLocation.BottomLeft },
+    });
+
+    await sleep(100);
+
+    const element = getIframe();
+    expect(element.parentElement?.style.bottom).toEqual("0px");
+    expect(element.parentElement?.style.left).toEqual("0px");
+    expect(element.parentElement?.style.right).toEqual("");
+  });
+
+  it("mobile, position iframe on right, should have valid css settigns", async () => {
+    mockMatchMedia(true);
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(jest.fn(), {
+      desktop: {
+        floatLocation: FloatLocation.BottomRight,
+        shiftLeft: 5,
+        shiftRight: 10,
+        shiftUp: 2,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    await sleep(100);
+
+    const element = getIframe();
+    expect(element.parentElement?.style.bottom).toEqual("0px");
+    expect(element.parentElement?.style.left).toEqual("");
+    expect(element.parentElement?.style.right).toEqual("0px");
+  });
+
+  it("bottom-right, horizontal shift is less than 0, should normalize to 0", async () => {
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(jest.fn(), {
+      desktop: {
+        floatLocation: FloatLocation.BottomRight,
+        shiftLeft: -100,
+        shiftRight: 5,
+        shiftUp: 0,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    await sleep(100);
+
+    const element = getIframe();
+    expect(element.parentElement?.style.right).toEqual("0px");
+  });
+
+  it("bottom-left, horizontal shift is less than 0, should normalize to 0", async () => {
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(jest.fn(), {
+      desktop: {
+        floatLocation: FloatLocation.BottomLeft,
+        shiftLeft: 5,
+        shiftRight: -100,
+        shiftUp: 0,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    await sleep(100);
+
+    const element = getIframe();
+    expect(element.parentElement?.style.left).toEqual("0px");
+  });
+
+  it("bottom-right, horizontal shift is greater than max, should normalize to max", async () => {
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(jest.fn(), {
+      desktop: {
+        floatLocation: FloatLocation.BottomRight,
+        shiftLeft: MAX_SHIFT_HORIZONTAL + 100,
+        shiftRight: 10,
+        shiftUp: 0,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    await sleep(100);
+
+    const element = getIframe();
+    expect(element.parentElement?.style.right).toEqual(
+      `${MAX_SHIFT_HORIZONTAL}px`,
+    );
+  });
+
+  it("bottom-left, horizontal shift is greater than max, should normalize to max", async () => {
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(jest.fn(), {
+      desktop: {
+        floatLocation: FloatLocation.BottomLeft,
+        shiftLeft: 10,
+        shiftRight: MAX_SHIFT_HORIZONTAL + 100,
+        shiftUp: 0,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    await sleep(100);
+
+    const element = getIframe();
+    expect(element.parentElement?.style.left).toEqual(
+      `${MAX_SHIFT_HORIZONTAL}px`,
+    );
+  });
+
+  it("vertical shift is less than 0, should normalize to 0", async () => {
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(jest.fn(), {
+      desktop: {
+        floatLocation: FloatLocation.BottomRight,
+        shiftLeft: 0,
+        shiftRight: 0,
+        shiftUp: -100,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    await sleep(100);
+
+    const element = getIframe();
+    expect(element.parentElement?.style.bottom).toEqual("0px");
+  });
+
+  it("vertical shift is greater than max, should normalize to max", async () => {
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(jest.fn(), {
+      desktop: {
+        floatLocation: FloatLocation.BottomRight,
+        shiftLeft: 0,
+        shiftRight: 0,
+        shiftUp: MAX_SHIFT_UP + 100,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    await sleep(100);
+
+    const element = getIframe();
+    expect(element.parentElement?.style.bottom).toEqual(`${MAX_SHIFT_UP}px`);
   });
 });
 
