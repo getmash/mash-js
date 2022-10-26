@@ -49,17 +49,34 @@ ___
 
 Initializes the Mash Wallet. When this method is called, the SDK will load the necessary resources for the Mash Wallet. It will connect the site to the wallet and have it ready for any users that visit your site. 
 
-The function accepts a settings object to help configure the Wallet on your site.
+The function accepts a settings object to help configure the Wallet on your site. Depending on needs of your site, you can shift the Wallet using the `position` key in the settings object. 
+
+You can control on which side the Wallet loads using the `floatLocation` property. If you need further customization, you can shift the Wallet horiontally or vertically based on your needs. There is max horitonal shift of 300px and max vertical shift of 200px.
 
 ```typescript
-type WalletPosition = {
-  shiftUp?: number;
-  shiftLeft?: number;
+enum FloatLocation {
+  BottomRight = "bottomRight",
+  BottomLeft = "bottomLeft",
+}
+
+interface LocationSettings {
+  floatLocation: FloatLocation;
+}
+
+type DesktopSettings = LocationSettings & {
+  shiftUp: number;
+  shiftLeft: number;
+  shiftRight: number;
 };
+
+type MobileSettings = LocationSettings;
 
 type MashSettings = {
   id: string;
-  position?: WalletPosition;
+  position?: {
+    desktop: Partial<DesktopSettings>;
+    mobile: Partial<MobileSettings>;
+  };
 };
 ```
 
