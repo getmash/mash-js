@@ -7,16 +7,16 @@ Post Message library is a wrapper over the native browser [PostMessage API](http
 Install the package with:
 
 ```shell
-yarn add @mashing/post-message
+yarn add @getmash/post-message
 # or 
-npm install @mashing/post-message --save
+npm install @getmash/post-message --save
 ```
 
 ## Usage
 
 ```typescript
 
-import PostMessageEngine from "@mashng/post-message"
+import PostMessageEngine from "@getmash/post-message"
 
 // in iframe
 
