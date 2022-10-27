@@ -11,17 +11,17 @@ Complete set of guides can be found here: https://guides.getmash.com/
 Install the package with:
 
 ```shell
-yarn add @mashing/client-sdk
+yarn add @getmash/client-sdk
 # or 
-npm install @mashing/client-sdk --save
+npm install @getmash/client-sdk --save
 ```
 
 ## Usage
 
-The SDK requires your earner ID to be able to initialize the wallet on your site – so that you are paid directly into your wallet. If you do not have an account yet, head to https://wallet.getmash.com/earn and set things up. 
+The SDK requires your earner ID to be able to initialize the wallet on your site – so that you are paid directly into your wallet. If you do not have an account yet, head over to https://wallet.getmash.com/earn to set things up. 
 
 ```javascript
-import Mash from "@mashing/client-sdk"
+import Mash from "@getmash/client-sdk"
 
 const mash = new Mash()
 
@@ -83,7 +83,7 @@ type MashSettings = {
 Once the wallet has been initalized, the `init` function will resolve.
 
 ```typescript
-import Mash from "@mashing/client-sdk"
+import Mash from "@getmash/client-sdk"
 
 const mash = new Mash()
 
@@ -94,7 +94,7 @@ mash.init({ id: "59f316a2-5079-11ed-bdc3-0242ac120002" }).then(() => {
 
 ### `access(resourceID: string): Promise<boolean>`
 
-For use when charging for an experience, or providing access with a "freebie" as defined in your pricing setup for this specific experience, action, event, or click. Accepts a resourceID and determine if the user that is logged into the Mash Wallet, and has access to the given resource. The Mash platform will determine if the user has access from a freebie, or requires payment. If the user requires payment, this function will trigger the necessary steps in the Mash Wallet to complete the payment. Users with a budget set for your site or experience, will auto-pay if they have enough funds available.
+For use when charging for an experience, or providing access with a "freebie" as defined in your pricing setup for this specific experience, action, event, or click. Accepts a resourceID and determines if the user is logged into the Mash Wallet, and has access to the given resource. The Mash platform will determine if the user has access from a freebie, or requires payment. If the user requires payment, this function will trigger the necessary steps in the Mash Wallet to complete the payment. Users with a budget set for your site or experience, will auto-pay if they have enough funds available.
 
 When the Mash Wallet is finished processing the access request, this function will return a boolean indicating if the given user has access to the resource. Access is granted if the user has a "freebie" available for the action, or has completed payment.
 
@@ -144,7 +144,7 @@ donate.onclick = () => {
 
 This function will check if the user has setup a budget on your site. If the user already has setup a budget, it will check the resource cost against the budget and determine if the budget is still valid or if the next purchase will invalidate it. With an active budget, users don't need to confirm every payment. A budget pre-authorizes payment to certain amount, and enables auto-payment without requiring a confirmation from the user. 
 
-Checking if a budget is helpful if you would like to auto-unlock content if the user has already pre-approved purchase to improve the user experience. This can be done to unlock an entire page immediately when they visit it, or to complete an event for the user without confirmation needed.
+Checking if there's a budget is helpful if you would like to auto-unlock content if the user has already pre-approved purchase to improve the user experience. This can be done to unlock an entire page immediately when they visit it, or to complete an event for the user without confirmation needed.
 
 ```javascript
 mash.userHasValidBudget("42ab4348-5079-11ed-bdc3-0242ac120002")
