@@ -24,6 +24,7 @@
     "test": "jest --colors",
     "test:config": "jest --showConfig",
     "test:watch": "jest --watch --colors",
+    "release:add:empty": "yarn changeset add --empty",
     "release:add": "yarn changeset add",
     "release:status": "yarn changeset status --since origin/main --output",
     "release:version": "yarn changeset version",
