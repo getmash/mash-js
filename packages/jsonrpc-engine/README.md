@@ -7,16 +7,16 @@ JsonRPC Engine is a wrapper over [PostMessageEngine](../post-message) that enfor
 Install the package with:
 
 ```shell
-yarn add @mashing/jsonrpc-engine
+yarn add @getmash/jsonrpc-engine
 # or 
-npm install @mashing/jsonrpc-engine --save
+npm install @getmash/jsonrpc-engine --save
 ```
 
 ## Usage
 
 ```typescript
 
-import JsonRPCEngine, { NewSuccessResponse } from "@mashng/post-message"
+import JsonRPCEngine, { NewSuccessResponse } from "@getmash/post-message"
 
 // in iframe
 
