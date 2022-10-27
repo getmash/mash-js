@@ -42,3 +42,11 @@ jobs:
 
       - name: Test packages
         run: yarn test
+
+      - name: Create Release Pull Request
+        uses: changesets/action@v1
+        with:
+          title: Bump package versions
+          commmit: Bump package versions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
