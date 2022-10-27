@@ -1,6 +1,6 @@
 {
   "name": "@getmash/client-sdk",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Mash Client SDK to interact with the Mash Wallet on a site",
   "keywords": [
     "lightning",
@@ -16,8 +16,8 @@
     "build": "tsc --build"
   },
   "dependencies": {
-    "@getmash/jsonrpc-engine": "^1.0.1",
-    "@getmash/post-message": "^1.0.1"
+    "@getmash/jsonrpc-engine": "^1.0.2",
+    "@getmash/post-message": "^1.0.2"
   },
   "files": [
     "dist"
