@@ -12,7 +12,7 @@
 
 # Overview
 
-Mash is the monetization platform for developers, indie-hackers, creators, builders who want to earn for their content, apps & experiences based on the value that they provide and learn what users love most. You can charge any amount, add usage-based-pricing to monetize any event, action or click without requiring your users to make a large-up-front purchases or input credit card details every time. Mash unlocks the fastest way to monetize experiences and get donations from your users, because their money is immediately available in your experience, and they can set a budget to auto-pay or auto-donate without interruption. It's your pricing, your experiences, your decisions, your control. 
+Mash is the monetization platform for developers, indie-hackers, creators, builders who want to earn for their content, apps & experiences based on the value that they provide and learn what users love most. You can charge any amount, add usage-based-pricing to monetize any event, action or click without requiring your users to make large-up-front purchases or input credit card details every time. Mash unlocks the fastest way to monetize experiences and get donations from your users, because their money is immediately available in your experience, and they can set a budget to auto-pay or auto-donate without interruption. It's your pricing, your experiences, your decisions, your control. 
 
 
 # How do I get started?
