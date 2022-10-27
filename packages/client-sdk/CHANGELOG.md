@@ -1,5 +1,15 @@
 # @getmash/client-sdk
 
+## 1.1.1
+
+### Patch Changes
+
+- [#9](https://github.com/getmash/mash-js/pull/9) [`ca363b5`](https://github.com/getmash/mash-js/commit/ca363b50d3df10fe049b46689a5cf33b0b4f5517) Thanks [@cartonioh](https://github.com/cartonioh)! - Update package scopes in documentation
+
+- Updated dependencies [[`ca363b5`](https://github.com/getmash/mash-js/commit/ca363b50d3df10fe049b46689a5cf33b0b4f5517)]:
+  - @getmash/jsonrpc-engine@1.0.2
+  - @getmash/post-message@1.0.2
+
 ## 1.1.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @getmash/post-message
 
+## 1.0.2
+
+### Patch Changes
+
+- [#9](https://github.com/getmash/mash-js/pull/9) [`ca363b5`](https://github.com/getmash/mash-js/commit/ca363b50d3df10fe049b46689a5cf33b0b4f5517) Thanks [@cartonioh](https://github.com/cartonioh)! - Update package scopes in documentation
+
 ## 1.0.1
 
 ### Patch Changes
