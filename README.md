@@ -47,7 +47,7 @@ Creators of all kinds are monetizing their content in new and exciting ways. Mas
 * **Books & Guides** – Authors are monetizing their experiences per chapter or page. You can get started easily with our open-source [Book Starter Gatsby Repo](https://github.com/getmash/mash-lightning-book-starter).
 
 ## Boosts & Donations
-* **Boosts** – Let your users one-click-donate to you, without requiring a confirmation. You'll learn what they love, and they'll get the satisfcation of supporting you. 
+* **Boosts** – Let your users one-click-donate to you, without requiring a confirmation. You'll learn what they love, and they'll get the satisfaction of supporting you. 
 * **Donate Buttons** – Let them say thanks, but a bit more than the boost.
 * **Donations Everywhere** – Share your lightning address, lightning QR code and Mash Page URL with your users to let them support you directly from all your channels, including Twitter, Reddit, Instagram, Facebook, Stackoverflow, Github… you name it!
 
