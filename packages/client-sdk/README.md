@@ -1,6 +1,6 @@
 # Mash Client SDK
 
-The [Mash](https://getmash.com) Client SDK is a Javascript library that is used to interact with the Mash Consumer Wallet. The SDK loads the wallet and exposes functionality to complete payments or donations on a site.
+The [Mash](https://getmash.com) Client SDK is a Javascript library that is used to enable your site and experiences to interact with the Mash Consumer Wallet. The SDK loads the wallet that provides users access to their funds, and exposes functionality for you to faciliate payments, donations, boosts, freebies and more between users of your site, web-app, experience and you.
 
 For more information about integrating Mash: https://guides.getmash.com/getting-started-integrating-mash
 
@@ -18,7 +18,7 @@ npm install @mashing/client-sdk --save
 
 ## Usage
 
-The SDK requires your earner ID to be able to initialize the wallet on your site. If you do not have an account yet, head to https://wallet.getmash.com/earn and set things up. 
+The SDK requires your earner ID to be able to initialize the wallet on your site – so that you are paid directly into your wallet. If you do not have an account yet, head to https://wallet.getmash.com/earn and set things up. 
 
 ```javascript
 import Mash from "@mashing/client-sdk"
@@ -94,9 +94,9 @@ mash.init({ id: "59f316a2-5079-11ed-bdc3-0242ac120002" }).then(() => {
 
 ### `access(resourceID: string): Promise<boolean>`
 
-Accepts a resourceID and determine if the user that is logged into the Mash Wallet has access to given resource. The Mash platform will determine if the user has access or requires payment. If the user requires payment, this function will trigger the necessary steps in the Mash Wallet to complete the payment. 
+For use when charging for an experience, or providing access with a "freebie" as defined in your pricing setup for this specific experience, action, event, or click. Accepts a resourceID and determine if the user that is logged into the Mash Wallet, and has access to the given resource. The Mash platform will determine if the user has access from a freebie, or requires payment. If the user requires payment, this function will trigger the necessary steps in the Mash Wallet to complete the payment. Users with a budget set for your site or experience, will auto-pay if they have enough funds available.
 
-When the Mash Wallet is finished processing the access request, this function will return a boolean indicating if the given user has access to the resource.
+When the Mash Wallet is finished processing the access request, this function will return a boolean indicating if the given user has access to the resource. Access is granted if the user has a "freebie" available for the action, or has completed payment.
 
 ```html
 <button id="btn"> Access Resource </button>
@@ -142,9 +142,9 @@ donate.onclick = () => {
 
 ### `userHasValidBudget(resourceID: string): Promise<boolean>`
 
-This function will check if the user has setup a budget on your site. If the user already has setup a budget, it will check the resource cost against the budget and determine if the budget is still valid or if the next purchase will invalidate it. With an active budget, user don't need to confirm every payment. A budget pre-authorizes payment to certain amount. 
+This function will check if the user has setup a budget on your site. If the user already has setup a budget, it will check the resource cost against the budget and determine if the budget is still valid or if the next purchase will invalidate it. With an active budget, users don't need to confirm every payment. A budget pre-authorizes payment to certain amount, and enables auto-payment without requiring a confirmation from the user. 
 
-Checking if a budget is helpful if you would like to auto-unlock content if the user has already pre-approved purchase to improve the user experience.
+Checking if a budget is helpful if you would like to auto-unlock content if the user has already pre-approved purchase to improve the user experience. This can be done to unlock an entire page immediately when they visit it, or to complete an event for the user without confirmation needed.
 
 ```javascript
 mash.userHasValidBudget("42ab4348-5079-11ed-bdc3-0242ac120002")
