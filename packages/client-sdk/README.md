@@ -1,6 +1,6 @@
 # Mash Client SDK
 
-The [Mash](https://getmash.com) Client SDK is a Javascript library that is used to enable your site and experiences to interact with the Mash Consumer Wallet. The SDK loads the wallet that provides users access to their funds, and exposes functionality for you to faciliate payments, donations, boosts, freebies and more between users of your site, web-app, experience and you.
+The [Mash](https://getmash.com) Client SDK is a Javascript library that is used to enable your site and experiences to interact with the Mash Consumer Wallet. The SDK loads the wallet that provides users access to their funds, and exposes functionality for you to facilitate payments, donations, boosts, freebies and more between users of your site, web-app, experience and you.
 
 For more information about integrating Mash: https://guides.getmash.com/getting-started-integrating-mash
 

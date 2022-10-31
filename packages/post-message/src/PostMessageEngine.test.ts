@@ -145,20 +145,20 @@ describe("PostMessageEngine", () => {
       expect(result).toBe(true);
     });
 
-    it("ignore on target window mismatch", () => {
-      // @ts-expect-error testing the private value
-      const result = tester._shouldIgnoreMessage({
-        ...validEvent,
-        source: {} as MessageEventSource,
-      });
-      expect(result).toBe(true);
-    });
-
     it("ignore on no data", () => {
       // @ts-expect-error testing the private value
       const result = tester._shouldIgnoreMessage({
         ...validEvent,
         data: { ...validEvent, data: undefined },
+      });
+      expect(result).toBe(true);
+    });
+
+    it("ignore on target window mismatch", () => {
+      // @ts-expect-error testing the private value
+      const result = tester._shouldIgnoreMessage({
+        ...validEvent,
+        source: {} as MessageEventSource,
       });
       expect(result).toBe(true);
     });
