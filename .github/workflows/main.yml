@@ -44,4 +44,4 @@ jobs:
           commit: Bump package versions
           version: yarn release:version
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CHANGESET_PR_CREATION_TOKEN }}
