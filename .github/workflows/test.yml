@@ -42,6 +42,7 @@ jobs:
         run: yarn install --immutable
 
       - name: Check release definition
+        if: github.head_ref != 'changeset-release/main'
         run: yarn release:status
 
       - name: Buld packages
