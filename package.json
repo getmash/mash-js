@@ -19,8 +19,8 @@
   "scripts": {
     "clean": "yarn workspaces foreach -p run clean",
     "build": "yarn clean && yarn workspaces foreach -ipt run build",
-    "lint": "eslint --ignore-path .eslintignore --ext .ts,.tsx packages/*",
-    "lint:fix": "eslint --ignore-path .eslintignore --ext .ts,.tsx --fix packages/*",
+    "lint": "eslint packages/*",
+    "lint:fix": "eslint --fix packages/*",
     "test": "jest --colors",
     "test:config": "jest --showConfig",
     "test:watch": "jest --watch --colors",
