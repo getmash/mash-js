@@ -41,7 +41,10 @@ jobs:
         uses: changesets/action@v1
         with:
           title: Bump package versions
-          commmit: Bump package versions [no ci]
+          commit: Bump package versions
           version: yarn release:version
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # From: https://docs.github.com/en/actions/using-workflows/triggering-a-workflow#triggering-a-workflow-from-a-workflow
+          # Events triggered by default GITHUB_TOKEN do not trigger workflows. We want the test workflow to run on the versioning
+          # branch. Using personal access token to trigger the workflow
+          GITHUB_TOKEN: ${{ secrets.CHANGESET_PR_CREATION_TOKEN }}
