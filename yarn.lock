@@ -1590,7 +1590,7 @@ __metadata:
   resolution: "@getmash/client-sdk@workspace:packages/client-sdk"
   dependencies:
     "@getmash/jsonrpc-engine": ^1.0.2
-    "@getmash/post-message": ^1.0.2
+    "@getmash/post-message": ^1.1.0
   languageName: unknown
   linkType: soft
 
@@ -1604,7 +1604,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@getmash/post-message@^1.0.2, @getmash/post-message@workspace:packages/post-message":
+"@getmash/post-message@^1.0.2, @getmash/post-message@^1.1.0, @getmash/post-message@workspace:packages/post-message":
   version: 0.0.0-use.local
   resolution: "@getmash/post-message@workspace:packages/post-message"
   dependencies:

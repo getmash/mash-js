@@ -1,5 +1,14 @@
 # @getmash/client-sdk
 
+## 1.1.2
+
+### Patch Changes
+
+- [#11](https://github.com/getmash/mash-js/pull/11) [`b9b19e1`](https://github.com/getmash/mash-js/commit/b9b19e1b3c67463a508cb531a01ecc5ebad826df) Thanks [@nyonson](https://github.com/nyonson)! - Add opt-in option to post message engine to not filter events by window
+
+- Updated dependencies [[`b9b19e1`](https://github.com/getmash/mash-js/commit/b9b19e1b3c67463a508cb531a01ecc5ebad826df)]:
+  - @getmash/post-message@1.1.0
+
 ## 1.1.1
 
 ### Patch Changes

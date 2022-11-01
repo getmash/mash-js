@@ -1,5 +1,11 @@
 # @getmash/post-message
 
+## 1.1.0
+
+### Minor Changes
+
+- [#11](https://github.com/getmash/mash-js/pull/11) [`b9b19e1`](https://github.com/getmash/mash-js/commit/b9b19e1b3c67463a508cb531a01ecc5ebad826df) Thanks [@nyonson](https://github.com/nyonson)! - Add opt-in option to post message engine to not filter events by window
+
 ## 1.0.2
 
 ### Patch Changes
