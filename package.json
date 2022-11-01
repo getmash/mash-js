@@ -27,7 +27,7 @@
     "release:add:empty": "yarn changeset add --empty",
     "release:add": "yarn changeset add",
     "release:status": "yarn changeset status --since origin/main --output",
-    "release:version": "yarn changeset version && yarn install",
+    "release:version": "yarn changeset version && yarn install --mode=update-lockfile",
     "release:publish": "yarn changeset publish",
     "release": "yarn clean && yarn build && yarn release:publish"
   },
