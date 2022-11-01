@@ -1,7 +1,7 @@
-name: "Verify Main Branch"
+name: "Version Packages"
 
 concurrency:
-  group: ${{ github.head_ref }}-test
+  group: ${{ github.head_ref }}-version-pkgs
   cancel-in-progress: true
 
 on:
@@ -9,7 +9,7 @@ on:
     branches: [main]
 
 jobs:
-  verify-pkgs:
+  version-pkgs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -37,17 +37,11 @@ jobs:
         shell: bash
         run: yarn install --immutable
 
-      - name: Build packages
-        run: yarn build
-
-      - name: Test packages
-        run: yarn test
-
       - name: Create Release Pull Request
         uses: changesets/action@v1
         with:
           title: Bump package versions
           commmit: Bump package versions [no ci]
-          version: yarn version
+          version: yarn release:version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
