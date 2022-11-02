@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 1.1.3
+
+### Patch Changes
+
+- [#18](https://github.com/getmash/mash-js/pull/18) [`8954657`](https://github.com/getmash/mash-js/commit/8954657889763467a859b40e3d1a11975f0d445a) Thanks [@mdedys](https://github.com/mdedys)! - Add defensive CSS to Iframe to prevent host site CSS leaking onto the FAB
+
 ## 1.1.2
 
 ### Patch Changes
