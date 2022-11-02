@@ -38,7 +38,11 @@ const CONTAINER_STYLE = {
   height: `${MIN_CONTENT_HEIGHT}px`,
   width: `${MIN_CONTENT_WIDTH}px`,
   "z-index": 2147483647,
+
+  // Defensive CSS to prevent leaking from host site
+  animation: "none !important",
   "background-color": "transparent !important",
+  transition: "none !important",
 };
 
 const IFRAME_STYLE = {
