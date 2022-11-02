@@ -4,6 +4,13 @@ module.exports = {
     es2022: true,
     jest: true,
   },
+  ignorePatterns: [
+    "node_modules",
+    "dist",
+    "coverage",
+    "*.config.js",
+    ".eslintrc.js",
+  ],
   extends: [
     "eslint:recommended",
     "plugin:import/recommended",
