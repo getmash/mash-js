@@ -8,7 +8,7 @@
 
 </br>
 
-[![Verify Main Branch](https://github.com/getmash/mash-js/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/getmash/mash-js/actions/workflows/main.yml)
+[![Client SDK](https://img.shields.io/github/package-json/v/getmash/mash-js?color=D99CE7&filename=packages%2Fclient-sdk%2Fpackage.json&label=%40getmash%2Fclient-sdk&logo=npm)](https://www.npmjs.com/package/@getmash/client-sdk)
 
 # Overview
 
