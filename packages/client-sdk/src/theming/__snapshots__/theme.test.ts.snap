@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`theme build build theme with color: #000, should match snapshot 1`] = `
+"
+:root {
+  --mash-primary-color: #000000;
+}
+
+mash-button::part(button), mash-accordion::part(button) {
+  font-family: inherit;
+}
+mash-button::part(solid), mash-accordion::part(solid) {
+  background-color: var(--mash-primary-color);
+  color: #FFF;
+}
+mash-button::part(solid):hover, mash-accordion::part(solid):hover {
+  background-color: #000000;
+}
+mash-button::part(solid):active, mash-accordion::part(solid):active {
+  background-color: #000000;
+}
+mash-button::part(outlined), mash-accordion::part(outlined) {
+  border-color: var(--mash-primary-color);
+  background-color: transparent;
+  color: var(--mash-primary-color);
+}
+mash-button::part(outlined):hover, mash-accordion::part(outlined):hover {
+  background-color: rgb(204, 204, 204);
+}
+mash-button::part(outlined):active, mash-accordion::part(outlined):active {
+  background-color: rgb(153, 153, 153);
+}"
+`;
+
+exports[`theme build build theme with color: #fff, should match snapshot 1`] = `
+"
+:root {
+  --mash-primary-color: #ffffff;
+}
+
+mash-button::part(button), mash-accordion::part(button) {
+  font-family: inherit;
+}
+mash-button::part(solid), mash-accordion::part(solid) {
+  background-color: var(--mash-primary-color);
+  color: #000;
+}
+mash-button::part(solid):hover, mash-accordion::part(solid):hover {
+  background-color: #cccccc;
+}
+mash-button::part(solid):active, mash-accordion::part(solid):active {
+  background-color: #999999;
+}
+mash-button::part(outlined), mash-accordion::part(outlined) {
+  border-color: var(--mash-primary-color);
+  background-color: transparent;
+  color: var(--mash-primary-color);
+}
+mash-button::part(outlined):hover, mash-accordion::part(outlined):hover {
+  background-color: rgb(255, 255, 255);
+}
+mash-button::part(outlined):active, mash-accordion::part(outlined):active {
+  background-color: rgb(255, 255, 255);
+}"
+`;

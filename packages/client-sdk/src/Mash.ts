@@ -1,6 +1,7 @@
 import IFrame from "./IFrame";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi";
 import { MashSettings, merge } from "./settings";
+import * as Theme from "./theming/theme";
 
 class Mash {
   private api: MashRPCAPI | null = null;
@@ -9,6 +10,10 @@ class Mash {
 
   constructor(src = "https://wallet.getmash.com/widget") {
     this.iframe = new IFrame(src);
+
+    // TODO: Retrieve primary color from API
+    const theme = Theme.build("#000");
+    Theme.inject(theme);
   }
 
   private static hasValidAutopayAuthorization(
