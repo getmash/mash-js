@@ -39,6 +39,7 @@
     "@babel/preset-env": "^7.20.2",
     "@types/babel__preset-env": "^7",
     "@types/eslint": "^8",
+    "@types/jest": "^29.2.2",
     "@types/prettier": "^2",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",

@@ -15,9 +15,7 @@ function generate(config) {
        */
       clearMocks: true,
       collectCoverage: true,
-      collectCoverageFrom: [
-	"**/*.{ts,tsx}",
-      ],
+      collectCoverageFrom: [ "**/*.{ts,tsx}" ],
       coverageDirectory: "coverage/",
       extensionsToTreatAsEsm: [".ts", ".tsx", ".mts"],
       transform: {
