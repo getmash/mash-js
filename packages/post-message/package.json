@@ -9,7 +9,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist",
-    "build": "tsc --build"
+    "build": "tsc --build",
+    "lint": "tsc --build && eslint",
+    "lint:fix": "tsc --build && eslint --fix"
   },
   "dependencies": {
     "uuid": "^9.0.0"
