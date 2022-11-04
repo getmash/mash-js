@@ -48,16 +48,16 @@ jobs:
         # branch protection rules
         if: github.head_ref != 'changeset-release/main'
         run: yarn release:status
-
-      - name: Buld packages
-        shell: bash
-        run: yarn build       
+     
+      # Fails if project references drift from package.json, fix with reference script
+      - name: Check project reference
+        run: yarn reference:check
 
       - name: Test packages
-        run: yarn test
+        run: yarn workspaces foreach --topological --parallel run test
 
       - name: Lint packages
-        run: yarn lint
+        run: yarn workspaces foreach --topological --parallel run lint
 
       - name: Post coverage
         uses: vebr/jest-lcov-reporter@v0.2.1
