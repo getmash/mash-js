@@ -17,13 +17,8 @@
     "packages/*"
   ],
   "scripts": {
-    "clean": "yarn workspaces foreach -p run clean",
-    "build": "yarn clean && yarn workspaces foreach -ipt run build",
-    "lint": "eslint packages/*",
-    "lint:fix": "eslint --fix packages/*",
-    "test": "jest --colors",
-    "test:config": "jest --showConfig",
-    "test:watch": "jest --watch --colors",
+    "references": "yarn workspaces-to-typescript-project-references --includesRoot",
+    "references:check": "yarn workspaces-to-typescript-project-references --includesRoot --check",
     "release:add:empty": "yarn changeset add --empty",
     "release:add": "yarn changeset add",
     "release:status": "yarn changeset status --since origin/main --output",
@@ -34,6 +29,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.19.3",
     "@changesets/changelog-github": "^0.4.7",
+    "@monorepo-utils/workspaces-to-typescript-project-references": "^2.8.2",
     "@types/babel__preset-env": "^7",
     "@types/eslint": "^8",
     "@types/jest": "^29.1.1",
