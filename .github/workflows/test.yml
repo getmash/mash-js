@@ -60,10 +60,9 @@ jobs:
         run: yarn workspaces foreach --topological --parallel run lint
 
       - name: Post coverage
-        uses: vebr/jest-lcov-reporter@v0.2.1
+        uses: ScaCap/code-coverage-assistant@v1 
         # only post on PRs
         if: github.event_name == 'pull_request'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          update-comment: true
-          lcov-file: ./coverage/lcov.info
+          monorepo-base-path: "./packages" 
