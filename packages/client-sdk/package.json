@@ -15,7 +15,8 @@
     "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist",
     "build": "tsc --build",
     "lint": "tsc --build && eslint",
-    "lint:fix": "tsc --build && eslint --fix"
+    "lint:fix": "tsc --build && eslint --fix",
+    "test": "tsc --build && jest"
   },
   "dependencies": {
     "@getmash/jsonrpc-engine": "^1.0.2",

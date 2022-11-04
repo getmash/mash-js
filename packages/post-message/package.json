@@ -11,7 +11,8 @@
     "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist",
     "build": "tsc --build",
     "lint": "tsc --build && eslint",
-    "lint:fix": "tsc --build && eslint --fix"
+    "lint:fix": "tsc --build && eslint --fix",
+    "test": "tsc --build && jest"
   },
   "dependencies": {
     "uuid": "^9.0.0"
