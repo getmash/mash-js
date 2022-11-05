@@ -149,6 +149,7 @@ describe("PostMessageEngine", () => {
       // @ts-expect-error testing the private value
       const result = tester._shouldIgnoreMessage({
         ...validEvent,
+        // @ts-expect-error testing the private value
         data: { ...validEvent, data: undefined },
       });
       expect(result).toBe(true);
