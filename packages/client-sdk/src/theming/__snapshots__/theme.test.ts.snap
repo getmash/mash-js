@@ -6,28 +6,28 @@ exports[`theme build build theme with color: #000, should match snapshot 1`] = `
   --mash-primary-color: #000000;
 }
 
-mash-button::part(button), mash-accordion::part(button) {
+mash-button::part(button), mash-accordion::part(button), mash-download-button::part(button), mash-text-reveal::part(button) {
   font-family: inherit;
 }
-mash-button::part(solid), mash-accordion::part(solid) {
+mash-button::part(solid), mash-accordion::part(solid), mash-download-button::part(solid), mash-text-reveal::part(solid) {
   background-color: var(--mash-primary-color);
   color: #FFF;
 }
-mash-button::part(solid):hover, mash-accordion::part(solid):hover {
+mash-button::part(solid):hover, mash-accordion::part(solid):hover, mash-download-button::part(solid):hover, mash-text-reveal::part(solid):hover {
   background-color: #000000;
 }
-mash-button::part(solid):active, mash-accordion::part(solid):active {
+mash-button::part(solid):active, mash-accordion::part(solid):active, mash-download-button::part(solid):active, mash-text-reveal::part(solid):active {
   background-color: #000000;
 }
-mash-button::part(outlined), mash-accordion::part(outlined) {
+mash-button::part(outlined), mash-accordion::part(outlined), mash-download-button::part(outlined), mash-text-reveal::part(outlined) {
   border-color: var(--mash-primary-color);
   background-color: transparent;
   color: var(--mash-primary-color);
 }
-mash-button::part(outlined):hover, mash-accordion::part(outlined):hover {
+mash-button::part(outlined):hover, mash-accordion::part(outlined):hover, mash-download-button::part(outlined):hover, mash-text-reveal::part(outlined):hover {
   background-color: rgb(204, 204, 204);
 }
-mash-button::part(outlined):active, mash-accordion::part(outlined):active {
+mash-button::part(outlined):active, mash-accordion::part(outlined):active, mash-download-button::part(outlined):active, mash-text-reveal::part(outlined):active {
   background-color: rgb(153, 153, 153);
 }"
 `;
@@ -38,28 +38,28 @@ exports[`theme build build theme with color: #fff, should match snapshot 1`] = `
   --mash-primary-color: #ffffff;
 }
 
-mash-button::part(button), mash-accordion::part(button) {
+mash-button::part(button), mash-accordion::part(button), mash-download-button::part(button), mash-text-reveal::part(button) {
   font-family: inherit;
 }
-mash-button::part(solid), mash-accordion::part(solid) {
+mash-button::part(solid), mash-accordion::part(solid), mash-download-button::part(solid), mash-text-reveal::part(solid) {
   background-color: var(--mash-primary-color);
   color: #000;
 }
-mash-button::part(solid):hover, mash-accordion::part(solid):hover {
+mash-button::part(solid):hover, mash-accordion::part(solid):hover, mash-download-button::part(solid):hover, mash-text-reveal::part(solid):hover {
   background-color: #cccccc;
 }
-mash-button::part(solid):active, mash-accordion::part(solid):active {
+mash-button::part(solid):active, mash-accordion::part(solid):active, mash-download-button::part(solid):active, mash-text-reveal::part(solid):active {
   background-color: #999999;
 }
-mash-button::part(outlined), mash-accordion::part(outlined) {
+mash-button::part(outlined), mash-accordion::part(outlined), mash-download-button::part(outlined), mash-text-reveal::part(outlined) {
   border-color: var(--mash-primary-color);
   background-color: transparent;
   color: var(--mash-primary-color);
 }
-mash-button::part(outlined):hover, mash-accordion::part(outlined):hover {
+mash-button::part(outlined):hover, mash-accordion::part(outlined):hover, mash-download-button::part(outlined):hover, mash-text-reveal::part(outlined):hover {
   background-color: rgb(255, 255, 255);
 }
-mash-button::part(outlined):active, mash-accordion::part(outlined):active {
+mash-button::part(outlined):active, mash-accordion::part(outlined):active, mash-download-button::part(outlined):active, mash-text-reveal::part(outlined):active {
   background-color: rgb(255, 255, 255);
 }"
 `;

@@ -2,7 +2,7 @@ import Color from "./color";
 import ButtonTemplate from "./templates/Button";
 import RootTemplate from "./templates/Root";
 
-function minify(stylesheet: string) {
+export function minify(stylesheet: string) {
   return stylesheet.replaceAll(/\n|\t/g, " ");
 }
 

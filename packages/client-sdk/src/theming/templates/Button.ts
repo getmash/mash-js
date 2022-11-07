@@ -3,50 +3,83 @@ import css from "../css";
 import WebComponents from "../elements";
 import selector from "../selector";
 
+const selectors = (
+  components: WebComponents[],
+  part: string,
+  state?: "active" | "hover",
+) => components.map(c => selector(c, part, state));
+
 function generate(color: Color): string {
   return css.toString([
     {
-      selectors: [
-        selector(WebComponents.Button, "button"),
-        selector(WebComponents.Accordion, "button"),
-      ],
+      selectors: selectors(
+        [
+          WebComponents.Button,
+          WebComponents.Accordion,
+          WebComponents.Download,
+          WebComponents.TextReveal,
+        ],
+        "button",
+      ),
       properties: {
         "font-family": "inherit",
       },
     },
     {
-      selectors: [
-        selector(WebComponents.Button, "solid"),
-        selector(WebComponents.Accordion, "solid"),
-      ],
+      selectors: selectors(
+        [
+          WebComponents.Button,
+          WebComponents.Accordion,
+          WebComponents.Download,
+          WebComponents.TextReveal,
+        ],
+        "solid",
+      ),
       properties: {
         "background-color": VariablePrimaryColor,
         color: getReadableTextColor(color.toHexString()),
       },
     },
     {
-      selectors: [
-        selector(WebComponents.Button, "solid", "hover"),
-        selector(WebComponents.Accordion, "solid", "hover"),
-      ],
+      selectors: selectors(
+        [
+          WebComponents.Button,
+          WebComponents.Accordion,
+          WebComponents.Download,
+          WebComponents.TextReveal,
+        ],
+        "solid",
+        "hover",
+      ),
       properties: {
         "background-color": color.darken(20).toHexString(),
       },
     },
     {
-      selectors: [
-        selector(WebComponents.Button, "solid", "active"),
-        selector(WebComponents.Accordion, "solid", "active"),
-      ],
+      selectors: selectors(
+        [
+          WebComponents.Button,
+          WebComponents.Accordion,
+          WebComponents.Download,
+          WebComponents.TextReveal,
+        ],
+        "solid",
+        "active",
+      ),
       properties: {
         "background-color": color.darken(40).toHexString(),
       },
     },
     {
-      selectors: [
-        selector(WebComponents.Button, "outlined"),
-        selector(WebComponents.Accordion, "outlined"),
-      ],
+      selectors: selectors(
+        [
+          WebComponents.Button,
+          WebComponents.Accordion,
+          WebComponents.Download,
+          WebComponents.TextReveal,
+        ],
+        "outlined",
+      ),
       properties: {
         "border-color": VariablePrimaryColor,
         "background-color": "transparent",
@@ -54,19 +87,31 @@ function generate(color: Color): string {
       },
     },
     {
-      selectors: [
-        selector(WebComponents.Button, "outlined", "hover"),
-        selector(WebComponents.Accordion, "outlined", "hover"),
-      ],
+      selectors: selectors(
+        [
+          WebComponents.Button,
+          WebComponents.Accordion,
+          WebComponents.Download,
+          WebComponents.TextReveal,
+        ],
+        "outlined",
+        "hover",
+      ),
       properties: {
         "background-color": color.lighten(80).toRgbString(),
       },
     },
     {
-      selectors: [
-        selector(WebComponents.Button, "outlined", "active"),
-        selector(WebComponents.Accordion, "outlined", "active"),
-      ],
+      selectors: selectors(
+        [
+          WebComponents.Button,
+          WebComponents.Accordion,
+          WebComponents.Download,
+          WebComponents.TextReveal,
+        ],
+        "outlined",
+        "active",
+      ),
       properties: {
         "background-color": color.lighten(60).toRgbString(),
       },

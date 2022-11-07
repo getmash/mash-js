@@ -1,3 +1,5 @@
+export * as ThemeBuilder from "./theming/theme";
+
 import Mash from "./Mash";
 
 export default Mash;
