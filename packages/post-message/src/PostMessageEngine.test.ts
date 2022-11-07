@@ -1,4 +1,4 @@
-import PostMessageEngine from "./PostMessageEngine";
+import PostMessageEngine from "./PostMessageEngine.js";
 
 describe("PostMessageEngine", () => {
   it("can set target origin", () => {

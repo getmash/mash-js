@@ -1,19 +1,20 @@
 {
   "name": "@getmash/jsonrpc-engine",
   "version": "1.0.2",
-  "description": "JsonRPC wrapper over  window.postMessage to allow a structured method to call functions through window.postMessage",
+  "description": "JsonRPC wrapper over window.postMessage to allow a structured method to call functions through window.postMessage",
   "keywords": [
     "post message",
     "jsonrpc"
   ],
   "main": "dist/index.js",
+  "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
     "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist",
     "build": "tsc --build",
     "lint": "tsc --build && eslint",
     "lint:fix": "tsc --build && eslint --fix",
-    "test": "tsc --build && NODE_OPTIONS='--experimental-vm-modules' jest"
+    "test": "tsc --build && jest"
   },
   "dependencies": {
     "@getmash/post-message": "^1.0.2",
@@ -31,6 +32,7 @@
     "babel-jest": "^29.2.2",
     "eslint": "^8.26.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^3.5.2",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^27.1.4",
     "eslint-plugin-prettier": "^4.2.1",

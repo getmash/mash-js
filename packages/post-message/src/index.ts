@@ -1,9 +1,9 @@
-import PostMessageEngine from "./PostMessageEngine";
+import PostMessageEngine from "./PostMessageEngine.js";
 
 export {
   PostMessageEngineOptions,
   PostMessageEvent,
   EngineListener,
-} from "./PostMessageEngine";
+} from "./PostMessageEngine.js";
 
 export default PostMessageEngine;
