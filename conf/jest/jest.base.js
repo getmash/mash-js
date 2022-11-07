@@ -18,6 +18,10 @@ function generate(config) {
       collectCoverageFrom: [ "**/*.{ts,tsx}" ],
       coverageDirectory: "coverage/",
       extensionsToTreatAsEsm: [".ts", ".tsx", ".mts"],
+      moduleNameMapper: {
+	'^(\\.{1,2}/.*)\\.js$': '$1',
+	'^uuid$': require.resolve('uuid'),
+      },
       transform: {
         "^.+\\.tsx?$": [
           "ts-jest",
