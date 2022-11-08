@@ -4,4 +4,5 @@
 
 # test all packages
 @test:
+  yarn references:check
   yarn workspaces foreach --topological --parallel run test
