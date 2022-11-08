@@ -38,6 +38,7 @@ function mockMatchMedia(mobile = false) {
   // https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
   Object.defineProperty(window, "matchMedia", {
     writable: true,
+    // @ts-ignore ignore type of wrapped to allow mock to function
     value: jest.fn().mockImplementation((query: string) => ({
       matches: mobile,
       media: query,
