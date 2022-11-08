@@ -41,13 +41,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: yarn install --immutable
-
-      - name: Check release definition
-        # Don't run on changeset-release branch as it does not require a changeset to update
-        # package versions. Simplifies the automation of package versioning and allows
-        # branch protection rules
-        if: github.head_ref != 'changeset-release/main'
-        run: yarn release:status
      
       # Fails if project references drift from package.json, fix with reference script
       - name: Check project reference
@@ -65,4 +58,11 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          monorepo-base-path: "./packages" 
+          monorepo-base-path: "./packages"
+
+      - name: Check release definition
+        # Don't run on changeset-release branch as it does not require a changeset to update
+        # package versions. Simplifies the automation of package versioning and allows
+        # branch protection rules
+        if: github.head_ref != 'changeset-release/main'
+        run: yarn release:status
