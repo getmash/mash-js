@@ -19,7 +19,9 @@ function generate(config) {
       coverageDirectory: "coverage/",
       extensionsToTreatAsEsm: [".ts", ".tsx", ".mts"],
       moduleNameMapper: {
+	// jest resolver needs help finding the ts files from js extensions in imports
 	'^(\\.{1,2}/.*)\\.js$': '$1',
+	// there is a bug in jest and it can't handle the exports in this library
 	'^uuid$': require.resolve('uuid'),
       },
       transform: {
