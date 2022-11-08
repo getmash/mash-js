@@ -6,15 +6,15 @@
     "post message",
     "jsonrpc"
   ],
-  "main": "dist/index.js",
+  "exports": "dist/index.js",
   "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
     "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist",
     "build": "tsc --build",
-    "lint": "tsc --build && eslint",
-    "lint:fix": "tsc --build && eslint --fix",
-    "test": "tsc --build && jest"
+    "lint": "tsc --build && eslint .",
+    "lint:fix": "tsc --build && eslint --fix .",
+    "test": "tsc --build && node --experimental-vm-modules $(yarn bin jest) src"
   },
   "dependencies": {
     "@getmash/post-message": "^1.0.2",

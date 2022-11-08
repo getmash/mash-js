@@ -13,7 +13,7 @@
     "build": "tsc --build",
     "lint": "tsc --build && eslint .",
     "lint:fix": "tsc --build && eslint --fix .",
-    "test": "tsc --build && node --experimental-vm-modules ./node_modules/.bin/jest"
+    "test": "tsc --build && node --experimental-vm-modules $(yarn bin jest) src"
   },
   "dependencies": {
     "uuid": "^9.0.0"
