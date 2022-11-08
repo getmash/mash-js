@@ -26,7 +26,8 @@
     "@getmash/post-message": "^1.1.0"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.test.*"
   ],
   "author": "Mash <support@getmash.com> (https://getmash.com/)",
   "license": "MIT",

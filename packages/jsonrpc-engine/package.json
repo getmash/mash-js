@@ -46,7 +46,8 @@
     "typescript": "^4.8.4"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.test.*"
   ],
   "author": "Mash <support@getmash.com> (https://getmash.com/)",
   "license": "MIT",
