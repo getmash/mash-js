@@ -44,7 +44,7 @@ jobs:
      
       # Fails if project references drift from package.json, fix with reference script
       - name: Check project reference
-        run: yarn reference:check
+        run: yarn references:check
 
       - name: Test packages
         run: yarn workspaces foreach --topological --parallel run test
