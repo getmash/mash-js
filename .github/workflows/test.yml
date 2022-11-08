@@ -60,7 +60,7 @@ jobs:
         run: yarn workspaces foreach --topological --parallel run lint
 
       - name: Post coverage
-        uses: eeshdarthvader/code-coverage-assistant@v1 
+        uses: eeshdarthvader/code-coverage-assistant@0.1 
         # only post on PRs
         if: github.event_name == 'pull_request'
         with:
