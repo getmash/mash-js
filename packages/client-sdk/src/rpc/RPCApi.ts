@@ -1,8 +1,8 @@
 import JsonRPCEngine from "@getmash/jsonrpc-engine";
 
-import { MashSettings } from "../settings";
-import RPCMethods from "./methods";
-import Targets from "./targets";
+import { MashSettings } from "../settings.js";
+import RPCMethods from "./methods.js";
+import Targets from "./targets.js";
 
 enum FiatCurrency {
   Usd = "USD",

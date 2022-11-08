@@ -6,9 +6,11 @@
     "post message",
     "jsonrpc"
   ],
-  "exports": "dist/index.js",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "default": "./dist/index.js"
+  },  
   "type": "module",
-  "types": "dist/index.d.ts",
   "scripts": {
     "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist",
     "build": "tsc --build",

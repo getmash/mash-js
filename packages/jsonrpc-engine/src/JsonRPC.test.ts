@@ -3,7 +3,7 @@ import {
   NewSuccessResponse,
   NewErrorResponse,
   JsonRPCError,
-} from "./JsonRPC";
+} from "./JsonRPC.js";
 
 describe("JsonRPC", () => {
   describe("NewRequest", () => {

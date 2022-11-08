@@ -12,8 +12,8 @@ import IFrame, {
   MIN_CONTENT_WIDTH,
   MAX_SHIFT_HORIZONTAL,
   MAX_SHIFT_UP,
-} from "./IFrame";
-import { FloatLocation, MashSettings, merge } from "./settings";
+} from "./IFrame.js";
+import { FloatLocation, MashSettings, merge } from "./settings.js";
 
 const IFRAME_SOURCE = "http://localhost";
 

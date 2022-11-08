@@ -1,4 +1,4 @@
-import { FloatLocation, merge, WalletPosition } from "./settings";
+import { FloatLocation, merge, WalletPosition } from "./settings.js";
 
 describe("settings", () => {
   describe("merge", () => {
