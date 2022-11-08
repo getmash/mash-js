@@ -1,5 +1,6 @@
+import { jest } from "@jest/globals";
+
 import PostMessageEngine from "./PostMessageEngine.js";
-import {jest} from '@jest/globals'
 
 describe("PostMessageEngine", () => {
   it("can set target origin", () => {

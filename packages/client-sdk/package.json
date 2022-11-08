@@ -12,7 +12,7 @@
   "exports": {
     "types": "./dist/index.d.ts",
     "default": "./dist/index.js"
-  },  
+  },
   "type": "module",
   "scripts": {
     "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist",
@@ -20,7 +20,7 @@
     "lint": "tsc --build && eslint .",
     "lint:fix": "tsc --build && eslint --fix .",
     "test": "tsc --build && node --experimental-vm-modules $(yarn bin jest) src"
-  }, 
+  },
   "dependencies": {
     "@getmash/jsonrpc-engine": "^1.0.2",
     "@getmash/post-message": "^1.1.0"

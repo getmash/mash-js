@@ -1,3 +1,5 @@
+import { jest } from "@jest/globals";
+
 import PostMessageEngine, { PostMessageEvent } from "@getmash/post-message";
 
 import IFrame, {
