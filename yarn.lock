@@ -1696,8 +1696,8 @@ __metadata:
   resolution: "@getmash/client-sdk@workspace:packages/client-sdk"
   dependencies:
     "@babel/preset-env": ^7.20.2
-    "@getmash/jsonrpc-engine": ^2.0.0-alpha.0
-    "@getmash/post-message": ^2.0.0-alpha.0
+    "@getmash/jsonrpc-engine": ^2.0.0
+    "@getmash/post-message": ^2.0.0
     "@types/babel__preset-env": ^7
     "@types/eslint": ^8
     "@types/jest": ^29.2.2
@@ -1720,12 +1720,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@getmash/jsonrpc-engine@^2.0.0-alpha.0, @getmash/jsonrpc-engine@workspace:packages/jsonrpc-engine":
+"@getmash/jsonrpc-engine@^2.0.0, @getmash/jsonrpc-engine@workspace:packages/jsonrpc-engine":
   version: 0.0.0-use.local
   resolution: "@getmash/jsonrpc-engine@workspace:packages/jsonrpc-engine"
   dependencies:
     "@babel/preset-env": ^7.20.2
-    "@getmash/post-message": ^2.0.0-alpha.0
+    "@getmash/post-message": ^2.0.0
     "@types/babel__preset-env": ^7
     "@types/eslint": ^8
     "@types/jest": ^29.2.2
@@ -1750,7 +1750,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@getmash/post-message@^2.0.0-alpha.0, @getmash/post-message@workspace:packages/post-message":
+"@getmash/post-message@^2.0.0, @getmash/post-message@workspace:packages/post-message":
   version: 0.0.0-use.local
   resolution: "@getmash/post-message@workspace:packages/post-message"
   dependencies:
