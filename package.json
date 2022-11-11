@@ -24,7 +24,7 @@
     "release:status": "yarn changeset status --since origin/main --output",
     "release:version": "yarn changeset version && yarn install --mode=update-lockfile",
     "release:publish": "yarn changeset publish",
-    "release": "yarn clean && yarn build && yarn release:publish"
+    "release": "yarn build && yarn release:publish"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.7",
