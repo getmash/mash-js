@@ -60,6 +60,11 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           monorepo-base-path: "./packages"
 
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
       - name: Check release definition
         # Don't run on changeset-release branch as it does not require a changeset to update
         # package versions. Simplifies the automation of package versioning and allows
