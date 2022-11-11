@@ -64,5 +64,5 @@ jobs:
         # Don't run on changeset-release branch as it does not require a changeset to update
         # package versions. Simplifies the automation of package versioning and allows
         # branch protection rules
-        if: github.head_ref != 'changeset-release/main'
+        if: ${{ github.ref != 'refs/heads/changeset-release/main' }}
         run: yarn release:status
