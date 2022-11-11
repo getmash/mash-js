@@ -1,6 +1,6 @@
 import PostMessageEngine from "@getmash/post-message";
 
-import { FloatLocation, WalletPosition } from "./settings";
+import { FloatLocation, WalletPosition } from "./settings.js";
 
 export enum Targets {
   HostSiteFrame = "@mash/host-site-iframe",

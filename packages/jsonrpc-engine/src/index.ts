@@ -1,6 +1,6 @@
-import JsonRPCEngine from "./JsonRPCEngine";
+import JsonRPCEngine from "./JsonRPCEngine.js";
 
-export { JsonRPCOptions, JsonRPCListener } from "./JsonRPCEngine";
+export { JsonRPCOptions, JsonRPCListener } from "./JsonRPCEngine.js";
 export default JsonRPCEngine;
 
 export {
@@ -13,4 +13,4 @@ export {
   NewErrorResponse,
   NewRequest,
   NewSuccessResponse,
-} from "./JsonRPC";
+} from "./JsonRPC.js";

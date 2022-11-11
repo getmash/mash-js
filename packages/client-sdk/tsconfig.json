@@ -1,10 +1,9 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../conf/tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "outDir": "./dist",
+    "outDir": "./dist"
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": ["./src/**/*.test.*"],
+  "include": ["./src/**/*"],
   "references": [{ "path": "../jsonrpc-engine" }, { "path": "../post-message" }]
 }

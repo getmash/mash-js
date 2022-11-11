@@ -9,7 +9,7 @@ import {
   NewRequest,
   JsonRPCResponse,
   ErrorPayload,
-} from "./JsonRPC";
+} from "./JsonRPC.js";
 
 export interface JsonRPCOptions extends PostMessageEngineOptions {
   // timeout in ms

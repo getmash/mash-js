@@ -1,6 +1,6 @@
-import IFrame from "./IFrame";
-import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi";
-import { MashSettings, merge } from "./settings";
+import IFrame from "./IFrame.js";
+import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
+import { MashSettings, merge } from "./settings.js";
 
 class Mash {
   private api: MashRPCAPI | null = null;

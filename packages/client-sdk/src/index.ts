@@ -1,8 +1,8 @@
-import Mash from "./Mash";
+import Mash from "./Mash.js";
 
 export default Mash;
 
-export { default as Targets } from "./rpc/targets";
+export { default as Targets } from "./rpc/targets.js";
 
 export {
   FloatLocation,
@@ -10,9 +10,9 @@ export {
   WalletPosition,
   DesktopSettings,
   MobileSettings,
-} from "./settings";
+} from "./settings.js";
 
 export {
   Events as IFrameEvents,
   IFRAME_NAME as MashIFrameName,
-} from "./IFrame";
+} from "./IFrame.js";

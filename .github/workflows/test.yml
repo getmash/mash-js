@@ -41,6 +41,24 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: yarn install --immutable
+     
+      # Fails if project references drift from package.json, fix with reference script
+      - name: Check project reference
+        run: yarn references:check
+
+      - name: Test packages
+        run: yarn workspaces foreach --topological --parallel run test
+
+      - name: Lint packages
+        run: yarn workspaces foreach --topological --parallel run lint
+
+      - name: Post coverage
+        uses: eeshdarthvader/code-coverage-assistant@0.1 
+        # only post on PRs
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          monorepo-base-path: "./packages"
 
       - name: Check release definition
         # Don't run on changeset-release branch as it does not require a changeset to update
@@ -48,22 +66,3 @@ jobs:
         # branch protection rules
         if: github.head_ref != 'changeset-release/main'
         run: yarn release:status
-
-      - name: Buld packages
-        shell: bash
-        run: yarn build       
-
-      - name: Test packages
-        run: yarn test
-
-      - name: Lint packages
-        run: yarn lint
-
-      - name: Post coverage
-        uses: vebr/jest-lcov-reporter@v0.2.1
-        # only post on PRs
-        if: github.event_name == 'pull_request'
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          update-comment: true
-          lcov-file: ./coverage/lcov.info

@@ -53,5 +53,15 @@ module.exports = {
     ],
     "@typescript-eslint/ban-ts-comment": "off",
   },
-  settings: {},
+  settings: {
+    // import settings along with eslint-import-resolver-typescript allow js imports to be mapped back to ts files
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+	"project": ["tsconfig.json"]
+      },
+    }
+  },
 };

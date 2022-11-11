@@ -24,7 +24,7 @@ coverage
 *.tsbuildinfo
 
 # jest
-.cache/jest
+**/.cache/jest
 
 #parcel
 .parcel-cache

@@ -1,7 +1,0 @@
-tsconfig.json
-tsconfig.lint.json
-tsconfig.tsbuildinfo
-src
-.eslintrc.js
-.npmignore
-*.log

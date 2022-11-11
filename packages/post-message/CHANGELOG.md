@@ -1,5 +1,11 @@
 # @getmash/post-message
 
+## 2.0.0-alpha.0
+
+### Major Changes
+
+- [#20](https://github.com/getmash/mash-js/pull/20) [`46f3177`](https://github.com/getmash/mash-js/commit/46f3177fde43f265ddb41aeb9daad3b19ecc6aa7) Thanks [@nyonson](https://github.com/nyonson)! - Upgrade all packages to ESM only. Dropping tech debt and simplifying our tooling.
+
 ## 1.1.0
 
 ### Minor Changes

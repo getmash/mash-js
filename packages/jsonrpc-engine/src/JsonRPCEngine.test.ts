@@ -1,5 +1,5 @@
-import { JsonRPCError, JsonRPCRequest, NewSuccessResponse } from "./JsonRPC";
-import JsonRPCEngine from "./JsonRPCEngine";
+import { JsonRPCError, JsonRPCRequest, NewSuccessResponse } from "./JsonRPC.js";
+import JsonRPCEngine from "./JsonRPCEngine.js";
 
 describe("JsonRPCEngine", () => {
   describe("call", () => {
