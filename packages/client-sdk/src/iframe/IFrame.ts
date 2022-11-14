@@ -1,6 +1,6 @@
 import PostMessageEngine from "@getmash/post-message";
 
-import { FloatLocation, WalletPosition } from "./settings.js";
+import { FloatLocation, WalletPosition } from "./position.js";
 
 export enum Targets {
   HostSiteFrame = "@mash/host-site-iframe",
@@ -316,29 +316,24 @@ export default class IFrame {
    * when the Wallet has loaded
    * @param onLoad OnLoadCallback
    */
-  mount(onLoad: OnLoadCallback, position?: WalletPosition) {
+  mount(onLoad: OnLoadCallback, position: WalletPosition) {
     if (!this.mounted) {
       this.container.appendChild(this.iframe);
       document.body.appendChild(this.container);
       this.mounted = true;
     }
 
-    if (position) {
-      this.desktopFloatLocation = position.desktop.floatLocation;
-      this.mobileFloatLocation = position.mobile.floatLocation;
-      this.shiftUp = this.normalizeShift(
-        position.desktop.shiftUp,
-        MAX_SHIFT_UP,
-      );
-      this.shiftLeft = this.normalizeShift(
-        position.desktop.shiftLeft,
-        MAX_SHIFT_HORIZONTAL,
-      );
-      this.shiftRight = this.normalizeShift(
-        position.desktop.shiftRight,
-        MAX_SHIFT_HORIZONTAL,
-      );
-    }
+    this.desktopFloatLocation = position.desktop.floatLocation;
+    this.mobileFloatLocation = position.mobile.floatLocation;
+    this.shiftUp = this.normalizeShift(position.desktop.shiftUp, MAX_SHIFT_UP);
+    this.shiftLeft = this.normalizeShift(
+      position.desktop.shiftLeft,
+      MAX_SHIFT_HORIZONTAL,
+    );
+    this.shiftRight = this.normalizeShift(
+      position.desktop.shiftRight,
+      MAX_SHIFT_HORIZONTAL,
+    );
 
     // Must init engine here to have the correct contentWindow.
     // If referencing this.iframe before it is mounted to the
