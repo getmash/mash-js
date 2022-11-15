@@ -1,11 +1,15 @@
+import { PartialDeep } from "type-fest";
+
 import parseConfig, { PartialConfig, Config } from "./config.js";
 import IFrame from "./iframe/IFrame.js";
 import { getWalletPosition, WalletPosition } from "./iframe/position.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
+import injectTheme from "./theming/inject.js";
+import { Theme } from "./theming/theme.js";
 
 export type MashSettings = {
   id: string;
-  position: Partial<WalletPosition>;
+  position: PartialDeep<WalletPosition>;
 };
 
 class Mash {
@@ -14,11 +18,6 @@ class Mash {
   private initialized = false;
   private config: Config;
 
-  /**
-   * Initializes the Mash SDK with a config
-   * @deprecated string config is deprecated and should instead use Config object
-   * @param config Config
-   */
   constructor(config: string | PartialConfig) {
     /**
      * Backwards compatibility to support existing earners
@@ -34,7 +33,13 @@ class Mash {
     this.iframe = new IFrame(this.config.src);
 
     // TODO: Add fetching of Earner config
-    // TODO: Load CSS based on Earner Theme
+
+    if (this.config.theme.inject) {
+      // TODO: Get Theme from API
+      const theme: Theme = { primaryColor: "#FF9900", fontFamily: "inherit" };
+      injectTheme(this.config.theme.baseUrl, theme);
+    }
+
     // TODO: Load Widgets
   }
 
@@ -49,7 +54,7 @@ class Mash {
     return curSpend + cleanCost <= maxSpend;
   }
 
-  init(settings: MashSettings) {
+  init(settings?: MashSettings) {
     if (this.iframe.mounted) {
       console.warn("[MASH] Already mounted, ignoring this call to init Mash");
       return Promise.resolve(null);
@@ -57,15 +62,15 @@ class Mash {
 
     // Backwards support for older init flow where earnerID is only
     // passed through settings object in init function
-    if (!this.config.earnerID) {
+    if (!this.config.earnerID && settings) {
       this.config.earnerID = settings.id;
     }
 
     // TODO: Modify this to check if position has already been set
     // through API call in the constructor
     const position = getWalletPosition(
-      settings.position.desktop,
-      settings.position.mobile,
+      settings?.position.desktop,
+      settings?.position.mobile,
     );
 
     // TODO: Add conditional logic to only init Wallet when there are known
