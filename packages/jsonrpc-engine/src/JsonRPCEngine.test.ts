@@ -1,8 +1,15 @@
+import assert from "node:assert/strict";
+import { beforeEach, describe, it } from "node:test";
+
+import { JSDOM } from "jsdom";
+
 import { JsonRPCError, JsonRPCRequest, NewSuccessResponse } from "./JsonRPC.js";
 import JsonRPCEngine from "./JsonRPCEngine.js";
 
 describe("JsonRPCEngine", () => {
   describe("call", () => {
+    //@ts-expect-error JSDOM Window mismatch
+    beforeEach(() => (global.window = new JSDOM("").window));
     it("call and wait for correct response", async () => {
       const sender = new JsonRPCEngine({
         name: "jsonrpc_sender",
@@ -18,14 +25,13 @@ describe("JsonRPCEngine", () => {
 
       reciever.listen(evt => {
         const message = evt.data as JsonRPCRequest;
-        expect(message).toBeDefined();
-        expect(message.method).toBe("test");
-        expect(message.params).toStrictEqual([1, 2]);
+        assert.ok(message);
+        assert.equal(message.method, "test");
+        assert.deepEqual(message.params, [1, 2]);
         reciever.send(NewSuccessResponse(message.id, true));
       });
 
-      const result = await sender.call<boolean>("test", 1, 2);
-      expect(result).toBe(true);
+      assert.doesNotReject(sender.call<boolean>("test", 1, 2));
 
       sender.destroy();
       reciever.destroy();
@@ -51,9 +57,7 @@ describe("JsonRPCEngine", () => {
         reciever.send(new JsonRPCError(message.id, 400, "failure").jsonrpc);
       });
 
-      await expect(sender.call<boolean>("test", 1, 2)).rejects.toEqual(
-        err.jsonrpc.error,
-      );
+      assert.rejects(sender.call<boolean>("test", 1, 2), err.jsonrpc.error);
     });
 
     it("no error or result", async () => {
@@ -75,10 +79,7 @@ describe("JsonRPCEngine", () => {
         // @ts-expect-error testing failure case
         reciever.send({ id: message.id });
       });
-
-      await expect(sender.call<boolean>("test", 1, 2)).rejects.toEqual(
-        err.jsonrpc.error,
-      );
+      assert.rejects(sender.call<boolean>("test", 1, 2), err.jsonrpc.error);
     });
 
     it("fail on timeout", async () => {
@@ -88,10 +89,7 @@ describe("JsonRPCEngine", () => {
         targetOrigin: "*",
         timeout: 5,
       });
-
-      await expect(sender.call("test", 1)).rejects.toStrictEqual(
-        expect.objectContaining({ code: 500, message: "Request timed out." }),
-      );
+      assert.rejects(sender.call<boolean>("test", 1));
     });
   });
 });
