@@ -15,16 +15,17 @@ import IFrame, {
   MAX_SHIFT_HORIZONTAL,
   MAX_SHIFT_UP,
 } from "./IFrame.js";
-import { FloatLocation, MashSettings, merge } from "./settings.js";
+import {
+  FloatLocation,
+  getWalletPosition,
+  WalletPosition,
+} from "./position.js";
 
 const IFRAME_SOURCE = "http://localhost";
 
-const MASH_SETTINGS: MashSettings = {
+const MASH_SETTINGS: { id: string; position: Partial<WalletPosition> } = {
   id: "123",
-  position: {
-    desktop: {},
-    mobile: {},
-  },
+  position: {},
 };
 
 const sleep = (ms: number) =>
@@ -92,7 +93,13 @@ describe("IFrame", () => {
     const callback = jest.fn();
 
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(callback, merge(MASH_SETTINGS).position);
+    iframe.mount(
+      callback,
+      getWalletPosition(
+        MASH_SETTINGS.position.desktop,
+        MASH_SETTINGS.position.mobile,
+      ),
+    );
 
     wallet.send({ name: Events.WalletLoaded, metadata: {} });
 
@@ -107,7 +114,13 @@ describe("IFrame", () => {
   it("trigger open event, should resize iframe correctly", async () => {
     const callback = jest.fn();
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(callback, merge(MASH_SETTINGS).position);
+    iframe.mount(
+      callback,
+      getWalletPosition(
+        MASH_SETTINGS.position.desktop,
+        MASH_SETTINGS.position.mobile,
+      ),
+    );
 
     wallet.send({ name: Events.WalletOpened, metadata: {} });
     await sleep(100);
@@ -120,7 +133,13 @@ describe("IFrame", () => {
   it("trigger close event, should resize iframe correctly", async () => {
     const callback = jest.fn();
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(callback, merge(MASH_SETTINGS).position);
+    iframe.mount(
+      callback,
+      getWalletPosition(
+        MASH_SETTINGS.position.desktop,
+        MASH_SETTINGS.position.mobile,
+      ),
+    );
 
     wallet.send({ name: Events.WalletOpened, metadata: {} });
     await sleep(100);
@@ -136,7 +155,13 @@ describe("IFrame", () => {
   it("trigger 2 notifications, should resize iframe correctly", async () => {
     const callback = jest.fn();
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(callback, merge(MASH_SETTINGS).position);
+    iframe.mount(
+      callback,
+      getWalletPosition(
+        MASH_SETTINGS.position.desktop,
+        MASH_SETTINGS.position.mobile,
+      ),
+    );
 
     wallet.send({ name: Events.NotificationUpdate, metadata: { count: 2 } });
     await sleep(100);

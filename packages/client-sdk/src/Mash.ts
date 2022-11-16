@@ -1,14 +1,41 @@
-import IFrame from "./IFrame.js";
+import parseConfig, { PartialConfig, Config } from "./config.js";
+import IFrame from "./iframe/IFrame.js";
+import { getWalletPosition, WalletPosition } from "./iframe/position.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
-import { MashSettings, merge } from "./settings.js";
+
+export type MashSettings = {
+  id: string;
+  position: Partial<WalletPosition>;
+};
 
 class Mash {
   private api: MashRPCAPI | null = null;
   private iframe: IFrame;
   private initialized = false;
+  private config: Config;
 
-  constructor(src = "https://wallet.getmash.com/widget") {
-    this.iframe = new IFrame(src);
+  /**
+   * Initializes the Mash SDK with a config
+   * @deprecated string config is deprecated and should instead use Config object
+   * @param config Config
+   */
+  constructor(config: string | PartialConfig) {
+    /**
+     * Backwards compatibility to support existing earners
+     */
+    if (typeof config === "string") {
+      this.iframe = new IFrame(config);
+      // earnerID will be retrieved through MashSettings on the init call
+      this.config = parseConfig({ earnerID: "", src: config });
+      return;
+    }
+
+    this.config = parseConfig(config);
+    this.iframe = new IFrame(this.config.src);
+
+    // TODO: Add fetching of Earner config
+    // TODO: Load CSS based on Earner Theme
+    // TODO: Load Widgets
   }
 
   private static hasValidAutopayAuthorization(
@@ -28,14 +55,28 @@ class Mash {
       return Promise.resolve(null);
     }
 
-    const merged = merge(settings);
+    // Backwards support for older init flow where earnerID is only
+    // passed through settings object in init function
+    if (!this.config.earnerID) {
+      this.config.earnerID = settings.id;
+    }
+
+    // TODO: Modify this to check if position has already been set
+    // through API call in the constructor
+    const position = getWalletPosition(
+      settings.position.desktop,
+      settings.position.mobile,
+    );
+
+    // TODO: Add conditional logic to only init Wallet when there are known
+    // Mash Elements on the page
 
     return new Promise((resolve, reject) => {
       const onIframeLoaded = (iframe: HTMLIFrameElement) => {
         this.api = new MashRPCAPI(this.iframe.src.origin, iframe.contentWindow);
 
         this.api
-          .init(merged)
+          .init(this.config.earnerID, position)
           .then(() => {
             this.initialized = true;
             resolve(null);
@@ -43,7 +84,7 @@ class Mash {
           .catch(err => reject(err));
       };
 
-      this.iframe.mount(onIframeLoaded, merged.position);
+      this.iframe.mount(onIframeLoaded, position);
     });
   }
 
