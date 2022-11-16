@@ -1,7 +1,7 @@
-import debug from 'debug';
+import debug from "debug";
 import { v4 as uuid } from "uuid";
 
-const logger = debug('mash:post-message');
+const logger = debug("mash:post-message");
 
 export type PostMessageEvent<TData = unknown> = {
   targetName: string;
@@ -61,33 +61,39 @@ export default class PostMessageEngine<TData> {
   private _shouldIgnoreMessage(evt: MessageEvent<PostMessageEvent>) {
     // origin is the main security check
     if (this._targetOrigin !== "*" && evt.origin !== this._targetOrigin) {
-      logger(`message ignored due to origin, message: ${evt.origin} engine: ${this._targetOrigin}`)
+      logger(
+        `message ignored due to origin, message: ${evt.origin} engine: ${this._targetOrigin}`,
+      );
       return true;
     }
     const message = evt.data;
     const messageIsObject = typeof message === "object";
     if (!messageIsObject) {
-      logger("message ignored due to not an object")
+      logger("message ignored due to not an object");
       return true;
     }
     // engine name's define streams
     if (messageIsObject && message.targetName !== this.name) {
-      logger(`message ignored due to target name, message: ${message.targetName} engine: ${this.name}`)
+      logger(
+        `message ignored due to target name, message: ${message.targetName} engine: ${this.name}`,
+      );
       return true;
     }
     // checking the event source helps limit messages and can also be used as a secondary security check
     if (this._targetWindowFilter && this._targetWindow !== evt.source) {
-      logger(`message ignored due to window, message: ${evt.source} engine: ${this._targetWindow}`)
+      logger(
+        `message ignored due to window, message: ${evt.source} engine: ${this._targetWindow}`,
+      );
       return true;
     }
 
     if (messageIsObject && !message.data) {
-      logger("message ignored due to no data")
+      logger("message ignored due to no data");
       return true;
     }
 
     // do not ignore message
-    return false; 
+    return false;
   }
 
   // Attaches a listener to the window to listen on 'message' events.
