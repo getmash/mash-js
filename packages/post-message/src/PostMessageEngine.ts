@@ -1,8 +1,6 @@
 import debug from "debug";
 import { v4 as uuid } from "uuid";
 
-const logger = debug("mash:post-message");
-
 export type PostMessageEvent<TData = unknown> = {
   targetName: string;
   data?: TData;
@@ -42,6 +40,7 @@ export default class PostMessageEngine<TData> {
   private _targetOrigin: string;
 
   private _listeners: RawEventListenerMap = {};
+  private _logger: debug.Debugger;
 
   constructor(options: PostMessageEngineOptions) {
     this.name = options.name;
@@ -49,8 +48,9 @@ export default class PostMessageEngine<TData> {
     this._targetWindow = options.targetWindow || window;
     this._targetWindowFilter = options.targetWindowFilter ?? true;
     this._targetOrigin = options.targetOrigin || window.location.origin;
+    this._logger = debug("mash:post-message");
     // debug logging can be enabled with env var or by the consumer
-    logger.enabled = logger.enabled || (options.debug ?? false);
+    this._logger.enabled = this._logger.enabled || (options.debug ?? false);
   }
 
   /**
@@ -61,34 +61,34 @@ export default class PostMessageEngine<TData> {
   private _shouldIgnoreMessage(evt: MessageEvent<PostMessageEvent>) {
     // origin is the main security check
     if (this._targetOrigin !== "*" && evt.origin !== this._targetOrigin) {
-      logger(
-        `message ignored due to origin, message: ${evt.origin} engine: ${this._targetOrigin}`,
+      this._logger(
+        `${this.name} engine ignored message due to origin, message: ${evt.origin} engine: ${this._targetOrigin}`,
       );
       return true;
     }
     const message = evt.data;
     const messageIsObject = typeof message === "object";
     if (!messageIsObject) {
-      logger("message ignored due to not an object");
+      this._logger(`${this.name} engine ignored message due to not an object`);
       return true;
     }
     // engine name's define streams
     if (messageIsObject && message.targetName !== this.name) {
-      logger(
-        `message ignored due to target name, message: ${message.targetName} engine: ${this.name}`,
+      this._logger(
+        `${this.name} engine ignored message due to target name, message: ${message.targetName} engine: ${this.name}`,
       );
       return true;
     }
     // checking the event source helps limit messages and can also be used as a secondary security check
     if (this._targetWindowFilter && this._targetWindow !== evt.source) {
-      logger(
-        `message ignored due to window, message: ${evt.source} engine: ${this._targetWindow}`,
+      this._logger(
+        `${this.name} engine ignored message due to window, message: ${evt.source} engine: ${this._targetWindow}`,
       );
       return true;
     }
 
     if (messageIsObject && !message.data) {
-      logger("message ignored due to no data");
+      this._logger(`${this.name} engine ignored message due to no data`);
       return true;
     }
 
