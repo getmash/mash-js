@@ -1,6 +1,7 @@
-import { TinyColor } from "@ctrl/tinycolor";
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+
+import { TinyColor } from "@ctrl/tinycolor";
 
 import { createDOM } from "../tests/dom.js";
 import injectTheme from "./theme.js";
