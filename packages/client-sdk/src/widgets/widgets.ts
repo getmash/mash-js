@@ -39,7 +39,7 @@ export function injectWidgets(baseURL: string) {
     script.src = `${baseURL}${value.path}`;
     return script;
   });
-  scripts.forEach(script => window.document.appendChild(script));
+  window.document.head.append(...scripts);
 }
 
 /**
