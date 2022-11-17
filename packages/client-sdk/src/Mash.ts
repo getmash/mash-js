@@ -62,7 +62,7 @@ class Mash {
   init(settings: MashSettings) {
     if (this.config.autoHide && !isWidgetOnPage()) {
       console.info(
-        "MASH] No mash elements found on page. Mash Wallet is hidden",
+        "[MASH] No mash elements found on page. Mash Wallet is hidden",
       );
       return Promise.resolve(null);
     }
