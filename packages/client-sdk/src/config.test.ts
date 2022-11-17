@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import parse, {
   Config,
   DefaultMashSrc,
@@ -7,7 +10,7 @@ import parse, {
 describe("Config", () => {
   it("empty config passed in, should set defaults", () => {
     const result = parse({ earnerID: "1" });
-    expect(result).toEqual<Config>({
+    assert.deepEqual<Config>(result, {
       autoHide: true,
       earnerID: "1",
       src: DefaultMashSrc,
@@ -31,6 +34,6 @@ describe("Config", () => {
       },
     };
     const result = parse(config);
-    expect(result).toEqual(config);
+    assert.deepEqual<Config>(result, config);
   });
 });

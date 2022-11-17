@@ -13,17 +13,20 @@
     "monetize"
   ],
   "packageManager": "yarn@3.2.3",
+  "engines": {
+    "node": ">=18"
+  },
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "references": "yarn workspaces-to-typescript-project-references --includesRoot",
-    "references:check": "yarn workspaces-to-typescript-project-references --includesRoot --check",
-    "release:add:empty": "yarn changeset add --empty",
-    "release:add": "yarn changeset add",
-    "release:status": "yarn changeset status --since origin/main --output",
-    "release:version": "yarn changeset version && yarn install --mode=update-lockfile",
-    "release:publish": "yarn changeset publish",
+    "references": "workspaces-to-typescript-project-references --includesRoot",
+    "references:check": "workspaces-to-typescript-project-references --includesRoot --check",
+    "release:add:empty": "changeset add --empty",
+    "release:add": "changeset add",
+    "release:status": "changeset status --since origin/main --output",
+    "release:version": "changeset version && yarn install --mode=update-lockfile",
+    "release:publish": "changeset publish",
     "release": "yarn workspaces foreach --topological --parallel run build && yarn release:publish"
   },
   "devDependencies": {
