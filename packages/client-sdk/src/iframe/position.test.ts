@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import {
   FloatLocation,
   getWalletPosition,
@@ -8,8 +11,7 @@ describe("settings", () => {
   describe("merge", () => {
     it("no position setting, should set correct defaults", () => {
       const result = getWalletPosition(undefined, undefined);
-
-      expect(result).toEqual({
+      assert.deepEqual(result, {
         desktop: {
           floatLocation: FloatLocation.BottomRight,
           shiftUp: 0,
@@ -29,8 +31,8 @@ describe("settings", () => {
         { floatLocation: "bad" },
       );
 
-      expect(result.desktop.floatLocation).toEqual(FloatLocation.BottomRight);
-      expect(result.mobile.floatLocation).toEqual(FloatLocation.BottomRight);
+      assert.equal(result.desktop.floatLocation, FloatLocation.BottomRight);
+      assert.equal(result.mobile.floatLocation, FloatLocation.BottomRight);
     });
 
     it("set valid custom position, should set position", () => {
@@ -45,7 +47,7 @@ describe("settings", () => {
       };
 
       const result = getWalletPosition(position.desktop, position.mobile);
-      expect(result).toEqual(position);
+      assert.deepEqual(result, position);
     });
   });
 });

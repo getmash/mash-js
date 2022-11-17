@@ -23,7 +23,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18.10.0 
       
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -46,11 +46,11 @@ jobs:
       - name: Check project reference
         run: yarn references:check
 
-      - name: Test packages
-        run: yarn workspaces foreach --topological --parallel run test
-
       - name: Lint packages
-        run: yarn workspaces foreach --topological --parallel run lint
+        run: yarn --verbose workspaces foreach --parallel run lint
+          
+      - name: Test packages
+        run: yarn --verbose workspaces foreach --parallel run test
 
       - name: Post coverage
         uses: eeshdarthvader/code-coverage-assistant@0.1 

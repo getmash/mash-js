@@ -1,9 +1,12 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import parse, { Config } from "./config.js";
 
 describe("Config", () => {
   it("empty config passed in, should set defaults", () => {
     const result = parse({ earnerID: "1" });
-    expect(result).toEqual({
+    assert.deepEqual(result, {
       autoHide: true,
       earnerID: "1",
       src: "https://wallet.getmash.com/widget",
@@ -21,6 +24,6 @@ describe("Config", () => {
       widgets: { inject: false },
     };
     const result = parse(config);
-    expect(result).toEqual(config);
+    assert.deepEqual(result, config);
   });
 });

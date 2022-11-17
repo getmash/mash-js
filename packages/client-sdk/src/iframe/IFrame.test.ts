@@ -1,4 +1,7 @@
-import { jest } from "@jest/globals";
+import assert from "node:assert/strict";
+import { beforeEach, describe, it } from "node:test";
+
+import { JSDOM } from "jsdom";
 
 import PostMessageEngine, { PostMessageEvent } from "@getmash/post-message";
 
@@ -35,145 +38,174 @@ const sleep = (ms: number) =>
     }, ms);
   });
 
+// Replaces the global window instance's postMessage implementation in order to fix 2 problems:
+// 1. JSDOM does not set event source's or origin's which our post message engine depends on to filter messages: https://github.com/jsdom/jsdom/issues/2745
+// 2. We need to fake what window events are being sent from or they will all look like they are coming from the global window
+const replacePostMessage = (sourceWindow: Window | null) => {
+  window.postMessage = (message: any) => {
+    window.dispatchEvent(
+      new window.MessageEvent("message", {
+        source: sourceWindow,
+        origin: IFRAME_SOURCE,
+        data: message,
+      }),
+    );
+  };
+};
+
+// JSDOM does not implement the matchMedia function on window.
 function mockMatchMedia(mobile = false) {
-  // https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
   Object.defineProperty(window, "matchMedia", {
-    writable: true,
-    // @ts-ignore ignore type of wrapped to allow mock to function
-    value: jest.fn().mockImplementation((query: string) => ({
+    value: (query: string) => ({
       matches: mobile,
       media: query,
       onchange: null,
-      addListener: jest.fn(), // deprecated
-      removeListener: jest.fn(), // deprecated
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
-    })),
+      addListener: () => ({}), // deprecated
+      removeListener: () => ({}), // deprecated
+      addEventListener: () => ({}),
+      removeEventListener: () => ({}),
+      dispatchEvent: () => ({}),
+    }),
   });
 }
 
-// Mock Listener to ignore _shouldIgnoreMessage check, check will never be valid since
-// we are manipulating the iframe here and not actually making calls from within the iframe
-type Listener = (ev: PostMessageEvent<unknown>) => void;
-jest
-  .spyOn(PostMessageEngine.prototype, "_listen")
-  .mockImplementation((listener: Listener) => {
-    const wrapped = (evt: MessageEvent) => {
-      /* eslint-disable-next-line */
-      listener(evt.data);
-    };
-
-    // @ts-ignore ignore type of wrapped to allow mock to function
-    window.addEventListener("message", wrapped, false);
-    // @ts-ignore ignore type of wrapped to allow mock to function
-    return () => window.removeEventListener("message", wrapped);
-  });
-
-const wallet = new PostMessageEngine<EventMessage>({
-  name: Targets.Wallet,
-  targetName: Targets.HostSiteFrame,
-  targetWindow: window,
-  targetOrigin: "*",
-});
-
+// pull the SDK iframe off of the global window for inspection.
 const getIframe = () => document.getElementsByName(IFRAME_NAME).item(0);
 
 describe("IFrame", () => {
   beforeEach(() => {
-    mockMatchMedia(false);
-  });
-
-  afterEach(() => {
-    const element = getIframe();
-    element.parentElement?.parentElement?.removeChild(element.parentElement);
+    const dom = new JSDOM(``);
+    global.document = dom.window.document;
+    //@ts-expect-error JSDOM Window mismatch
+    global.window = dom.window;
   });
 
   it("mount iframe, should exist in dom", async () => {
-    const callback = jest.fn();
+    mockMatchMedia();
 
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(
-      callback,
+      () => ({}),
       getWalletPosition(
         MASH_SETTINGS.position.desktop,
         MASH_SETTINGS.position.mobile,
       ),
     );
 
-    wallet.send({ name: Events.WalletLoaded, metadata: {} });
-
-    // PostMessage uses a setTimeout(0) in JSDOM,
-    // need to sleep here to ensure it runs
-    await sleep(100);
-
-    expect(callback).toHaveBeenCalledTimes(1);
-    expect(getIframe()).toBeDefined();
+    assert.ok(getIframe());
   });
 
   it("trigger open event, should resize iframe correctly", async () => {
-    const callback = jest.fn();
+    mockMatchMedia();
+
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(
-      callback,
+      () => ({}),
       getWalletPosition(
         MASH_SETTINGS.position.desktop,
         MASH_SETTINGS.position.mobile,
       ),
     );
 
+    // @ts-expect-error grabbing the private iframe to get window
+    replacePostMessage(iframe.iframe.contentWindow);
+
+    // pretend to be the app in the iframe asking the SDK to resize it
+    const wallet = new PostMessageEngine<EventMessage>({
+      name: Targets.Wallet,
+      targetName: Targets.HostSiteFrame,
+      targetWindow: window,
+      targetOrigin: "*",
+    });
     wallet.send({ name: Events.WalletOpened, metadata: {} });
     await sleep(100);
 
-    const element = getIframe();
-    expect(element.parentElement?.style.height).toBe(`${MAX_CONTENT_HEIGHT}px`);
-    expect(element.parentElement?.style.width).toBe(`${MAX_CONTENT_WIDTH}px`);
+    assert.equal(
+      getIframe().parentElement?.style.height,
+      `${MAX_CONTENT_HEIGHT}px`,
+    );
+    assert.equal(
+      getIframe().parentElement?.style.width,
+      `${MAX_CONTENT_WIDTH}px`,
+    );
   });
 
   it("trigger close event, should resize iframe correctly", async () => {
-    const callback = jest.fn();
+    mockMatchMedia();
+
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(
-      callback,
+      () => ({}),
       getWalletPosition(
         MASH_SETTINGS.position.desktop,
         MASH_SETTINGS.position.mobile,
       ),
     );
 
+    // @ts-expect-error grabbing the private iframe to get window
+    replacePostMessage(iframe.iframe.contentWindow);
+
+    // pretend to be the app in the iframe asking the SDK to resize it
+    const wallet = new PostMessageEngine<EventMessage>({
+      name: Targets.Wallet,
+      targetName: Targets.HostSiteFrame,
+      targetWindow: window,
+      targetOrigin: "*",
+    });
     wallet.send({ name: Events.WalletOpened, metadata: {} });
     await sleep(100);
 
     wallet.send({ name: Events.WalletClosed, metadata: {} });
     await sleep(100);
 
-    const element = getIframe();
-    expect(element.parentElement?.style.height).toBe(`${MIN_CONTENT_HEIGHT}px`);
-    expect(element.parentElement?.style.width).toBe(`${MIN_CONTENT_WIDTH}px`);
+    assert.equal(
+      getIframe().parentElement?.style.height,
+      `${MIN_CONTENT_HEIGHT}px`,
+    );
+    assert.equal(
+      getIframe().parentElement?.style.width,
+      `${MIN_CONTENT_WIDTH}px`,
+    );
   });
 
   it("trigger 2 notifications, should resize iframe correctly", async () => {
-    const callback = jest.fn();
+    mockMatchMedia();
+
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(
-      callback,
+      () => ({}),
       getWalletPosition(
         MASH_SETTINGS.position.desktop,
         MASH_SETTINGS.position.mobile,
       ),
     );
 
+    // @ts-expect-error grabbing the private iframe to get window
+    replacePostMessage(iframe.iframe.contentWindow);
+
+    // pretend to be the app in the iframe asking the SDK to resize it
+    const wallet = new PostMessageEngine<EventMessage>({
+      name: Targets.Wallet,
+      targetName: Targets.HostSiteFrame,
+      targetWindow: window,
+      targetOrigin: "*",
+    });
+
     wallet.send({ name: Events.NotificationUpdate, metadata: { count: 2 } });
     await sleep(100);
 
-    const element = getIframe();
-    expect(element.parentElement?.style.height).toBe("280px");
-    expect(element.parentElement?.style.width).toBe(`${MAX_CONTENT_WIDTH}px`);
+    assert.equal(getIframe().parentElement?.style.height, "280px");
+    assert.equal(
+      getIframe().parentElement?.style.width,
+      `${MAX_CONTENT_WIDTH}px`,
+    );
   });
 
   it("desktop, position iframe on left, should have valid css settigns", async () => {
+    mockMatchMedia();
+
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(jest.fn(), {
+    iframe.mount(() => ({}), {
       desktop: {
         floatLocation: FloatLocation.BottomLeft,
         shiftLeft: 5,
@@ -183,17 +215,16 @@ describe("IFrame", () => {
       mobile: { floatLocation: FloatLocation.BottomRight },
     });
 
-    await sleep(100);
-
-    const element = getIframe();
-    expect(element.parentElement?.style.bottom).toEqual("15px");
-    expect(element.parentElement?.style.left).toEqual("10px");
-    expect(element.parentElement?.style.right).toEqual("");
+    assert.equal(getIframe().parentElement?.style.bottom, "15px");
+    assert.equal(getIframe().parentElement?.style.left, "10px");
+    assert.equal(getIframe().parentElement?.style.right, "");
   });
 
   it("desktop, position iframe on right, should have valid css settigns", async () => {
+    mockMatchMedia();
+
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(jest.fn(), {
+    iframe.mount(() => ({}), {
       desktop: {
         floatLocation: FloatLocation.BottomRight,
         shiftLeft: 5,
@@ -203,19 +234,16 @@ describe("IFrame", () => {
       mobile: { floatLocation: FloatLocation.BottomRight },
     });
 
-    await sleep(100);
-
-    const element = getIframe();
-    expect(element.parentElement?.style.bottom).toEqual("2px");
-    expect(element.parentElement?.style.left).toEqual("");
-    expect(element.parentElement?.style.right).toEqual("5px");
+    assert.equal(getIframe().parentElement?.style.bottom, "2px");
+    assert.equal(getIframe().parentElement?.style.left, "");
+    assert.equal(getIframe().parentElement?.style.right, "5px");
   });
 
   it("mobile, position iframe on left, should have valid css settigns", async () => {
     mockMatchMedia(true);
 
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(jest.fn(), {
+    iframe.mount(() => ({}), {
       desktop: {
         floatLocation: FloatLocation.BottomRight,
         shiftLeft: 5,
@@ -225,19 +253,16 @@ describe("IFrame", () => {
       mobile: { floatLocation: FloatLocation.BottomLeft },
     });
 
-    await sleep(100);
-
-    const element = getIframe();
-    expect(element.parentElement?.style.bottom).toEqual("0px");
-    expect(element.parentElement?.style.left).toEqual("0px");
-    expect(element.parentElement?.style.right).toEqual("");
+    assert.equal(getIframe().parentElement?.style.bottom, "0px");
+    assert.equal(getIframe().parentElement?.style.left, "0px");
+    assert.equal(getIframe().parentElement?.style.right, "");
   });
 
   it("mobile, position iframe on right, should have valid css settigns", async () => {
     mockMatchMedia(true);
 
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(jest.fn(), {
+    iframe.mount(() => ({}), {
       desktop: {
         floatLocation: FloatLocation.BottomRight,
         shiftLeft: 5,
@@ -247,17 +272,16 @@ describe("IFrame", () => {
       mobile: { floatLocation: FloatLocation.BottomRight },
     });
 
-    await sleep(100);
-
-    const element = getIframe();
-    expect(element.parentElement?.style.bottom).toEqual("0px");
-    expect(element.parentElement?.style.left).toEqual("");
-    expect(element.parentElement?.style.right).toEqual("0px");
+    assert.equal(getIframe().parentElement?.style.bottom, "0px");
+    assert.equal(getIframe().parentElement?.style.left, "");
+    assert.equal(getIframe().parentElement?.style.right, "0px");
   });
 
   it("bottom-right, horizontal shift is less than 0, should normalize to 0", async () => {
+    mockMatchMedia();
+
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(jest.fn(), {
+    iframe.mount(() => ({}), {
       desktop: {
         floatLocation: FloatLocation.BottomRight,
         shiftLeft: -100,
@@ -267,15 +291,14 @@ describe("IFrame", () => {
       mobile: { floatLocation: FloatLocation.BottomRight },
     });
 
-    await sleep(100);
-
-    const element = getIframe();
-    expect(element.parentElement?.style.right).toEqual("0px");
+    assert.equal(getIframe().parentElement?.style.right, "0px");
   });
 
   it("bottom-left, horizontal shift is less than 0, should normalize to 0", async () => {
+    mockMatchMedia();
+
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(jest.fn(), {
+    iframe.mount(() => ({}), {
       desktop: {
         floatLocation: FloatLocation.BottomLeft,
         shiftLeft: 5,
@@ -285,15 +308,14 @@ describe("IFrame", () => {
       mobile: { floatLocation: FloatLocation.BottomRight },
     });
 
-    await sleep(100);
-
-    const element = getIframe();
-    expect(element.parentElement?.style.left).toEqual("0px");
+    assert.equal(getIframe().parentElement?.style.left, "0px");
   });
 
   it("bottom-right, horizontal shift is greater than max, should normalize to max", async () => {
+    mockMatchMedia();
+
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(jest.fn(), {
+    iframe.mount(() => ({}), {
       desktop: {
         floatLocation: FloatLocation.BottomRight,
         shiftLeft: MAX_SHIFT_HORIZONTAL + 100,
@@ -303,17 +325,17 @@ describe("IFrame", () => {
       mobile: { floatLocation: FloatLocation.BottomRight },
     });
 
-    await sleep(100);
-
-    const element = getIframe();
-    expect(element.parentElement?.style.right).toEqual(
+    assert.equal(
+      getIframe().parentElement?.style.right,
       `${MAX_SHIFT_HORIZONTAL}px`,
     );
   });
 
   it("bottom-left, horizontal shift is greater than max, should normalize to max", async () => {
+    mockMatchMedia();
+
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(jest.fn(), {
+    iframe.mount(() => ({}), {
       desktop: {
         floatLocation: FloatLocation.BottomLeft,
         shiftLeft: 10,
@@ -323,17 +345,17 @@ describe("IFrame", () => {
       mobile: { floatLocation: FloatLocation.BottomRight },
     });
 
-    await sleep(100);
-
-    const element = getIframe();
-    expect(element.parentElement?.style.left).toEqual(
+    assert.equal(
+      getIframe().parentElement?.style.left,
       `${MAX_SHIFT_HORIZONTAL}px`,
     );
   });
 
   it("vertical shift is less than 0, should normalize to 0", async () => {
+    mockMatchMedia();
+
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(jest.fn(), {
+    iframe.mount(() => ({}), {
       desktop: {
         floatLocation: FloatLocation.BottomRight,
         shiftLeft: 0,
@@ -343,15 +365,14 @@ describe("IFrame", () => {
       mobile: { floatLocation: FloatLocation.BottomRight },
     });
 
-    await sleep(100);
-
-    const element = getIframe();
-    expect(element.parentElement?.style.bottom).toEqual("0px");
+    assert.equal(getIframe().parentElement?.style.bottom, "0px");
   });
 
   it("vertical shift is greater than max, should normalize to max", async () => {
+    mockMatchMedia();
+
     const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(jest.fn(), {
+    iframe.mount(() => ({}), {
       desktop: {
         floatLocation: FloatLocation.BottomRight,
         shiftLeft: 0,
@@ -361,10 +382,7 @@ describe("IFrame", () => {
       mobile: { floatLocation: FloatLocation.BottomRight },
     });
 
-    await sleep(100);
-
-    const element = getIframe();
-    expect(element.parentElement?.style.bottom).toEqual(`${MAX_SHIFT_UP}px`);
+    assert.equal(getIframe().parentElement?.style.bottom, `${MAX_SHIFT_UP}px`);
   });
 });
 
@@ -372,12 +390,12 @@ describe("toHTMLStyle", () => {
   it("single style, correctly formats string", () => {
     const style = { color: "red" };
     const str = toHTMLStyle(style);
-    expect(str).toBe("color:red;");
+    assert.equal(str, "color:red;");
   });
 
   it("multiple styles, correctly formats string", () => {
     const style = { color: "red", width: "100px", top: 1 };
     const str = toHTMLStyle(style);
-    expect(str).toBe("color:red;width:100px;top:1;");
+    assert.equal(str, "color:red;width:100px;top:1;");
   });
 });

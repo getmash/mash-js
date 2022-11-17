@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import {
   NewRequest,
   NewSuccessResponse,
@@ -9,21 +12,21 @@ describe("JsonRPC", () => {
   describe("NewRequest", () => {
     it("check valid json rpc request", () => {
       const result = NewRequest("test", [1, 2]);
-      expect(result).toHaveProperty("id");
-      expect(result).toHaveProperty("jsonrpc", "2.0");
-      expect(result.method).toEqual("test");
-      expect(result.params).toEqual([1, 2]);
+      assert.ok(result.id);
+      assert.equal(result.jsonrpc, "2.0");
+      assert.equal(result.method, "test");
+      assert.deepEqual(result.params, [1, 2]);
     });
   });
 
   describe("NewSuccessResponse", () => {
     it("check valid json rpc success response", () => {
       const result = NewSuccessResponse<string>("1", "test");
-      expect(result).toHaveProperty("id", "1");
-      expect(result).toHaveProperty("jsonrpc", "2.0");
-      expect(result).toHaveProperty("result", "test");
+      assert.equal(result.id, "1");
+      assert.equal(result.jsonrpc, "2.0");
+      assert.equal(result.result, "test");
       const idx = Object.keys(result).findIndex(value => value === "error");
-      expect(idx).toBe(-1);
+      assert.equal(idx, -1);
     });
   });
 
@@ -31,11 +34,11 @@ describe("JsonRPC", () => {
     it("check valid json rpc error response", () => {
       const error = { code: 400, message: "failure", data: "some stack" };
       const result = NewErrorResponse<string>("1", error);
-      expect(result).toHaveProperty("id", "1");
-      expect(result).toHaveProperty("jsonrpc", "2.0");
-      expect(result.error).toMatchObject(error);
+      assert.equal(result.id, "1");
+      assert.equal(result.jsonrpc, "2.0");
+      assert.deepEqual(result.error, error);
       const idx = Object.keys(result).findIndex(value => value === "result");
-      expect(idx).toBe(-1);
+      assert.equal(idx, -1);
     });
   });
 
@@ -43,9 +46,9 @@ describe("JsonRPC", () => {
     it("error obj should contain error response", () => {
       const data = { secret: "sauce" };
       const error = new JsonRPCError("1", 400, "Bad Request", data);
-      expect(error.jsonrpc).toBeDefined();
-      expect(error.jsonrpc.error).toBeDefined();
-      expect(error.jsonrpc.result).toBeUndefined();
+      assert.ok(error.jsonrpc);
+      assert.ok(error.jsonrpc.error);
+      assert.ok(!error.jsonrpc.result);
     });
   });
 });
