@@ -5,6 +5,7 @@ import IFrame from "./iframe/IFrame.js";
 import { getWalletPosition, WalletPosition } from "./iframe/position.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
 import preconnect from "./widgets/preconnect.js";
+import injectTheme from "./widgets/theme.js";
 import { injectWidgets, isWidgetOnPage } from "./widgets/widgets.js";
 
 export type MashSettings = {
@@ -40,6 +41,12 @@ class Mash {
 
     if (this.config.widgets.injectWidgets) {
       injectWidgets(this.config.widgets.baseURL);
+    }
+    if (this.config.widgets.injectTheme) {
+      injectTheme(this.config.widgets.baseURL, {
+        primaryColor: "#000",
+        fontFamily: "inherit",
+      });
     }
   }
 

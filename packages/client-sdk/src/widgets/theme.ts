@@ -1,8 +1,11 @@
 import { TinyColor } from "@ctrl/tinycolor";
 
-import { Theme } from "./theme.js";
+export type Theme = {
+  primaryColor: string;
+  fontFamily: string;
+};
 
-export default function inject(baseUrl: string, theme: Theme) {
+export default function injectTheme(baseUrl: string, theme: Theme) {
   const color = new TinyColor(theme.primaryColor);
   const hsl = color.toHsl();
 
