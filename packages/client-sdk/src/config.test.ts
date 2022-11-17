@@ -1,14 +1,24 @@
-import parse, { Config } from "./config.js";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
+import parse, {
+  Config,
+  DefaultMashSrc,
+  DefaultWidgetBaseURL,
+} from "./config.js";
 
 describe("Config", () => {
   it("empty config passed in, should set defaults", () => {
     const result = parse({ earnerID: "1" });
-    expect(result).toEqual<Config>({
+    assert.deepEqual<Config>(result, {
       autoHide: true,
       earnerID: "1",
-      src: "https://wallet.getmash.com/widget",
-      theme: { inject: true, baseUrl: "https://widgets.getmash.com" },
-      widgets: { inject: true, baseUrl: "https://widgets.getmash.com" },
+      src: DefaultMashSrc,
+      widgets: {
+        baseURL: DefaultWidgetBaseURL,
+        injectTheme: true,
+        injectWidgets: true,
+      },
     });
   });
 
@@ -17,10 +27,13 @@ describe("Config", () => {
       earnerID: "1",
       autoHide: false,
       src: "testsite",
-      theme: { inject: false, baseUrl: "url" },
-      widgets: { inject: false, baseUrl: "url" },
+      widgets: {
+        baseURL: "tester.com",
+        injectTheme: false,
+        injectWidgets: false,
+      },
     };
     const result = parse(config);
-    expect(result).toEqual<Config>(config);
+    assert.deepEqual<Config>(result, config);
   });
 });

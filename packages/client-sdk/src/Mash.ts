@@ -4,8 +4,8 @@ import parseConfig, { PartialConfig, Config } from "./config.js";
 import IFrame from "./iframe/IFrame.js";
 import { getWalletPosition, WalletPosition } from "./iframe/position.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
-import injectTheme from "./theming/inject.js";
-import { Theme } from "./theming/theme.js";
+import preconnect from "./widgets/preconnect.js";
+import { injectWidgets, isWidgetOnPage } from "./widgets/widgets.js";
 
 export type MashSettings = {
   id: string;
@@ -34,13 +34,13 @@ class Mash {
 
     // TODO: Add fetching of Earner config
 
-    if (this.config.theme.inject) {
-      // TODO: Get Theme from API
-      const theme: Theme = { primaryColor: "#FF9900", fontFamily: "inherit" };
-      injectTheme(this.config.theme.baseUrl, theme);
+    if (this.config.widgets.injectTheme || this.config.widgets.injectWidgets) {
+      preconnect(this.config.widgets.baseURL);
     }
 
-    // TODO: Load Widgets
+    if (this.config.widgets.injectWidgets) {
+      injectWidgets(this.config.widgets.baseURL);
+    }
   }
 
   private static hasValidAutopayAuthorization(
@@ -55,6 +55,13 @@ class Mash {
   }
 
   init(settings?: MashSettings) {
+    if (this.config.autoHide && !isWidgetOnPage()) {
+      console.info(
+        "[MASH] No mash elements found on page. Mash Wallet is hidden",
+      );
+      return Promise.resolve(null);
+    }
+
     if (this.iframe.mounted) {
       console.warn("[MASH] Already mounted, ignoring this call to init Mash");
       return Promise.resolve(null);

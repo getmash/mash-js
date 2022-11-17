@@ -2,7 +2,6 @@ module.exports = {
   env: {
     browser: true,
     es2022: true,
-    jest: true,
   },
   ignorePatterns: [
     "node_modules",
@@ -16,7 +15,6 @@ module.exports = {
     "plugin:import/recommended",
     "plugin:import/typescript",
     "plugin:@typescript-eslint/recommended",
-    "plugin:jest/recommended",
     "plugin:prettier/recommended",
   ],
   parser: "@typescript-eslint/parser",
