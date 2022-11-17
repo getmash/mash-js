@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import { beforeEach, describe, it } from "node:test";
 
 import { JSDOM } from "jsdom";
-import sinon from "sinon";
 
 import PostMessageEngine, { PostMessageEvent } from "@getmash/post-message";
 
@@ -61,14 +60,17 @@ function mockMatchMedia(mobile = false) {
       matches: mobile,
       media: query,
       onchange: null,
-      addListener: sinon.fake(), // deprecated
-      removeListener: sinon.fake(), // deprecated
-      addEventListener: sinon.fake(),
-      removeEventListener: sinon.fake(),
-      dispatchEvent: sinon.fake(),
+      addListener: () => ({}), // deprecated
+      removeListener: () => ({}), // deprecated
+      addEventListener: () => ({}),
+      removeEventListener: () => ({}),
+      dispatchEvent: () => ({}),
     }),
   });
 }
+
+// pull the SDK iframe off of the global window for inspection.
+const getIframe = () => document.getElementsByName(IFRAME_NAME).item(0);
 
 describe("IFrame", () => {
   beforeEach(() => {
@@ -83,14 +85,14 @@ describe("IFrame", () => {
 
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(
-      sinon.fake(),
+      () => ({}),
       getWalletPosition(
         MASH_SETTINGS.position.desktop,
         MASH_SETTINGS.position.mobile,
       ),
     );
 
-    assert.ok(document.getElementsByName(IFRAME_NAME).item(0));
+    assert.ok(getIframe());
   });
 
   it("trigger open event, should resize iframe correctly", async () => {
@@ -98,7 +100,7 @@ describe("IFrame", () => {
 
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(
-      sinon.fake(),
+      () => ({}),
       getWalletPosition(
         MASH_SETTINGS.position.desktop,
         MASH_SETTINGS.position.mobile,
@@ -118,251 +120,270 @@ describe("IFrame", () => {
     wallet.send({ name: Events.WalletOpened, metadata: {} });
     await sleep(100);
 
-    const element = document.getElementsByName(IFRAME_NAME).item(0);
-
     assert.equal(
-      element.parentElement?.style.height,
+      getIframe().parentElement?.style.height,
       `${MAX_CONTENT_HEIGHT}px`,
     );
-    assert.equal(element.parentElement?.style.width, `${MAX_CONTENT_WIDTH}px`);
+    assert.equal(
+      getIframe().parentElement?.style.width,
+      `${MAX_CONTENT_WIDTH}px`,
+    );
   });
 
-  // it("trigger close event, should resize iframe correctly", async () => {
-  //   const callback = jest.fn();
-  //   const iframe = new IFrame(IFRAME_SOURCE);
-  //   iframe.mount(
-  //     callback,
-  //     getWalletPosition(
-  //       MASH_SETTINGS.position.desktop,
-  //       MASH_SETTINGS.position.mobile,
-  //     ),
-  //   );
-  //
-  //   wallet.send({ name: Events.WalletOpened, metadata: {} });
-  //   await sleep(100);
-  //
-  //   wallet.send({ name: Events.WalletClosed, metadata: {} });
-  //   await sleep(100);
-  //
-  //   const element = getIframe();
-  //   expect(element.parentElement?.style.height).toBe(`${MIN_CONTENT_HEIGHT}px`);
-  //   expect(element.parentElement?.style.width).toBe(`${MIN_CONTENT_WIDTH}px`);
-  // });
-  //
-  // it("trigger 2 notifications, should resize iframe correctly", async () => {
-  //   const callback = jest.fn();
-  //   const iframe = new IFrame(IFRAME_SOURCE);
-  //   iframe.mount(
-  //     callback,
-  //     getWalletPosition(
-  //       MASH_SETTINGS.position.desktop,
-  //       MASH_SETTINGS.position.mobile,
-  //     ),
-  //   );
-  //
-  //   wallet.send({ name: Events.NotificationUpdate, metadata: { count: 2 } });
-  //   await sleep(100);
-  //
-  //   const element = getIframe();
-  //   expect(element.parentElement?.style.height).toBe("280px");
-  //   expect(element.parentElement?.style.width).toBe(`${MAX_CONTENT_WIDTH}px`);
-  // });
-  //
-  // it("desktop, position iframe on left, should have valid css settigns", async () => {
-  //   const iframe = new IFrame(IFRAME_SOURCE);
-  //   iframe.mount(jest.fn(), {
-  //     desktop: {
-  //       floatLocation: FloatLocation.BottomLeft,
-  //       shiftLeft: 5,
-  //       shiftRight: 10,
-  //       shiftUp: 15,
-  //     },
-  //     mobile: { floatLocation: FloatLocation.BottomRight },
-  //   });
-  //
-  //   await sleep(100);
-  //
-  //   const element = getIframe();
-  //   expect(element.parentElement?.style.bottom).toEqual("15px");
-  //   expect(element.parentElement?.style.left).toEqual("10px");
-  //   expect(element.parentElement?.style.right).toEqual("");
-  // });
-  //
-  // it("desktop, position iframe on right, should have valid css settigns", async () => {
-  //   const iframe = new IFrame(IFRAME_SOURCE);
-  //   iframe.mount(jest.fn(), {
-  //     desktop: {
-  //       floatLocation: FloatLocation.BottomRight,
-  //       shiftLeft: 5,
-  //       shiftRight: 10,
-  //       shiftUp: 2,
-  //     },
-  //     mobile: { floatLocation: FloatLocation.BottomRight },
-  //   });
-  //
-  //   await sleep(100);
-  //
-  //   const element = getIframe();
-  //   expect(element.parentElement?.style.bottom).toEqual("2px");
-  //   expect(element.parentElement?.style.left).toEqual("");
-  //   expect(element.parentElement?.style.right).toEqual("5px");
-  // });
-  //
-  // it("mobile, position iframe on left, should have valid css settigns", async () => {
-  //   mockMatchMedia(true);
-  //
-  //   const iframe = new IFrame(IFRAME_SOURCE);
-  //   iframe.mount(jest.fn(), {
-  //     desktop: {
-  //       floatLocation: FloatLocation.BottomRight,
-  //       shiftLeft: 5,
-  //       shiftRight: 10,
-  //       shiftUp: 2,
-  //     },
-  //     mobile: { floatLocation: FloatLocation.BottomLeft },
-  //   });
-  //
-  //   await sleep(100);
-  //
-  //   const element = getIframe();
-  //   expect(element.parentElement?.style.bottom).toEqual("0px");
-  //   expect(element.parentElement?.style.left).toEqual("0px");
-  //   expect(element.parentElement?.style.right).toEqual("");
-  // });
-  //
-  // it("mobile, position iframe on right, should have valid css settigns", async () => {
-  //   mockMatchMedia(true);
-  //
-  //   const iframe = new IFrame(IFRAME_SOURCE);
-  //   iframe.mount(jest.fn(), {
-  //     desktop: {
-  //       floatLocation: FloatLocation.BottomRight,
-  //       shiftLeft: 5,
-  //       shiftRight: 10,
-  //       shiftUp: 2,
-  //     },
-  //     mobile: { floatLocation: FloatLocation.BottomRight },
-  //   });
-  //
-  //   await sleep(100);
-  //
-  //   const element = getIframe();
-  //   expect(element.parentElement?.style.bottom).toEqual("0px");
-  //   expect(element.parentElement?.style.left).toEqual("");
-  //   expect(element.parentElement?.style.right).toEqual("0px");
-  // });
-  //
-  // it("bottom-right, horizontal shift is less than 0, should normalize to 0", async () => {
-  //   const iframe = new IFrame(IFRAME_SOURCE);
-  //   iframe.mount(jest.fn(), {
-  //     desktop: {
-  //       floatLocation: FloatLocation.BottomRight,
-  //       shiftLeft: -100,
-  //       shiftRight: 5,
-  //       shiftUp: 0,
-  //     },
-  //     mobile: { floatLocation: FloatLocation.BottomRight },
-  //   });
-  //
-  //   await sleep(100);
-  //
-  //   const element = getIframe();
-  //   expect(element.parentElement?.style.right).toEqual("0px");
-  // });
-  //
-  // it("bottom-left, horizontal shift is less than 0, should normalize to 0", async () => {
-  //   const iframe = new IFrame(IFRAME_SOURCE);
-  //   iframe.mount(jest.fn(), {
-  //     desktop: {
-  //       floatLocation: FloatLocation.BottomLeft,
-  //       shiftLeft: 5,
-  //       shiftRight: -100,
-  //       shiftUp: 0,
-  //     },
-  //     mobile: { floatLocation: FloatLocation.BottomRight },
-  //   });
-  //
-  //   await sleep(100);
-  //
-  //   const element = getIframe();
-  //   expect(element.parentElement?.style.left).toEqual("0px");
-  // });
-  //
-  // it("bottom-right, horizontal shift is greater than max, should normalize to max", async () => {
-  //   const iframe = new IFrame(IFRAME_SOURCE);
-  //   iframe.mount(jest.fn(), {
-  //     desktop: {
-  //       floatLocation: FloatLocation.BottomRight,
-  //       shiftLeft: MAX_SHIFT_HORIZONTAL + 100,
-  //       shiftRight: 10,
-  //       shiftUp: 0,
-  //     },
-  //     mobile: { floatLocation: FloatLocation.BottomRight },
-  //   });
-  //
-  //   await sleep(100);
-  //
-  //   const element = getIframe();
-  //   expect(element.parentElement?.style.right).toEqual(
-  //     `${MAX_SHIFT_HORIZONTAL}px`,
-  //   );
-  // });
-  //
-  // it("bottom-left, horizontal shift is greater than max, should normalize to max", async () => {
-  //   const iframe = new IFrame(IFRAME_SOURCE);
-  //   iframe.mount(jest.fn(), {
-  //     desktop: {
-  //       floatLocation: FloatLocation.BottomLeft,
-  //       shiftLeft: 10,
-  //       shiftRight: MAX_SHIFT_HORIZONTAL + 100,
-  //       shiftUp: 0,
-  //     },
-  //     mobile: { floatLocation: FloatLocation.BottomRight },
-  //   });
-  //
-  //   await sleep(100);
-  //
-  //   const element = getIframe();
-  //   expect(element.parentElement?.style.left).toEqual(
-  //     `${MAX_SHIFT_HORIZONTAL}px`,
-  //   );
-  // });
-  //
-  // it("vertical shift is less than 0, should normalize to 0", async () => {
-  //   const iframe = new IFrame(IFRAME_SOURCE);
-  //   iframe.mount(jest.fn(), {
-  //     desktop: {
-  //       floatLocation: FloatLocation.BottomRight,
-  //       shiftLeft: 0,
-  //       shiftRight: 0,
-  //       shiftUp: -100,
-  //     },
-  //     mobile: { floatLocation: FloatLocation.BottomRight },
-  //   });
-  //
-  //   await sleep(100);
-  //
-  //   const element = getIframe();
-  //   expect(element.parentElement?.style.bottom).toEqual("0px");
-  // });
-  //
-  // it("vertical shift is greater than max, should normalize to max", async () => {
-  //   const iframe = new IFrame(IFRAME_SOURCE);
-  //   iframe.mount(jest.fn(), {
-  //     desktop: {
-  //       floatLocation: FloatLocation.BottomRight,
-  //       shiftLeft: 0,
-  //       shiftRight: 0,
-  //       shiftUp: MAX_SHIFT_UP + 100,
-  //     },
-  //     mobile: { floatLocation: FloatLocation.BottomRight },
-  //   });
-  //
-  //   await sleep(100);
-  //
-  //   const element = getIframe();
-  //   expect(element.parentElement?.style.bottom).toEqual(`${MAX_SHIFT_UP}px`);
-  // });
+  it("trigger close event, should resize iframe correctly", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(
+      () => ({}),
+      getWalletPosition(
+        MASH_SETTINGS.position.desktop,
+        MASH_SETTINGS.position.mobile,
+      ),
+    );
+
+    // @ts-expect-error grabbing the private iframe to get window
+    replacePostMessage(iframe.iframe.contentWindow);
+
+    // pretend to be the app in the iframe asking the SDK to resize it
+    const wallet = new PostMessageEngine<EventMessage>({
+      name: Targets.Wallet,
+      targetName: Targets.HostSiteFrame,
+      targetWindow: window,
+      targetOrigin: "*",
+    });
+    wallet.send({ name: Events.WalletOpened, metadata: {} });
+    await sleep(100);
+
+    wallet.send({ name: Events.WalletClosed, metadata: {} });
+    await sleep(100);
+
+    assert.equal(
+      getIframe().parentElement?.style.height,
+      `${MIN_CONTENT_HEIGHT}px`,
+    );
+    assert.equal(
+      getIframe().parentElement?.style.width,
+      `${MIN_CONTENT_WIDTH}px`,
+    );
+  });
+
+  it("trigger 2 notifications, should resize iframe correctly", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(
+      () => ({}),
+      getWalletPosition(
+        MASH_SETTINGS.position.desktop,
+        MASH_SETTINGS.position.mobile,
+      ),
+    );
+
+    // @ts-expect-error grabbing the private iframe to get window
+    replacePostMessage(iframe.iframe.contentWindow);
+
+    // pretend to be the app in the iframe asking the SDK to resize it
+    const wallet = new PostMessageEngine<EventMessage>({
+      name: Targets.Wallet,
+      targetName: Targets.HostSiteFrame,
+      targetWindow: window,
+      targetOrigin: "*",
+    });
+
+    wallet.send({ name: Events.NotificationUpdate, metadata: { count: 2 } });
+    await sleep(100);
+
+    assert.equal(getIframe().parentElement?.style.height, "280px");
+    assert.equal(
+      getIframe().parentElement?.style.width,
+      `${MAX_CONTENT_WIDTH}px`,
+    );
+  });
+
+  it("desktop, position iframe on left, should have valid css settigns", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatLocation: FloatLocation.BottomLeft,
+        shiftLeft: 5,
+        shiftRight: 10,
+        shiftUp: 15,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    assert.equal(getIframe().parentElement?.style.bottom, "15px");
+    assert.equal(getIframe().parentElement?.style.left, "10px");
+    assert.equal(getIframe().parentElement?.style.right, "");
+  });
+
+  it("desktop, position iframe on right, should have valid css settigns", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatLocation: FloatLocation.BottomRight,
+        shiftLeft: 5,
+        shiftRight: 10,
+        shiftUp: 2,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    assert.equal(getIframe().parentElement?.style.bottom, "2px");
+    assert.equal(getIframe().parentElement?.style.left, "");
+    assert.equal(getIframe().parentElement?.style.right, "5px");
+  });
+
+  it("mobile, position iframe on left, should have valid css settigns", async () => {
+    mockMatchMedia(true);
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatLocation: FloatLocation.BottomRight,
+        shiftLeft: 5,
+        shiftRight: 10,
+        shiftUp: 2,
+      },
+      mobile: { floatLocation: FloatLocation.BottomLeft },
+    });
+
+    assert.equal(getIframe().parentElement?.style.bottom, "0px");
+    assert.equal(getIframe().parentElement?.style.left, "0px");
+    assert.equal(getIframe().parentElement?.style.right, "");
+  });
+
+  it("mobile, position iframe on right, should have valid css settigns", async () => {
+    mockMatchMedia(true);
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatLocation: FloatLocation.BottomRight,
+        shiftLeft: 5,
+        shiftRight: 10,
+        shiftUp: 2,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    assert.equal(getIframe().parentElement?.style.bottom, "0px");
+    assert.equal(getIframe().parentElement?.style.left, "");
+    assert.equal(getIframe().parentElement?.style.right, "0px");
+  });
+
+  it("bottom-right, horizontal shift is less than 0, should normalize to 0", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatLocation: FloatLocation.BottomRight,
+        shiftLeft: -100,
+        shiftRight: 5,
+        shiftUp: 0,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    assert.equal(getIframe().parentElement?.style.right, "0px");
+  });
+
+  it("bottom-left, horizontal shift is less than 0, should normalize to 0", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatLocation: FloatLocation.BottomLeft,
+        shiftLeft: 5,
+        shiftRight: -100,
+        shiftUp: 0,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    assert.equal(getIframe().parentElement?.style.left, "0px");
+  });
+
+  it("bottom-right, horizontal shift is greater than max, should normalize to max", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatLocation: FloatLocation.BottomRight,
+        shiftLeft: MAX_SHIFT_HORIZONTAL + 100,
+        shiftRight: 10,
+        shiftUp: 0,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    assert.equal(
+      getIframe().parentElement?.style.right,
+      `${MAX_SHIFT_HORIZONTAL}px`,
+    );
+  });
+
+  it("bottom-left, horizontal shift is greater than max, should normalize to max", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatLocation: FloatLocation.BottomLeft,
+        shiftLeft: 10,
+        shiftRight: MAX_SHIFT_HORIZONTAL + 100,
+        shiftUp: 0,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    assert.equal(
+      getIframe().parentElement?.style.left,
+      `${MAX_SHIFT_HORIZONTAL}px`,
+    );
+  });
+
+  it("vertical shift is less than 0, should normalize to 0", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatLocation: FloatLocation.BottomRight,
+        shiftLeft: 0,
+        shiftRight: 0,
+        shiftUp: -100,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    assert.equal(getIframe().parentElement?.style.bottom, "0px");
+  });
+
+  it("vertical shift is greater than max, should normalize to max", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatLocation: FloatLocation.BottomRight,
+        shiftLeft: 0,
+        shiftRight: 0,
+        shiftUp: MAX_SHIFT_UP + 100,
+      },
+      mobile: { floatLocation: FloatLocation.BottomRight },
+    });
+
+    assert.equal(getIframe().parentElement?.style.bottom, `${MAX_SHIFT_UP}px`);
+  });
 });
 
 describe("toHTMLStyle", () => {

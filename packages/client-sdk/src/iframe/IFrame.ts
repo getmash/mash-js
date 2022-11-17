@@ -281,7 +281,6 @@ export default class IFrame {
 
       switch (data.name) {
         case Events.WalletOpened: {
-          console.error("HERE I AM");
           this.open = true;
           this.resize();
           break;
