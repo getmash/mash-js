@@ -1,5 +1,3 @@
-import preconnect from "./preconnect.js";
-
 type Widget = {
   path: string;
   element: string;
