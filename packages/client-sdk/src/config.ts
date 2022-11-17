@@ -13,10 +13,12 @@ export type Config = {
 
 export type PartialConfig = Partial<Config> & { earnerID: string };
 
-const DEFAULT_MASH_SRC = "https://wallet.getmash.com/widget";
+export const DefaultMashSrc = "https://wallet.getmash.com/widget";
+
+export const DefaultWidgetBaseURL = "https://widgets.getmash.com";
 
 const DEFAULT_WIDGETS_CONFIG: WidgetConfig = {
-  baseURL: "https://widgets.getmash.com",
+  baseURL: DefaultWidgetBaseURL,
   injectTheme: true,
   injectWidgets: true,
 };
@@ -25,7 +27,7 @@ export default function parse(config: PartialConfig): Config {
   return {
     autoHide: config.autoHide ?? true,
     earnerID: config.earnerID,
-    src: config.src || DEFAULT_MASH_SRC,
+    src: config.src || DefaultMashSrc,
     widgets: Object.assign({}, DEFAULT_WIDGETS_CONFIG, config.widgets),
   };
 }

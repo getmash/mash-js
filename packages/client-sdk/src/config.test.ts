@@ -1,14 +1,21 @@
-import parse, { Config } from "./config.js";
+import parse, {
+  Config,
+  DefaultMashSrc,
+  DefaultWidgetBaseURL,
+} from "./config.js";
 
 describe("Config", () => {
   it("empty config passed in, should set defaults", () => {
     const result = parse({ earnerID: "1" });
-    expect(result).toEqual({
+    expect(result).toEqual<Config>({
       autoHide: true,
       earnerID: "1",
-      src: "https://wallet.getmash.com/widget",
-      theme: { inject: true },
-      widgets: { inject: true },
+      src: DefaultMashSrc,
+      widgets: {
+        baseURL: DefaultWidgetBaseURL,
+        injectTheme: true,
+        injectWidgets: true,
+      },
     });
   });
 
@@ -17,8 +24,11 @@ describe("Config", () => {
       earnerID: "1",
       autoHide: false,
       src: "testsite",
-      theme: { inject: false },
-      widgets: { inject: false },
+      widgets: {
+        baseURL: "tester.com",
+        injectTheme: false,
+        injectWidgets: false,
+      },
     };
     const result = parse(config);
     expect(result).toEqual(config);
