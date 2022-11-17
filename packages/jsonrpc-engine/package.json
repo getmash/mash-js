@@ -44,7 +44,8 @@
   },
   "files": [
     "dist",
-    "!dist/**/*.test.*"
+    "!dist/**/*.test.*",
+    "!dist/**/*.map"
   ],
   "author": "Mash <support@getmash.com> (https://getmash.com/)",
   "license": "MIT",
