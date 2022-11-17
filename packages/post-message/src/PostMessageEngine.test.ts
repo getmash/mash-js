@@ -14,8 +14,21 @@ type PostMessageSpy = sinon.SinonSpy<
 >;
 
 describe("PostMessageEngine", () => {
-  //@ts-expect-error JSDOM Window mismatch
-  beforeEach(() => (global.window = new JSDOM("").window));
+  beforeEach(() => {
+    // @ts-expect-errorJSDOM Window mismatch
+    global.window = new JSDOM("").window;
+    // Replaces the global window instance's postMessage implementation in order to
+    // set event source or origin which our post message engine depends on to filter messages: https://github.com/jsdom/jsdom/issues/2745
+    window.postMessage = (message: any) => {
+      window.dispatchEvent(
+        new window.MessageEvent("message", {
+          source: window,
+          origin: "example.com",
+          data: message,
+        }),
+      );
+    };
+  });
 
   // setup sandbox
   const sandbox = sinon.createSandbox();
@@ -61,35 +74,38 @@ describe("PostMessageEngine", () => {
   // postMessage is a async event so in order for the messages to be recieved this
   // test must be async with the timeout at the end. Timeout for postMessage is 0,
   // so 100 is sufficient to complete the tests correctly.
-  // it("validate listen only acts on expected messages", async () => {
-  //   const sender = new PostMessageEngine({
-  //     name: "pm_a",
-  //     targetName: "pm_B",
-  //     targetOrigin: "*",
-  //   });
-  //   const reciever = new PostMessageEngine({
-  //     name: "pm_B",
-  //     targetName: "pm_a",
-  //     targetOrigin: "*",
-  //   });
-  //   const cb = jest.fn();
-  //   reciever.listen(cb);
-  //   // Valid Request - Should call cb
-  //   sender.send({ value: "test" });
-  //   // Invalid Requests - Should not call cb
-  //   window.postMessage({}, "*");
-  //   window.postMessage({ targetName: "zss", data: {} }, "*");
-  //   window.postMessage("FAKE", "*");
-  //   window.postMessage({ targetName: "asd" }, "*");
-  //   await new Promise(resolve => {
-  //     setTimeout(() => {
-  //       expect(cb).toHaveBeenCalledTimes(1);
-  //       sender.destroy();
-  //       reciever.destroy();
-  //       resolve(null);
-  //     }, 100);
-  //   });
-  // });
+  it("validate listen only acts on expected messages", async () => {
+    const sender = new PostMessageEngine({
+      name: "pm_a",
+      targetName: "pm_B",
+      targetOrigin: "*",
+    });
+    const reciever = new PostMessageEngine({
+      name: "pm_B",
+      targetName: "pm_a",
+      targetOrigin: "*",
+    });
+    const cb = sinon.fake();
+    reciever.listen(cb);
+
+    // Valid Request - Should call cb
+    sender.send({ value: "test" });
+
+    // Invalid Requests - Should not call cb
+    window.postMessage({}, "*");
+    window.postMessage({ targetName: "zss", data: {} }, "*");
+    window.postMessage("FAKE", "*");
+    window.postMessage({ targetName: "asd" }, "*");
+
+    await new Promise(resolve => {
+      setTimeout(() => {
+        assert.ok(cb.calledOnce);
+        sender.destroy();
+        reciever.destroy();
+        resolve(null);
+      }, 100);
+    });
+  });
 
   it("validate destroy removes all listener", () => {
     const sender = new PostMessageEngine({
