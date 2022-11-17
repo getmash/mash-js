@@ -43,6 +43,7 @@
     "url": "https://github.com/getmash/mash-js/issues"
   },
   "devDependencies": {
+    "@testing-library/dom": "^8.19.0",
     "@types/eslint": "^8",
     "@types/node": "^18.11.9",
     "@types/prettier": "^2",
