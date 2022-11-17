@@ -47,10 +47,10 @@ jobs:
         run: yarn references:check
 
       - name: Lint packages
-        run: yarn workspaces foreach --parallel run lint
+        run: yarn --verbose workspaces foreach --parallel run lint
           
       - name: Test packages
-        run: yarn workspaces foreach --parallel run test
+        run: yarn --verbose workspaces foreach --parallel run test
 
       - name: Post coverage
         uses: eeshdarthvader/code-coverage-assistant@0.1 
