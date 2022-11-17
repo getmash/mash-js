@@ -3,7 +3,7 @@ type Widget = {
   element: string;
 };
 
-const Widgets: Record<string, Widget> = {
+export const Widgets: Record<string, Widget> = {
   Accordion: { path: "accordion/accordion.js", element: "mash-accordion" },
   Boost: { path: "boost/boost.js", element: "mash-boost" },
   ButtonRevealer: {

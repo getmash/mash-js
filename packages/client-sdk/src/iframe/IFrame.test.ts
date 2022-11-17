@@ -1,10 +1,9 @@
 import assert from "node:assert/strict";
 import { beforeEach, describe, it } from "node:test";
 
-import { JSDOM } from "jsdom";
-
 import PostMessageEngine from "@getmash/post-message";
 
+import { createDOM } from "../tests/dom.js";
 import IFrame, {
   Targets,
   EventMessage,
@@ -75,10 +74,7 @@ const getIframe = () => document.getElementsByName(IFRAME_NAME).item(0);
 
 describe("IFrame", () => {
   beforeEach(() => {
-    const dom = new JSDOM(``);
-    global.document = dom.window.document;
-    //@ts-expect-error JSDOM Window mismatch
-    global.window = dom.window;
+    createDOM();
   });
 
   it("mount iframe, should exist in dom", async () => {

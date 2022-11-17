@@ -18,7 +18,7 @@
     "build": "tsc --build",
     "lint": "tsc --build && eslint .",
     "lint:fix": "tsc --build && eslint --fix .",
-    "test": "tsc --build && c8 --reporter=text --reporter=lcov node --enable-source-maps --test dist/"
+    "test": "tsc --build && c8 --reporter=text --all --reporter=lcov node --enable-source-maps --test dist/"
   },
   "dependencies": {
     "@getmash/post-message": "^2.0.0",
