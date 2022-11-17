@@ -40,3 +40,5 @@ const sender = new PostMessageEngine({
 
 sender.send({ hello: "world" })
 ```
+
+* debug logs can be enabled with the environment variable `DEBUG=mash:post-message`
