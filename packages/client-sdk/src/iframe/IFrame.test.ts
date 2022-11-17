@@ -1,10 +1,9 @@
 import assert from "node:assert/strict";
 import { beforeEach, describe, it } from "node:test";
 
-import { JSDOM } from "jsdom";
+import PostMessageEngine from "@getmash/post-message";
 
-import PostMessageEngine, { PostMessageEvent } from "@getmash/post-message";
-
+import { createDOM } from "../tests/dom.js";
 import IFrame, {
   Targets,
   EventMessage,
@@ -42,6 +41,7 @@ const sleep = (ms: number) =>
 // 1. JSDOM does not set event source's or origin's which our post message engine depends on to filter messages: https://github.com/jsdom/jsdom/issues/2745
 // 2. We need to fake what window events are being sent from or they will all look like they are coming from the global window
 const replacePostMessage = (sourceWindow: Window | null) => {
+  /* eslint-disable-next-line */
   window.postMessage = (message: any) => {
     window.dispatchEvent(
       new window.MessageEvent("message", {
@@ -74,10 +74,7 @@ const getIframe = () => document.getElementsByName(IFRAME_NAME).item(0);
 
 describe("IFrame", () => {
   beforeEach(() => {
-    const dom = new JSDOM(``);
-    global.document = dom.window.document;
-    //@ts-expect-error JSDOM Window mismatch
-    global.window = dom.window;
+    createDOM();
   });
 
   it("mount iframe, should exist in dom", async () => {

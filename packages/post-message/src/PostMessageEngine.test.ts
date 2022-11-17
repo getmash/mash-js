@@ -9,6 +9,7 @@ import PostMessageEngine from "./PostMessageEngine.js";
 // help out sinon with overloaded function by defining the one post message uses
 // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/36436
 type PostMessageSpy = sinon.SinonSpy<
+  /* eslint-disable-next-line */
   [message: any, targetOrigin: string, transfer?: Transferable[]],
   void
 >;
@@ -19,6 +20,7 @@ describe("PostMessageEngine", () => {
     global.window = new JSDOM("").window;
     // Replaces the global window instance's postMessage implementation in order to
     // set event source or origin which our post message engine depends on to filter messages: https://github.com/jsdom/jsdom/issues/2745
+    /* eslint-disable-next-line */
     window.postMessage = (message: any) => {
       window.dispatchEvent(
         new window.MessageEvent("message", {

@@ -1,33 +1,33 @@
-type Injectable = {
-  inject: boolean;
+type WidgetConfig = {
+  baseURL: string;
+  injectTheme: boolean;
+  injectWidgets: boolean;
 };
-
-type WidgetsConfig = Injectable;
-
-type ThemeConfig = Injectable;
 
 export type Config = {
   autoHide: boolean;
   earnerID: string;
   src: string;
-  theme: ThemeConfig;
-  widgets: WidgetsConfig;
+  widgets: WidgetConfig;
 };
 
 export type PartialConfig = Partial<Config> & { earnerID: string };
 
-const DEFAULT_MASH_SRC = "https://wallet.getmash.com/widget";
+export const DefaultMashSrc = "https://wallet.getmash.com/widget";
 
-const DEFAULT_WIDGETS_CONFIG: WidgetsConfig = { inject: true };
+export const DefaultWidgetBaseURL = "https://widgets.getmash.com";
 
-const DEFAULT_THEME_CONFIG: ThemeConfig = { inject: true };
+const DEFAULT_WIDGETS_CONFIG: WidgetConfig = {
+  baseURL: DefaultWidgetBaseURL,
+  injectTheme: true,
+  injectWidgets: true,
+};
 
 export default function parse(config: PartialConfig): Config {
   return {
     autoHide: config.autoHide ?? true,
     earnerID: config.earnerID,
-    src: config.src || DEFAULT_MASH_SRC,
-    theme: Object.assign({}, DEFAULT_THEME_CONFIG, config.theme || {}),
-    widgets: Object.assign({}, DEFAULT_WIDGETS_CONFIG, config.widgets || {}),
+    src: config.src || DefaultMashSrc,
+    widgets: Object.assign({}, DEFAULT_WIDGETS_CONFIG, config.widgets),
   };
 }
