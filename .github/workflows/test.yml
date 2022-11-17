@@ -46,11 +46,11 @@ jobs:
       - name: Check project reference
         run: yarn references:check
 
-      - name: Test packages
-        run: yarn workspaces foreach --parallel run test
-
       - name: Lint packages
         run: yarn workspaces foreach --parallel run lint
+          
+      - name: Test packages
+        run: yarn workspaces foreach --parallel run test
 
       - name: Post coverage
         uses: eeshdarthvader/code-coverage-assistant@0.1 
