@@ -1,5 +1,11 @@
 import type { PartialDeep } from "type-fest";
 
+export enum environments {
+  Local = "local",
+  Dev = "dev",
+  Prod = "prod"
+}
+
 type WidgetConfig = {
   baseURL: string;
   injectTheme: boolean;
@@ -11,6 +17,7 @@ export type Config = {
   earnerID: string;
   src: string;
   widgets: WidgetConfig;
+  environment?: string;
 };
 
 export type PartialConfig = PartialDeep<Config> & { earnerID: string };
@@ -31,5 +38,6 @@ export default function parse(config: PartialConfig): Config {
     earnerID: config.earnerID,
     src: config.src || DefaultMashSrc,
     widgets: Object.assign({}, DEFAULT_WIDGETS_CONFIG, config.widgets),
+    environment: config.environment ?? environments.Prod,
   };
 }

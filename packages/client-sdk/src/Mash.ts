@@ -1,8 +1,9 @@
 import { PartialDeep } from "type-fest";
 
-import parseConfig, { PartialConfig, Config } from "./config.js";
+import parseConfig, { PartialConfig, Config, environments } from "./config.js";
 import IFrame from "./iframe/IFrame.js";
 import { getWalletPosition, WalletPosition } from "./iframe/position.js";
+import { CustomizationResponse, WalletButtonPosition } from "./types.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
 import preconnect from "./widgets/preconnect.js";
 import injectTheme from "./widgets/theme.js";
@@ -33,7 +34,35 @@ class Mash {
     this.config = parseConfig(config);
     this.iframe = new IFrame(this.config.src);
 
-    // TODO: Add fetching of Earner config
+    let apiUrl = "https://api.getmash.com";
+
+    switch(config.environment) { 
+      case environments.Local: { 
+         apiUrl = "http://localhost:8080";
+         break; 
+      } 
+      case environments.Dev: { 
+        apiUrl = "https://api.dev.getmash.com";
+         break; 
+      } 
+   }
+
+    const earnersUrl = `${apiUrl}/earners/${config.earnerID}`;
+    const request = new Request(earnersUrl);
+
+    let walletButtonPosition: WalletButtonPosition;
+
+    fetch(request)
+      .then(response => response.json())
+      .then((response:CustomizationResponse) => {
+          if (this.config.widgets.injectTheme) {
+            injectTheme(this.config.widgets.baseURL, {
+              primaryColor: response.customization.theme.primaryColor,
+              fontFamily: response.customization.theme.fontFamily,
+            });
+          }
+          walletButtonPosition = response.customization.walletButtonPosition;
+      });
 
     if (this.config.widgets.injectTheme || this.config.widgets.injectWidgets) {
       preconnect(this.config.widgets.baseURL);
@@ -41,12 +70,6 @@ class Mash {
 
     if (this.config.widgets.injectWidgets) {
       injectWidgets(this.config.widgets.baseURL);
-    }
-    if (this.config.widgets.injectTheme) {
-      injectTheme(this.config.widgets.baseURL, {
-        primaryColor: "#000",
-        fontFamily: "inherit",
-      });
     }
   }
 
