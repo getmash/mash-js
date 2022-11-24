@@ -48,7 +48,7 @@ export type Earner = {
   customization: EarnerCustomizationConfiguration;
 };
 
-export function GetEarner(baseURL: string, earnerID: string): Promise<Earner> {
+export function getEarner(baseURL: string, earnerID: string): Promise<Earner> {
   const request = new Request(`${baseURL}/earners/${earnerID}`);
   return fetch(request).then(data => data.json());
 }

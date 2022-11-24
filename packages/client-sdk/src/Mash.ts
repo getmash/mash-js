@@ -1,6 +1,6 @@
 import { PartialDeep } from "type-fest";
 
-import { GetEarner } from "./api/routes.js";
+import * as MashAPI from "./api/routes.js";
 import parseConfig, { PartialConfig, Config } from "./config.js";
 import IFrame from "./iframe/IFrame.js";
 import { getWalletPosition, WalletPosition } from "./iframe/position.js";
@@ -42,7 +42,7 @@ class Mash {
       injectWidgets(this.config.widgets.baseURL);
     }
 
-    GetEarner(this.config.api, this.config.earnerID)
+    MashAPI.getEarner(this.config.api, this.config.earnerID)
       .then(result => {
         if (this.config.widgets.injectTheme) {
           injectTheme(this.config.widgets.baseURL, result.customization.theme);
