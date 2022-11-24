@@ -1,9 +1,9 @@
 import { PartialDeep } from "type-fest";
 
-import parseConfig, { PartialConfig, Config, environments } from "./config.js";
+import { GetEarner } from "./api/routes.js";
+import parseConfig, { PartialConfig, Config } from "./config.js";
 import IFrame from "./iframe/IFrame.js";
 import { getWalletPosition, WalletPosition } from "./iframe/position.js";
-import { CustomizationResponse, WalletButtonPosition } from "./types.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
 import preconnect from "./widgets/preconnect.js";
 import injectTheme from "./widgets/theme.js";
@@ -27,42 +27,12 @@ class Mash {
     if (typeof config === "string") {
       this.iframe = new IFrame(config);
       // earnerID will be retrieved through MashSettings on the init call
-      this.config = parseConfig({ earnerID: "", src: config });
+      this.config = parseConfig({ earnerID: "", walletURL: config });
       return;
     }
 
     this.config = parseConfig(config);
-    this.iframe = new IFrame(this.config.src);
-
-    let apiUrl = "https://api.getmash.com";
-
-    switch(config.environment) { 
-      case environments.Local: { 
-         apiUrl = "http://localhost:8080";
-         break; 
-      } 
-      case environments.Dev: { 
-        apiUrl = "https://api.dev.getmash.com";
-         break; 
-      } 
-   }
-
-    const earnersUrl = `${apiUrl}/earners/${config.earnerID}`;
-    const request = new Request(earnersUrl);
-
-    let walletButtonPosition: WalletButtonPosition;
-
-    fetch(request)
-      .then(response => response.json())
-      .then((response:CustomizationResponse) => {
-          if (this.config.widgets.injectTheme) {
-            injectTheme(this.config.widgets.baseURL, {
-              primaryColor: response.customization.theme.primaryColor,
-              fontFamily: response.customization.theme.fontFamily,
-            });
-          }
-          walletButtonPosition = response.customization.walletButtonPosition;
-      });
+    this.iframe = new IFrame(this.config.walletURL);
 
     if (this.config.widgets.injectTheme || this.config.widgets.injectWidgets) {
       preconnect(this.config.widgets.baseURL);
@@ -71,6 +41,12 @@ class Mash {
     if (this.config.widgets.injectWidgets) {
       injectWidgets(this.config.widgets.baseURL);
     }
+
+    GetEarner(this.config.api, this.config.earnerID).then(result => {
+      if (this.config.widgets.injectTheme) {
+        injectTheme(this.config.widgets.baseURL, result.customization.theme);
+      }
+    });
   }
 
   private static hasValidAutopayAuthorization(
@@ -109,9 +85,6 @@ class Mash {
       settings?.position.desktop,
       settings?.position.mobile,
     );
-
-    // TODO: Add conditional logic to only init Wallet when there are known
-    // Mash Elements on the page
 
     return new Promise((resolve, reject) => {
       const onIframeLoaded = (iframe: HTMLIFrameElement) => {

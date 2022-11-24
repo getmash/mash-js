@@ -1,9 +1,9 @@
 import type { PartialDeep } from "type-fest";
 
-export enum environments {
+export enum APIEnvironment {
   Local = "local",
   Dev = "dev",
-  Prod = "prod"
+  Prod = "prod",
 }
 
 type WidgetConfig = {
@@ -13,16 +13,16 @@ type WidgetConfig = {
 };
 
 export type Config = {
+  api: APIEnvironment;
   autoHide: boolean;
   earnerID: string;
-  src: string;
+  walletURL: string;
   widgets: WidgetConfig;
-  environment?: string;
 };
 
 export type PartialConfig = PartialDeep<Config> & { earnerID: string };
 
-export const DefaultMashSrc = "https://wallet.getmash.com/widget";
+export const DefaultWalletURL = "https://wallet.getmash.com/widget";
 
 export const DefaultWidgetBaseURL = "https://widgets.getmash.com";
 
@@ -34,10 +34,10 @@ const DEFAULT_WIDGETS_CONFIG: WidgetConfig = {
 
 export default function parse(config: PartialConfig): Config {
   return {
+    api: config.api || APIEnvironment.Prod,
     autoHide: config.autoHide ?? true,
     earnerID: config.earnerID,
-    src: config.src || DefaultMashSrc,
+    walletURL: config.walletURL || DefaultWalletURL,
     widgets: Object.assign({}, DEFAULT_WIDGETS_CONFIG, config.widgets),
-    environment: config.environment ?? environments.Prod,
   };
 }

@@ -1,9 +1,6 @@
 import { TinyColor } from "@ctrl/tinycolor";
 
-export type Theme = {
-  primaryColor: string;
-  fontFamily: string;
-};
+import { Theme } from "../api/routes.js";
 
 export default function injectTheme(baseUrl: string, theme: Theme) {
   const color = new TinyColor(theme.primaryColor);
