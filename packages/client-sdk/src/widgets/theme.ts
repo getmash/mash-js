@@ -2,7 +2,7 @@ import { TinyColor } from "@ctrl/tinycolor";
 
 import { Theme } from "../api/routes.js";
 
-export default function injectTheme(baseUrl: string, theme: Theme) {
+export default function injectTheme(baseURL: string, theme: Theme) {
   const color = new TinyColor(theme.primaryColor);
   const hsl = color.toHsl();
 
