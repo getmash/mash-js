@@ -20,7 +20,7 @@ export default function injectTheme(baseURL: string, theme: Theme) {
 
   const link = window.document.createElement("link");
   link.rel = "stylesheet";
-  link.href = `${baseUrl}/theme/theme.css`;
+  link.href = `${baseURL}/theme/theme.css`;
 
   window.document.head.appendChild(link);
 }
