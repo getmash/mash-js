@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { beforeEach, describe, it } from "node:test";
 
+import { waitFor } from "@testing-library/dom";
+
 import PostMessageEngine from "@getmash/post-message";
 
 import { createDOM } from "../tests/dom.js";
@@ -29,13 +31,6 @@ const MASH_SETTINGS: { id: string; position: Partial<WalletPosition> } = {
   id: "123",
   position: {},
 };
-
-const sleep = (ms: number) =>
-  new Promise(resolve => {
-    setTimeout(() => {
-      resolve(null);
-    }, ms);
-  });
 
 // Replaces the global window instance's postMessage implementation in order to fix 2 problems:
 // 1. JSDOM does not set event source's or origin's which our post message engine depends on to filter messages: https://github.com/jsdom/jsdom/issues/2745
@@ -115,16 +110,20 @@ describe("IFrame", () => {
       targetOrigin: "*",
     });
     wallet.send({ name: Events.WalletOpened, metadata: {} });
-    await sleep(100);
 
-    assert.equal(
-      getIframe().parentElement?.style.height,
-      `${MAX_CONTENT_HEIGHT}px`,
-    );
-    assert.equal(
-      getIframe().parentElement?.style.width,
-      `${MAX_CONTENT_WIDTH}px`,
-    );
+    await waitFor(() => {
+      assert.equal(
+        getIframe().parentElement?.style.height,
+        `${MAX_CONTENT_HEIGHT}px`,
+      );
+    });
+
+    await waitFor(() => {
+      assert.equal(
+        getIframe().parentElement?.style.width,
+        `${MAX_CONTENT_WIDTH}px`,
+      );
+    });
   });
 
   it("trigger close event, should resize iframe correctly", async () => {
@@ -150,19 +149,19 @@ describe("IFrame", () => {
       targetOrigin: "*",
     });
     wallet.send({ name: Events.WalletOpened, metadata: {} });
-    await sleep(100);
-
     wallet.send({ name: Events.WalletClosed, metadata: {} });
-    await sleep(100);
-
-    assert.equal(
-      getIframe().parentElement?.style.height,
-      `${MIN_CONTENT_HEIGHT}px`,
-    );
-    assert.equal(
-      getIframe().parentElement?.style.width,
-      `${MIN_CONTENT_WIDTH}px`,
-    );
+    await waitFor(() => {
+      assert.equal(
+        getIframe().parentElement?.style.height,
+        `${MIN_CONTENT_HEIGHT}px`,
+      );
+    });
+    await waitFor(() => {
+      assert.equal(
+        getIframe().parentElement?.style.width,
+        `${MIN_CONTENT_WIDTH}px`,
+      );
+    });
   });
 
   it("trigger 2 notifications, should resize iframe correctly", async () => {
@@ -189,13 +188,15 @@ describe("IFrame", () => {
     });
 
     wallet.send({ name: Events.NotificationUpdate, metadata: { count: 2 } });
-    await sleep(100);
-
-    assert.equal(getIframe().parentElement?.style.height, "280px");
-    assert.equal(
-      getIframe().parentElement?.style.width,
-      `${MAX_CONTENT_WIDTH}px`,
-    );
+    await waitFor(() => {
+      assert.equal(getIframe().parentElement?.style.height, "280px");
+    });
+    await waitFor(() => {
+      assert.equal(
+        getIframe().parentElement?.style.width,
+        `${MAX_CONTENT_WIDTH}px`,
+      );
+    });
   });
 
   it("desktop, position iframe on left, should have valid css settigns", async () => {
