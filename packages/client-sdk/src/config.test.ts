@@ -2,8 +2,8 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import parse, {
-  APIEnvironment,
   Config,
+  DefaultAPIBaseURL,
   DefaultWalletURL,
   DefaultWidgetBaseURL,
 } from "./config.js";
@@ -12,7 +12,7 @@ describe("Config", () => {
   it("empty config passed in, should set defaults", () => {
     const result = parse({ earnerID: "1" });
     assert.deepEqual<Config>(result, {
-      api: APIEnvironment.Prod,
+      api: DefaultAPIBaseURL,
       autoHide: true,
       earnerID: "1",
       walletURL: DefaultWalletURL,
@@ -26,7 +26,7 @@ describe("Config", () => {
 
   it("custom config, should set values based on custom config", () => {
     const config: Config = {
-      api: APIEnvironment.Dev,
+      api: "http://test.com",
       earnerID: "1",
       autoHide: false,
       walletURL: "testsite",

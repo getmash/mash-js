@@ -1,11 +1,3 @@
-import { APIEnvironment } from "../config.js";
-
-function getAPI(env: APIEnvironment) {
-  if (env === APIEnvironment.Local) return "http://localhost:8080";
-  if (env === APIEnvironment.Dev) return "https://api.dev.getmash.com";
-  return "https://api.getmash.com";
-}
-
 export enum WalletButtonFloatSide {
   Left = "left",
   Right = "right",
@@ -56,10 +48,7 @@ export type Earner = {
   customization: EarnerCustomizationConfiguration;
 };
 
-export function GetEarner(
-  env: APIEnvironment,
-  earnerID: string,
-): Promise<Earner> {
-  const request = new Request(`${getAPI(env)}/earners/${earnerID}`);
+export function GetEarner(baseURL: string, earnerID: string): Promise<Earner> {
+  const request = new Request(`${baseURL}/earners/${earnerID}`);
   return fetch(request).then(data => data.json());
 }

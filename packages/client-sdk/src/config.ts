@@ -1,11 +1,5 @@
 import type { PartialDeep } from "type-fest";
 
-export enum APIEnvironment {
-  Local = "local",
-  Dev = "dev",
-  Prod = "prod",
-}
-
 type WidgetConfig = {
   baseURL: string;
   injectTheme: boolean;
@@ -13,7 +7,7 @@ type WidgetConfig = {
 };
 
 export type Config = {
-  api: APIEnvironment;
+  api: string;
   autoHide: boolean;
   earnerID: string;
   walletURL: string;
@@ -22,8 +16,8 @@ export type Config = {
 
 export type PartialConfig = PartialDeep<Config> & { earnerID: string };
 
+export const DefaultAPIBaseURL = "https://api.getmash.com";
 export const DefaultWalletURL = "https://wallet.getmash.com/widget";
-
 export const DefaultWidgetBaseURL = "https://widgets.getmash.com";
 
 const DEFAULT_WIDGETS_CONFIG: WidgetConfig = {
@@ -34,7 +28,7 @@ const DEFAULT_WIDGETS_CONFIG: WidgetConfig = {
 
 export default function parse(config: PartialConfig): Config {
   return {
-    api: config.api || APIEnvironment.Prod,
+    api: config.api || DefaultAPIBaseURL,
     autoHide: config.autoHide ?? true,
     earnerID: config.earnerID,
     walletURL: config.walletURL || DefaultWalletURL,

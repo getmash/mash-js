@@ -42,11 +42,21 @@ class Mash {
       injectWidgets(this.config.widgets.baseURL);
     }
 
-    GetEarner(this.config.api, this.config.earnerID).then(result => {
-      if (this.config.widgets.injectTheme) {
-        injectTheme(this.config.widgets.baseURL, result.customization.theme);
-      }
-    });
+    GetEarner(this.config.api, this.config.earnerID)
+      .then(result => {
+        if (this.config.widgets.injectTheme) {
+          injectTheme(this.config.widgets.baseURL, result.customization.theme);
+        }
+      })
+      .catch(() => {
+        // If API error, inject default theme
+        if (this.config.widgets.injectTheme) {
+          injectTheme(this.config.widgets.baseURL, {
+            primaryColor: "#000",
+            fontFamily: "inherit",
+          });
+        }
+      });
   }
 
   private static hasValidAutopayAuthorization(

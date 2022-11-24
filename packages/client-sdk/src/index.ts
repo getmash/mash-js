@@ -16,5 +16,3 @@ export {
   Events as IFrameEvents,
   IFRAME_NAME as MashIFrameName,
 } from "./iframe/IFrame.js";
-
-export { APIEnvironment } from "./config.js";
