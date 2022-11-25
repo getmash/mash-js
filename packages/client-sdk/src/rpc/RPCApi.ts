@@ -41,7 +41,7 @@ class MashRPCApi {
   }
 
   init(earnerID: string, position: WalletPosition) {
-    return this.engine.call<void>(RPCMethods.Init, { earnerID, position });
+    return this.engine.call<void>(RPCMethods.Init, { id: earnerID, position });
   }
 
   access(resourceID: string) {

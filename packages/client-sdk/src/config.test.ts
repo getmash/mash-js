@@ -3,7 +3,8 @@ import { describe, it } from "node:test";
 
 import parse, {
   Config,
-  DefaultMashSrc,
+  DefaultAPIBaseURL,
+  DefaultWalletURL,
   DefaultWidgetBaseURL,
 } from "./config.js";
 
@@ -11,9 +12,10 @@ describe("Config", () => {
   it("empty config passed in, should set defaults", () => {
     const result = parse({ earnerID: "1" });
     assert.deepEqual<Config>(result, {
+      api: DefaultAPIBaseURL,
       autoHide: true,
       earnerID: "1",
-      src: DefaultMashSrc,
+      walletURL: DefaultWalletURL,
       widgets: {
         baseURL: DefaultWidgetBaseURL,
         injectTheme: true,
@@ -24,9 +26,10 @@ describe("Config", () => {
 
   it("custom config, should set values based on custom config", () => {
     const config: Config = {
+      api: "http://test.com",
       earnerID: "1",
       autoHide: false,
-      src: "testsite",
+      walletURL: "testsite",
       widgets: {
         baseURL: "tester.com",
         injectTheme: false,

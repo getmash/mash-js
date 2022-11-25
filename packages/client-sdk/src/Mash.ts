@@ -1,13 +1,17 @@
+import { PartialDeep } from "type-fest";
+
+import * as MashAPI from "./api/routes.js";
 import parseConfig, { PartialConfig, Config } from "./config.js";
 import IFrame from "./iframe/IFrame.js";
 import { getWalletPosition, WalletPosition } from "./iframe/position.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
 import preconnect from "./widgets/preconnect.js";
+import injectTheme from "./widgets/theme.js";
 import { injectWidgets, isWidgetOnPage } from "./widgets/widgets.js";
 
 export type MashSettings = {
   id: string;
-  position: Partial<WalletPosition>;
+  position: PartialDeep<WalletPosition>;
 };
 
 class Mash {
@@ -16,11 +20,6 @@ class Mash {
   private initialized = false;
   private config: Config;
 
-  /**
-   * Initializes the Mash SDK with a config
-   * @deprecated string config is deprecated and should instead use Config object
-   * @param config Config
-   */
   constructor(config: string | PartialConfig) {
     /**
      * Backwards compatibility to support existing earners
@@ -28,24 +27,36 @@ class Mash {
     if (typeof config === "string") {
       this.iframe = new IFrame(config);
       // earnerID will be retrieved through MashSettings on the init call
-      this.config = parseConfig({ earnerID: "", src: config });
+      this.config = parseConfig({ earnerID: "", walletURL: config });
       return;
     }
 
     this.config = parseConfig(config);
-    this.iframe = new IFrame(this.config.src);
-
-    // TODO: Add fetching of Earner config
+    this.iframe = new IFrame(this.config.walletURL);
 
     if (this.config.widgets.injectTheme || this.config.widgets.injectWidgets) {
       preconnect(this.config.widgets.baseURL);
     }
 
-    // TODO: Load CSS based on Earner Theme
-
     if (this.config.widgets.injectWidgets) {
       injectWidgets(this.config.widgets.baseURL);
     }
+
+    MashAPI.getEarner(this.config.api, this.config.earnerID)
+      .then(result => {
+        if (this.config.widgets.injectTheme) {
+          injectTheme(this.config.widgets.baseURL, result.customization.theme);
+        }
+      })
+      .catch(() => {
+        // If API error, inject default theme
+        if (this.config.widgets.injectTheme) {
+          injectTheme(this.config.widgets.baseURL, {
+            primaryColor: "#000",
+            fontFamily: "inherit",
+          });
+        }
+      });
   }
 
   private static hasValidAutopayAuthorization(
@@ -59,7 +70,7 @@ class Mash {
     return curSpend + cleanCost <= maxSpend;
   }
 
-  init(settings: MashSettings) {
+  init(settings?: MashSettings) {
     if (this.config.autoHide && !isWidgetOnPage()) {
       console.info(
         "[MASH] No mash elements found on page. Mash Wallet is hidden",
@@ -74,19 +85,16 @@ class Mash {
 
     // Backwards support for older init flow where earnerID is only
     // passed through settings object in init function
-    if (!this.config.earnerID) {
+    if (!this.config.earnerID && settings) {
       this.config.earnerID = settings.id;
     }
 
     // TODO: Modify this to check if position has already been set
     // through API call in the constructor
     const position = getWalletPosition(
-      settings.position.desktop,
-      settings.position.mobile,
+      settings?.position.desktop,
+      settings?.position.mobile,
     );
-
-    // TODO: Add conditional logic to only init Wallet when there are known
-    // Mash Elements on the page
 
     return new Promise((resolve, reject) => {
       const onIframeLoaded = (iframe: HTMLIFrameElement) => {
