@@ -20,13 +20,15 @@ npm install @getmash/client-sdk --save
 
 The SDK requires your earner ID to be able to initialize the wallet on your site – so that you are paid directly into your wallet. If you do not have an account yet, head over to https://wallet.getmash.com/earn to set things up. 
 
+The SDK retrieves settings from the Mash Platform to configure the position of the wallet on your site. It also supports loading the theme for web components that was selected in the Mash Platform.
+
 ```javascript
 import Mash from "@getmash/client-sdk"
 
-const mash = new Mash()
+const mash = new Mash({ earnerID: "<earner_id>"})
 
 // Loads Mash Wallet on site
-mash.init({ id: "<earner_id>" }).then(() => {
+mash.init().then(() => {
   // Wallet is now loaded
 })
 
@@ -35,6 +37,27 @@ if (mash.isReady()) {
   // Do something
 }
 ```
+
+The constructor accepts the following config object:
+
+```
+type Config = {
+  autoHide: boolean;
+  earnerID: string;
+  widgets: {
+    injectTheme: boolean;
+    injectWidgets: boolean;
+  };
+};
+```
+
+`autoHide`: Controls the behaviour of the wallet. If it is set to true, the wallet will hide when there are no known Mash widgets on the page. Default: `true`
+
+`earnerID`: Identifer for your earner account
+
+`injectTheme`: If set to true, it will load the theme that was configured in the Mash Platform. Default: `true`
+
+`injectWidgets`: If set to true, the SDK will inject script tags for all Mash Widgets. Default: `true`
 
 ## Methods
 
@@ -45,49 +68,18 @@ if (mash.isReady()) {
 - [`isReady`](#isready)
 ___
 
-### `init(settings: MashSettings): Promise<void>`
+### `init(): Promise<void>`
 
 Initializes the Mash Wallet. When this method is called, the SDK will load the necessary resources for the Mash Wallet. It will connect the site to the wallet and have it ready for any users that visit your site. 
-
-The function accepts a settings object to help configure the Wallet on your site. Depending on needs of your site, you can shift the Wallet using the `position` key in the settings object. 
-
-You can control on which side the Wallet loads using the `floatLocation` property. If you need further customization, you can shift the Wallet horizontally or vertically based on your needs. There is max horizontally shift of 300px and max vertical shift of 200px.
-
-```typescript
-enum FloatLocation {
-  BottomRight = "bottomRight",
-  BottomLeft = "bottomLeft",
-}
-
-interface LocationSettings {
-  floatLocation: FloatLocation;
-}
-
-type DesktopSettings = LocationSettings & {
-  shiftUp: number;
-  shiftLeft: number;
-  shiftRight: number;
-};
-
-type MobileSettings = LocationSettings;
-
-type MashSettings = {
-  id: string;
-  position?: {
-    desktop: Partial<DesktopSettings>;
-    mobile: Partial<MobileSettings>;
-  };
-};
-```
 
 Once the wallet has been initalized, the `init` function will resolve.
 
 ```typescript
 import Mash from "@getmash/client-sdk"
 
-const mash = new Mash()
+const mash = new Mash({ earnerID: "59f316a2-5079-11ed-bdc3-0242ac120002" })
 
-mash.init({ id: "59f316a2-5079-11ed-bdc3-0242ac120002" }).then(() => {
+mash.init().then(() => {
   // Mash is now intialized and ready to be used
 })
 ```
