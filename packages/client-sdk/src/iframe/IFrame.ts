@@ -30,9 +30,9 @@ export const MIN_CONTENT_HEIGHT = 100;
 /* Max Height of a notifcation */
 export const MAX_HEIGHT_NOTIFICATION = 140;
 /* Max amount the Wallet can be moved up */
-export const MAX_SHIFT_VERTICAL = 150;
+export const MAX_SHIFT_VERTICAL = 200;
 /* Max amount the Wallet can be moved horizontally */
-export const MAX_SHIFT_HORIZONTAL = 350;
+export const MAX_SHIFT_HORIZONTAL = 300;
 /* Basic vertical shift */
 export const BASIC_SHIFT_VERTICAL = 100;
 /* Basic horizontal shift */
