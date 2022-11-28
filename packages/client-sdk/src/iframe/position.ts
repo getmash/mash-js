@@ -1,3 +1,5 @@
+import { PartialDeep } from "type-fest";
+
 import {
   WalletButtonDesktopPosition,
   WalletButtonFloatPlacement,
@@ -95,4 +97,37 @@ export function getWalletPosition(
     desktop: getDesktopLocation(desktop),
     mobile: getMobileLocation(mobile),
   };
+}
+
+export function formatPosition(position?: PartialDeep<WalletPosition>) {
+  const formattedPosition: WalletButtonPosition = getWalletPosition();
+  if (position?.desktop?.floatLocation === FloatLocation.BottomLeft) {
+    formattedPosition.desktop.floatSide = WalletButtonFloatSide.Left;
+  } else if (position?.desktop?.floatLocation === FloatLocation.BottomRight) {
+    formattedPosition.desktop.floatSide = WalletButtonFloatSide.Right;
+  }
+
+  if (position?.desktop?.shiftLeft || position?.desktop?.shiftRight) {
+    formattedPosition.desktop.floatPlacement =
+      WalletButtonFloatPlacement.Custom;
+    formattedPosition.desktop.customShiftConfiguration.horizontal =
+      position.desktop.shiftLeft || 0;
+    formattedPosition.desktop.customShiftConfiguration.horizontal =
+      position.desktop.shiftRight || 0;
+  }
+
+  if (position?.desktop?.shiftUp) {
+    formattedPosition.desktop.floatPlacement =
+      WalletButtonFloatPlacement.Custom;
+    formattedPosition.desktop.customShiftConfiguration.vertical =
+      position.desktop.shiftUp || 0;
+  }
+
+  if (position?.mobile?.floatLocation === FloatLocation.BottomLeft) {
+    formattedPosition.mobile.floatSide = WalletButtonFloatSide.Left;
+  } else if (position?.mobile?.floatLocation === FloatLocation.BottomRight) {
+    formattedPosition.mobile.floatSide = WalletButtonFloatSide.Right;
+  }
+
+  return formattedPosition;
 }
