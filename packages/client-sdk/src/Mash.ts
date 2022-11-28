@@ -109,7 +109,6 @@ class Mash {
     }
 
     return this.positionPromise.then(position => {
-      position.desktop.floatSide = MashAPI.WalletButtonFloatSide.Left;
       this.mount(position);
     });
   }
