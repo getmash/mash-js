@@ -1,6 +1,6 @@
 {
   "name": "@getmash/client-sdk",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Mash Client SDK to interact with the Mash Wallet on a site",
   "keywords": [
     "lightning",
@@ -26,7 +26,7 @@
   "dependencies": {
     "@ctrl/tinycolor": "^3.4.1",
     "@getmash/jsonrpc-engine": "^2.0.0",
-    "@getmash/post-message": "^2.0.0"
+    "@getmash/post-message": "^2.1.0"
   },
   "files": [
     "dist",
