@@ -23,7 +23,7 @@ class Mash {
   private iframe: IFrame;
   private initialized = false;
   private config: Config;
-  private positionPromise!: Promise<MashAPI.WalletButtonPosition>;
+  private positionPromise?: Promise<MashAPI.WalletButtonPosition>;
 
   constructor(config: string | PartialConfig) {
     /**
@@ -108,7 +108,7 @@ class Mash {
       return this.mount(position);
     }
 
-    return this.positionPromise.then(position => {
+    return this.positionPromise?.then(position => {
       this.mount(position);
     });
   }
