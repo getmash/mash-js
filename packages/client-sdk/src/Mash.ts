@@ -66,6 +66,9 @@ class Mash {
             fontFamily: "inherit",
           });
         }
+        console.warn(
+          "[MASH] Error when fetching wallet placement from API, using default placement",
+        );
         return getWalletPosition();
       });
   }
