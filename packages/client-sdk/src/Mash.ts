@@ -23,13 +23,14 @@ class Mash {
   private iframe: IFrame;
   private initialized = false;
   private config: Config;
-  private positionPromise?: Promise<MashAPI.WalletButtonPosition>;
+  private positionPromise: Promise<MashAPI.WalletButtonPosition>;
 
   constructor(config: string | PartialConfig) {
     /**
      * Backwards compatibility to support existing earners
      */
     if (typeof config === "string") {
+      this.positionPromise = Promise.resolve(getWalletPosition());
       this.iframe = new IFrame(config);
       // earnerID will be retrieved through MashSettings on the init call
       this.config = parseConfig({ earnerID: "", walletURL: config });
@@ -108,7 +109,7 @@ class Mash {
       return this.mount(position);
     }
 
-    return this.positionPromise?.then(position => {
+    return this.positionPromise.then(position => {
       this.mount(position);
     });
   }
