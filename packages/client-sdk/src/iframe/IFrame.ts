@@ -1,6 +1,11 @@
 import PostMessageEngine from "@getmash/post-message";
-import { WalletButtonFloatPlacement, WalletButtonFloatSide, WalletButtonPosition, WalletButtonShiftConfiguration } from "../api/routes.js";
 
+import {
+  WalletButtonFloatPlacement,
+  WalletButtonFloatSide,
+  WalletButtonPosition,
+  WalletButtonShiftConfiguration,
+} from "../api/routes.js";
 
 export enum Targets {
   HostSiteFrame = "@mash/host-site-iframe",
@@ -100,7 +105,7 @@ export default class IFrame {
   private desktopFloatPlacement = WalletButtonFloatPlacement.Default;
   private desktopShiftConfiguration: WalletButtonShiftConfiguration = {
     horizontal: 0,
-    vertical: 0
+    vertical: 0,
   };
   private mobileFloatSide = WalletButtonFloatSide.Right;
 
@@ -383,11 +388,13 @@ export default class IFrame {
     this.desktopFloatSide = position.desktop.floatSide;
     this.desktopFloatPlacement = position.desktop.floatPlacement;
     this.desktopShiftConfiguration.horizontal = this.normalizeShift(
-      position.desktop.customShiftConfiguration.horizontal, 
-      MAX_SHIFT_HORIZONTAL);
+      position.desktop.customShiftConfiguration.horizontal,
+      MAX_SHIFT_HORIZONTAL,
+    );
     this.desktopShiftConfiguration.vertical = this.normalizeShift(
       position.desktop.customShiftConfiguration.vertical,
-      MAX_SHIFT_VERTICAL);
+      MAX_SHIFT_VERTICAL,
+    );
     this.mobileFloatSide = position.mobile.floatSide;
 
     // Must init engine here to have the correct contentWindow.

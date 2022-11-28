@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { WalletButtonFloatPlacement, WalletButtonFloatSide, WalletButtonPosition } from "../api/routes.js";
 
 import {
-  FloatLocation,
-  getWalletPosition,
-} from "./position.js";
+  WalletButtonFloatPlacement,
+  WalletButtonFloatSide,
+  WalletButtonPosition,
+} from "../api/routes.js";
+import { getWalletPosition } from "./position.js";
 
 describe("settings", () => {
   describe("merge", () => {
@@ -18,7 +19,7 @@ describe("settings", () => {
           customShiftConfiguration: {
             horizontal: 0,
             vertical: 0,
-          }
+          },
         },
         mobile: {
           floatSide: WalletButtonFloatSide.Right,
@@ -45,10 +46,10 @@ describe("settings", () => {
           customShiftConfiguration: {
             horizontal: 50,
             vertical: 60,
-          }
+          },
         },
         mobile: {
-          floatSide: WalletButtonFloatSide.Right
+          floatSide: WalletButtonFloatSide.Right,
         },
       };
 

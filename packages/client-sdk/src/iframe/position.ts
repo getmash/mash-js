@@ -1,4 +1,10 @@
-import { WalletButtonDesktopPosition, WalletButtonFloatPlacement, WalletButtonFloatSide, WalletButtonMobilePosition, WalletButtonPosition } from "../api/routes.js";
+import {
+  WalletButtonDesktopPosition,
+  WalletButtonFloatPlacement,
+  WalletButtonFloatSide,
+  WalletButtonMobilePosition,
+  WalletButtonPosition,
+} from "../api/routes.js";
 
 export enum FloatLocation {
   BottomRight = "bottom-right",
@@ -30,7 +36,9 @@ export type WalletPosition = {
 function normalizeFloatSide(location: WalletButtonFloatSide | undefined) {
   if (
     !location ||
-    !Object.values(WalletButtonFloatSide).includes(location as WalletButtonFloatSide)
+    !Object.values(WalletButtonFloatSide).includes(
+      location as WalletButtonFloatSide,
+    )
   ) {
     return WalletButtonFloatSide.Right;
   }
@@ -43,10 +51,14 @@ function normalizeFloatSide(location: WalletButtonFloatSide | undefined) {
  * @param location string
  * @returns WalletButtonFloatPlacement
  */
- function normalizeFloatPlacement(location: WalletButtonFloatPlacement | undefined) {
+function normalizeFloatPlacement(
+  location: WalletButtonFloatPlacement | undefined,
+) {
   if (
     !location ||
-    !Object.values(WalletButtonFloatPlacement).includes(location as WalletButtonFloatPlacement)
+    !Object.values(WalletButtonFloatPlacement).includes(
+      location as WalletButtonFloatPlacement,
+    )
   ) {
     return WalletButtonFloatPlacement.Default;
   }
@@ -63,11 +75,13 @@ function getDesktopLocation(
     customShiftConfiguration: {
       horizontal: desktop?.customShiftConfiguration?.horizontal || 0,
       vertical: desktop?.customShiftConfiguration?.vertical || 0,
-    }
+    },
   };
 }
 
-function getMobileLocation(mobile?: Partial<WalletButtonMobilePosition>): WalletButtonMobilePosition {
+function getMobileLocation(
+  mobile?: Partial<WalletButtonMobilePosition>,
+): WalletButtonMobilePosition {
   return {
     floatSide: normalizeFloatSide(mobile?.floatSide),
   };

@@ -5,6 +5,11 @@ import { waitFor } from "@testing-library/dom";
 
 import PostMessageEngine from "@getmash/post-message";
 
+import {
+  WalletButtonFloatPlacement,
+  WalletButtonFloatSide,
+  WalletButtonPosition,
+} from "../api/routes.js";
 import { createDOM } from "../tests/dom.js";
 import IFrame, {
   Targets,
@@ -24,7 +29,6 @@ import IFrame, {
   INTERCOM_SHIFT,
 } from "./IFrame.js";
 import { getWalletPosition } from "./position.js";
-import { WalletButtonFloatPlacement, WalletButtonFloatSide, WalletButtonPosition } from "../api/routes.js";
 
 const IFRAME_SOURCE = "http://localhost";
 
@@ -210,8 +214,8 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.Custom,
         customShiftConfiguration: {
           horizontal: 10,
-          vertical: 15
-        }
+          vertical: 15,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });
@@ -231,8 +235,8 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.Custom,
         customShiftConfiguration: {
           horizontal: 5,
-          vertical: 2
-        }
+          vertical: 2,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });
@@ -252,8 +256,8 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.Custom,
         customShiftConfiguration: {
           horizontal: 5,
-          vertical: 2
-        }
+          vertical: 2,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Left },
     });
@@ -273,8 +277,8 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.Custom,
         customShiftConfiguration: {
           horizontal: 10,
-          vertical: 2
-        }
+          vertical: 2,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });
@@ -294,8 +298,8 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.Custom,
         customShiftConfiguration: {
           horizontal: -100,
-          vertical: 0
-        }
+          vertical: 0,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });
@@ -313,8 +317,8 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.Custom,
         customShiftConfiguration: {
           horizontal: -100,
-          vertical: 0
-        }
+          vertical: 0,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });
@@ -332,8 +336,8 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.Custom,
         customShiftConfiguration: {
           horizontal: MAX_SHIFT_HORIZONTAL + 100,
-          vertical: 0
-        }
+          vertical: 0,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });
@@ -354,8 +358,8 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.Custom,
         customShiftConfiguration: {
           horizontal: MAX_SHIFT_HORIZONTAL + 100,
-          vertical: 0
-        }
+          vertical: 0,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });
@@ -376,8 +380,8 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.Custom,
         customShiftConfiguration: {
           horizontal: 0,
-          vertical: -100
-        }
+          vertical: -100,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });
@@ -395,13 +399,16 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.Custom,
         customShiftConfiguration: {
           horizontal: 0,
-          vertical: MAX_SHIFT_VERTICAL + 100
-        }
+          vertical: MAX_SHIFT_VERTICAL + 100,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });
 
-    assert.equal(getIframe().parentElement?.style.bottom, `${MAX_SHIFT_VERTICAL}px`);
+    assert.equal(
+      getIframe().parentElement?.style.bottom,
+      `${MAX_SHIFT_VERTICAL}px`,
+    );
   });
 
   it("basic horizontal shift to the left", async () => {
@@ -414,13 +421,16 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.BasicShiftHorizontal,
         customShiftConfiguration: {
           horizontal: 0,
-          vertical: 0
-        }
+          vertical: 0,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });
 
-    assert.equal(getIframe().parentElement?.style.right, `${BASIC_SHIFT_HORIZONTAL}px`);
+    assert.equal(
+      getIframe().parentElement?.style.right,
+      `${BASIC_SHIFT_HORIZONTAL}px`,
+    );
   });
 
   it("basic horizontal shift to the right", async () => {
@@ -433,13 +443,16 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.BasicShiftHorizontal,
         customShiftConfiguration: {
           horizontal: 0,
-          vertical: 0
-        }
+          vertical: 0,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });
 
-    assert.equal(getIframe().parentElement?.style.left, `${BASIC_SHIFT_HORIZONTAL}px`);
+    assert.equal(
+      getIframe().parentElement?.style.left,
+      `${BASIC_SHIFT_HORIZONTAL}px`,
+    );
   });
 
   it("basic vertical shift up", async () => {
@@ -452,13 +465,16 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.BasicShiftVertical,
         customShiftConfiguration: {
           horizontal: 0,
-          vertical: 0
-        }
+          vertical: 0,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });
 
-    assert.equal(getIframe().parentElement?.style.bottom, `${BASIC_SHIFT_VERTICAL}px`);
+    assert.equal(
+      getIframe().parentElement?.style.bottom,
+      `${BASIC_SHIFT_VERTICAL}px`,
+    );
   });
 
   it("using Ghost shift", async () => {
@@ -471,8 +487,8 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.Ghost,
         customShiftConfiguration: {
           horizontal: 0,
-          vertical: 0
-        }
+          vertical: 0,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });
@@ -490,13 +506,16 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.Intercom,
         customShiftConfiguration: {
           horizontal: 0,
-          vertical: 0
-        }
+          vertical: 0,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });
 
-    assert.equal(getIframe().parentElement?.style.bottom, `${INTERCOM_SHIFT}px`);
+    assert.equal(
+      getIframe().parentElement?.style.bottom,
+      `${INTERCOM_SHIFT}px`,
+    );
   });
   it("using custom shift", async () => {
     mockMatchMedia();
@@ -508,8 +527,8 @@ describe("IFrame", () => {
         floatPlacement: WalletButtonFloatPlacement.Custom,
         customShiftConfiguration: {
           horizontal: 200,
-          vertical: 100
-        }
+          vertical: 100,
+        },
       },
       mobile: { floatSide: WalletButtonFloatSide.Right },
     });

@@ -1,6 +1,6 @@
 import JsonRPCEngine from "@getmash/jsonrpc-engine";
-import { WalletButtonPosition } from "../api/routes.js";
 
+import { WalletButtonPosition } from "../api/routes.js";
 import RPCMethods from "./methods.js";
 import Targets from "./targets.js";
 

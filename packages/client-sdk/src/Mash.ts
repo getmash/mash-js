@@ -4,7 +4,11 @@ import * as MashAPI from "./api/routes.js";
 import { WalletButtonPosition } from "./api/routes.js";
 import parseConfig, { PartialConfig, Config } from "./config.js";
 import IFrame from "./iframe/IFrame.js";
-import { FloatLocation, getWalletPosition, WalletPosition } from "./iframe/position.js";
+import {
+  FloatLocation,
+  getWalletPosition,
+  WalletPosition,
+} from "./iframe/position.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
 import preconnect from "./widgets/preconnect.js";
 import injectTheme from "./widgets/theme.js";
@@ -105,35 +109,38 @@ class Mash {
         formattedPosition.desktop,
         formattedPosition.mobile,
       );
-  
+
       return this.mountIframe(position);
     }
   }
 
   formatPosition(position?: PartialDeep<WalletPosition>) {
-    let formattedPosition: WalletButtonPosition = getWalletPosition();
+    const formattedPosition: WalletButtonPosition = getWalletPosition();
     if (position?.desktop?.floatLocation === FloatLocation.BottomLeft) {
       formattedPosition.desktop.floatSide = MashAPI.WalletButtonFloatSide.Left;
-    }
-    else if (position?.desktop?.floatLocation === FloatLocation.BottomRight) {
+    } else if (position?.desktop?.floatLocation === FloatLocation.BottomRight) {
       formattedPosition.desktop.floatSide = MashAPI.WalletButtonFloatSide.Right;
     }
 
     if (position?.desktop?.shiftLeft || position?.desktop?.shiftRight) {
-      formattedPosition.desktop.floatPlacement = MashAPI.WalletButtonFloatPlacement.Custom;
-      formattedPosition.desktop.customShiftConfiguration.horizontal = position.desktop.shiftLeft || 0;
-      formattedPosition.desktop.customShiftConfiguration.horizontal = position.desktop.shiftRight || 0;
+      formattedPosition.desktop.floatPlacement =
+        MashAPI.WalletButtonFloatPlacement.Custom;
+      formattedPosition.desktop.customShiftConfiguration.horizontal =
+        position.desktop.shiftLeft || 0;
+      formattedPosition.desktop.customShiftConfiguration.horizontal =
+        position.desktop.shiftRight || 0;
     }
 
     if (position?.desktop?.shiftUp) {
-      formattedPosition.desktop.floatPlacement = MashAPI.WalletButtonFloatPlacement.Custom;
-      formattedPosition.desktop.customShiftConfiguration.vertical = position.desktop.shiftUp || 0;
+      formattedPosition.desktop.floatPlacement =
+        MashAPI.WalletButtonFloatPlacement.Custom;
+      formattedPosition.desktop.customShiftConfiguration.vertical =
+        position.desktop.shiftUp || 0;
     }
 
     if (position?.mobile?.floatLocation === FloatLocation.BottomLeft) {
       formattedPosition.mobile.floatSide = MashAPI.WalletButtonFloatSide.Left;
-    }
-    else if (position?.mobile?.floatLocation === FloatLocation.BottomRight) {
+    } else if (position?.mobile?.floatLocation === FloatLocation.BottomRight) {
       formattedPosition.mobile.floatSide = MashAPI.WalletButtonFloatSide.Right;
     }
 
