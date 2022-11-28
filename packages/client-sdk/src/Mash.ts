@@ -59,6 +59,9 @@ class Mash {
         return result.customization.walletButtonPosition;
       })
       .catch(() => {
+        console.warn(
+          "[MASH] Error when fetching wallet placement from API, using default placement and theme",
+        );
         // If API error, inject default theme
         if (this.config.widgets.injectTheme) {
           injectTheme(this.config.widgets.baseURL, {
@@ -66,9 +69,6 @@ class Mash {
             fontFamily: "inherit",
           });
         }
-        console.warn(
-          "[MASH] Error when fetching wallet placement from API, using default placement",
-        );
         return getWalletPosition();
       });
   }
