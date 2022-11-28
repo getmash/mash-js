@@ -343,7 +343,7 @@ __metadata:
   dependencies:
     "@ctrl/tinycolor": ^3.4.1
     "@getmash/jsonrpc-engine": ^2.0.0
-    "@getmash/post-message": ^2.0.0
+    "@getmash/post-message": ^2.1.0
     "@testing-library/dom": ^8.19.0
     "@types/eslint": ^8
     "@types/node": ^18.11.9
@@ -388,7 +388,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@getmash/post-message@^2.0.0, @getmash/post-message@workspace:packages/post-message":
+"@getmash/post-message@^2.0.0, @getmash/post-message@^2.1.0, @getmash/post-message@workspace:packages/post-message":
   version: 0.0.0-use.local
   resolution: "@getmash/post-message@workspace:packages/post-message"
   dependencies:

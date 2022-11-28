@@ -1,5 +1,11 @@
 # @getmash/post-message
 
+## 2.1.0
+
+### Minor Changes
+
+- [#28](https://github.com/getmash/mash-js/pull/28) [`976e52f`](https://github.com/getmash/mash-js/commit/976e52f0a078c442d258a018b70fe03032671976) Thanks [@nyonson](https://github.com/nyonson)! - Add debug logs to post-message for easier development
+
 ## 2.0.0
 
 ### Major Changes

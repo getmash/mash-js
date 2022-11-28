@@ -1,5 +1,22 @@
 # @getmash/client-sdk
 
+## 2.1.0
+
+### Minor Changes
+
+- [#27](https://github.com/getmash/mash-js/pull/27) [`cb849e0`](https://github.com/getmash/mash-js/commit/cb849e082a1ce714950e6b4285d5b40e6bc011ba) Thanks [@mdedys](https://github.com/mdedys)! - Add logic to inject mash theme into site
+
+- [#29](https://github.com/getmash/mash-js/pull/29) [`e42cefb`](https://github.com/getmash/mash-js/commit/e42cefb446318da5f561a316df30a85396127a5c) Thanks [@mdedys](https://github.com/mdedys)! - - Dynamically load mash widgets scripts into the header of the page
+
+  - If autohide is enabled, only show the wallet if known mash elements exist
+
+- [#24](https://github.com/getmash/mash-js/pull/24) [`0d50c88`](https://github.com/getmash/mash-js/commit/0d50c883970b65dacc947857d2b25345b0320b65) Thanks [@mdedys](https://github.com/mdedys)! - Extend Mash constructor to support a string or detailed config object to allow advanced configuration
+
+### Patch Changes
+
+- Updated dependencies [[`976e52f`](https://github.com/getmash/mash-js/commit/976e52f0a078c442d258a018b70fe03032671976)]:
+  - @getmash/post-message@2.1.0
+
 ## 2.0.0
 
 ### Major Changes
