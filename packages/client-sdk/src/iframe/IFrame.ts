@@ -1,6 +1,6 @@
 import PostMessageEngine from "@getmash/post-message";
+import { WalletButtonFloatPlacement, WalletButtonFloatSide, WalletButtonPosition, WalletButtonShiftConfiguration } from "../api/routes.js";
 
-import { FloatLocation, WalletPosition } from "./position.js";
 
 export enum Targets {
   HostSiteFrame = "@mash/host-site-iframe",
@@ -25,9 +25,17 @@ export const MIN_CONTENT_HEIGHT = 100;
 /* Max Height of a notifcation */
 export const MAX_HEIGHT_NOTIFICATION = 140;
 /* Max amount the Wallet can be moved up */
-export const MAX_SHIFT_UP = 200;
+export const MAX_SHIFT_VERTICAL = 150;
 /* Max amount the Wallet can be moved horizontally */
-export const MAX_SHIFT_HORIZONTAL = 300;
+export const MAX_SHIFT_HORIZONTAL = 350;
+/* Basic vertical shift */
+export const BASIC_SHIFT_VERTICAL = 100;
+/* Basic horizontal shift */
+export const BASIC_SHIFT_HORIZONTAL = 100;
+/* Amount used to shift for Ghost */
+export const GHOST_SHIFT = 80;
+/* Amount used to shift for Intercom */
+export const INTERCOM_SHIFT = 60;
 
 const CONTAINER_STYLE = {
   position: "fixed",
@@ -88,11 +96,13 @@ export default class IFrame {
   private open = false;
   private notificationCount = 0;
 
-  private shiftUp = 0;
-  private shiftLeft = 0;
-  private shiftRight = 0;
-  private desktopFloatLocation = FloatLocation.BottomRight;
-  private mobileFloatLocation = FloatLocation.BottomRight;
+  private desktopFloatSide = WalletButtonFloatSide.Right;
+  private desktopFloatPlacement = WalletButtonFloatPlacement.Default;
+  private desktopShiftConfiguration: WalletButtonShiftConfiguration = {
+    horizontal: 0,
+    vertical: 0
+  };
+  private mobileFloatSide = WalletButtonFloatSide.Right;
 
   private container: HTMLDivElement;
   private iframe: HTMLIFrameElement;
@@ -190,13 +200,13 @@ export default class IFrame {
     if (mediaQuery.matches) {
       this.container.style.bottom = "0";
 
-      switch (this.mobileFloatLocation) {
-        case FloatLocation.BottomLeft: {
+      switch (this.mobileFloatSide) {
+        case WalletButtonFloatSide.Left: {
           this.container.style.right = "";
           this.container.style.left = "0";
           break;
         }
-        case FloatLocation.BottomRight: {
+        case WalletButtonFloatSide.Right: {
           this.container.style.right = "0";
           this.container.style.left = "";
           break;
@@ -205,17 +215,64 @@ export default class IFrame {
       return;
     }
 
-    this.container.style.bottom = `${this.shiftUp}px`;
-
-    switch (this.desktopFloatLocation) {
-      case FloatLocation.BottomLeft: {
-        this.container.style.left = `${this.shiftRight}px`;
+    switch (this.desktopFloatSide) {
+      case WalletButtonFloatSide.Left: {
+        this.container.style.left = "0";
         this.container.style.right = "";
         break;
       }
-      case FloatLocation.BottomRight: {
+      case WalletButtonFloatSide.Right: {
+        this.container.style.right = "0";
         this.container.style.left = "";
-        this.container.style.right = `${this.shiftLeft}px`;
+        break;
+      }
+    }
+    switch (this.desktopFloatPlacement) {
+      case WalletButtonFloatPlacement.Ghost: {
+        this.container.style.right = "0";
+        this.container.style.left = "";
+        this.container.style.bottom = `${GHOST_SHIFT}px`;
+        break;
+      }
+      case WalletButtonFloatPlacement.Intercom: {
+        this.container.style.right = "0";
+        this.container.style.left = "";
+        this.container.style.bottom = `${INTERCOM_SHIFT}px`;
+        break;
+      }
+      case WalletButtonFloatPlacement.BasicShiftHorizontal: {
+        switch (this.desktopFloatSide) {
+          case WalletButtonFloatSide.Left: {
+            this.container.style.left = `${BASIC_SHIFT_HORIZONTAL}px`;
+            this.container.style.right = "";
+            break;
+          }
+          case WalletButtonFloatSide.Right: {
+            this.container.style.right = `${BASIC_SHIFT_HORIZONTAL}px`;
+            this.container.style.left = "";
+            break;
+          }
+        }
+        break;
+      }
+      case WalletButtonFloatPlacement.BasicShiftVertical: {
+        this.container.style.bottom = `${BASIC_SHIFT_VERTICAL}px`;
+        break;
+      }
+      case WalletButtonFloatPlacement.Custom: {
+        switch (this.desktopFloatSide) {
+          case WalletButtonFloatSide.Left: {
+            this.container.style.left = `${this.desktopShiftConfiguration.horizontal}px`;
+            this.container.style.right = "";
+            break;
+          }
+          case WalletButtonFloatSide.Right: {
+            this.container.style.right = `${this.desktopShiftConfiguration.horizontal}px`;
+            this.container.style.left = "";
+            break;
+          }
+        }
+        this.container.style.bottom = `${this.desktopShiftConfiguration.vertical}px`;
         break;
       }
     }
@@ -316,24 +373,22 @@ export default class IFrame {
    * when the Wallet has loaded
    * @param onLoad OnLoadCallback
    */
-  mount(onLoad: OnLoadCallback, position: WalletPosition) {
+  mount(onLoad: OnLoadCallback, position: WalletButtonPosition) {
     if (!this.mounted) {
       this.container.appendChild(this.iframe);
       document.body.appendChild(this.container);
       this.mounted = true;
     }
 
-    this.desktopFloatLocation = position.desktop.floatLocation;
-    this.mobileFloatLocation = position.mobile.floatLocation;
-    this.shiftUp = this.normalizeShift(position.desktop.shiftUp, MAX_SHIFT_UP);
-    this.shiftLeft = this.normalizeShift(
-      position.desktop.shiftLeft,
-      MAX_SHIFT_HORIZONTAL,
-    );
-    this.shiftRight = this.normalizeShift(
-      position.desktop.shiftRight,
-      MAX_SHIFT_HORIZONTAL,
-    );
+    this.desktopFloatSide = position.desktop.floatSide;
+    this.desktopFloatPlacement = position.desktop.floatPlacement;
+    this.desktopShiftConfiguration.horizontal = this.normalizeShift(
+      position.desktop.customShiftConfiguration.horizontal, 
+      MAX_SHIFT_HORIZONTAL);
+    this.desktopShiftConfiguration.vertical = this.normalizeShift(
+      position.desktop.customShiftConfiguration.vertical,
+      MAX_SHIFT_VERTICAL);
+    this.mobileFloatSide = position.mobile.floatSide;
 
     // Must init engine here to have the correct contentWindow.
     // If referencing this.iframe before it is mounted to the

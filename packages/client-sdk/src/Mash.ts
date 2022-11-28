@@ -1,9 +1,10 @@
 import { PartialDeep } from "type-fest";
 
 import * as MashAPI from "./api/routes.js";
+import { WalletButtonPosition } from "./api/routes.js";
 import parseConfig, { PartialConfig, Config } from "./config.js";
 import IFrame from "./iframe/IFrame.js";
-import { getWalletPosition, WalletPosition } from "./iframe/position.js";
+import { FloatLocation, getWalletPosition, WalletPosition } from "./iframe/position.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
 import preconnect from "./widgets/preconnect.js";
 import injectTheme from "./widgets/theme.js";
@@ -19,6 +20,7 @@ class Mash {
   private iframe: IFrame;
   private initialized = false;
   private config: Config;
+  private useInitPlacement = false;
 
   constructor(config: string | PartialConfig) {
     /**
@@ -47,6 +49,9 @@ class Mash {
         if (this.config.widgets.injectTheme) {
           injectTheme(this.config.widgets.baseURL, result.customization.theme);
         }
+        if (!this.useInitPlacement) {
+          this.mountIframe(result.customization.walletButtonPosition);
+        }
       })
       .catch(() => {
         // If API error, inject default theme
@@ -55,6 +60,9 @@ class Mash {
             primaryColor: "#000",
             fontFamily: "inherit",
           });
+        }
+        if (!this.useInitPlacement) {
+          this.mountIframe(getWalletPosition());
         }
       });
   }
@@ -89,13 +97,50 @@ class Mash {
       this.config.earnerID = settings.id;
     }
 
-    // TODO: Modify this to check if position has already been set
-    // through API call in the constructor
-    const position = getWalletPosition(
-      settings?.position.desktop,
-      settings?.position.mobile,
-    );
+    if (settings?.position) {
+      this.useInitPlacement = true;
+      const formattedPosition = this.formatPosition(settings?.position);
 
+      const position = getWalletPosition(
+        formattedPosition.desktop,
+        formattedPosition.mobile,
+      );
+  
+      return this.mountIframe(position);
+    }
+  }
+
+  formatPosition(position?: PartialDeep<WalletPosition>) {
+    let formattedPosition: WalletButtonPosition = getWalletPosition();
+    if (position?.desktop?.floatLocation === FloatLocation.BottomLeft) {
+      formattedPosition.desktop.floatSide = MashAPI.WalletButtonFloatSide.Left;
+    }
+    else if (position?.desktop?.floatLocation === FloatLocation.BottomRight) {
+      formattedPosition.desktop.floatSide = MashAPI.WalletButtonFloatSide.Right;
+    }
+
+    if (position?.desktop?.shiftLeft || position?.desktop?.shiftRight) {
+      formattedPosition.desktop.floatPlacement = MashAPI.WalletButtonFloatPlacement.Custom;
+      formattedPosition.desktop.customShiftConfiguration.horizontal = position.desktop.shiftLeft || 0;
+      formattedPosition.desktop.customShiftConfiguration.horizontal = position.desktop.shiftRight || 0;
+    }
+
+    if (position?.desktop?.shiftUp) {
+      formattedPosition.desktop.floatPlacement = MashAPI.WalletButtonFloatPlacement.Custom;
+      formattedPosition.desktop.customShiftConfiguration.vertical = position.desktop.shiftUp || 0;
+    }
+
+    if (position?.mobile?.floatLocation === FloatLocation.BottomLeft) {
+      formattedPosition.mobile.floatSide = MashAPI.WalletButtonFloatSide.Left;
+    }
+    else if (position?.mobile?.floatLocation === FloatLocation.BottomRight) {
+      formattedPosition.mobile.floatSide = MashAPI.WalletButtonFloatSide.Right;
+    }
+
+    return formattedPosition;
+  }
+
+  mountIframe(position: WalletButtonPosition) {
     return new Promise((resolve, reject) => {
       const onIframeLoaded = (iframe: HTMLIFrameElement) => {
         this.api = new MashRPCAPI(this.iframe.src.origin, iframe.contentWindow);

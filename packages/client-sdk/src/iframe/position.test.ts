@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { WalletButtonFloatPlacement, WalletButtonFloatSide, WalletButtonPosition } from "../api/routes.js";
 
 import {
   FloatLocation,
   getWalletPosition,
-  WalletPosition,
 } from "./position.js";
 
 describe("settings", () => {
@@ -13,13 +13,15 @@ describe("settings", () => {
       const result = getWalletPosition(undefined, undefined);
       assert.deepEqual(result, {
         desktop: {
-          floatLocation: FloatLocation.BottomRight,
-          shiftUp: 0,
-          shiftLeft: 0,
-          shiftRight: 0,
+          floatSide: WalletButtonFloatSide.Right,
+          floatPlacement: WalletButtonFloatPlacement.Default,
+          customShiftConfiguration: {
+            horizontal: 0,
+            vertical: 0,
+          }
         },
         mobile: {
-          floatLocation: FloatLocation.BottomRight,
+          floatSide: WalletButtonFloatSide.Right,
         },
       });
     });
@@ -27,23 +29,27 @@ describe("settings", () => {
     it("invalid float location, should default to bottom right", () => {
       const result = getWalletPosition(
         // @ts-expect-error testing bad values
-        { floatLocation: "bad" },
-        { floatLocation: "bad" },
+        { floatSide: "bad" },
+        { floatSide: "bad" },
       );
 
-      assert.equal(result.desktop.floatLocation, FloatLocation.BottomRight);
-      assert.equal(result.mobile.floatLocation, FloatLocation.BottomRight);
+      assert.equal(result.desktop.floatSide, WalletButtonFloatSide.Right);
+      assert.equal(result.mobile.floatSide, WalletButtonFloatSide.Right);
     });
 
     it("set valid custom position, should set position", () => {
-      const position: WalletPosition = {
+      const position: WalletButtonPosition = {
         desktop: {
-          floatLocation: FloatLocation.BottomLeft,
-          shiftLeft: 1,
-          shiftRight: 2,
-          shiftUp: 3,
+          floatPlacement: WalletButtonFloatPlacement.Custom,
+          floatSide: WalletButtonFloatSide.Right,
+          customShiftConfiguration: {
+            horizontal: 50,
+            vertical: 60,
+          }
         },
-        mobile: { floatLocation: FloatLocation.BottomLeft },
+        mobile: {
+          floatSide: WalletButtonFloatSide.Right
+        },
       };
 
       const result = getWalletPosition(position.desktop, position.mobile);
