@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.1.2
+
+### Patch Changes
+
+- [#36](https://github.com/getmash/mash-js/pull/36) [`4696856`](https://github.com/getmash/mash-js/commit/4696856ac12bc6c664359af53de0fea265212ad0) Thanks [@mdedys](https://github.com/mdedys)! - Add further backwards compatibility and remove support for string config"
+
 ## 2.1.1
 
 ### Patch Changes
