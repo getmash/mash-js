@@ -3,9 +3,17 @@ type Widget = {
   element: string;
 };
 
+export const OldWidgets = [
+  "mash-text-reveal",
+  "mash-download-btn",
+  "mash-paywall",
+  "mash-youtube-player",
+  "mash-donate-btn",
+];
+
 export const Widgets: Record<string, Widget> = {
   Accordion: { path: "accordion/accordion.js", element: "mash-accordion" },
-  Boost: { path: "boost/boost.js", element: "mash-boost" },
+  Boost: { path: "boost/boost.js", element: "mash-boost-button" },
   ButtonRevealer: {
     path: "content/button-revealer.js",
     element: "mash-button-revealer",
@@ -46,9 +54,18 @@ export function injectWidgets(baseURL: string) {
  */
 export function isWidgetOnPage() {
   const widgets = Object.values(Widgets);
+
+  // Check for new widgets
   for (let i = 0; i < widgets.length; i++) {
     const el = window.document.querySelector(widgets[i].element);
     if (el) return true;
   }
+
+  // Check for old widgets
+  for (let i = 0; i < OldWidgets.length; i++) {
+    const el = window.document.querySelector(OldWidgets[i]);
+    if (el) return true;
+  }
+
   return false;
 }
