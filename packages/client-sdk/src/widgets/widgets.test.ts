@@ -6,7 +6,7 @@ import {
   injectWidgets,
   isWidgetOnPage,
   Widgets,
-  OldWidgets,
+  DeprecatedWidgets,
 } from "./widgets.js";
 
 describe("widgets", () => {
@@ -31,7 +31,8 @@ describe("widgets", () => {
     it("old mash widget exists, should return true", () => {
       createDOM();
 
-      const widget = OldWidgets[Math.floor(Math.random() * OldWidgets.length)];
+      const widget =
+        DeprecatedWidgets[Math.floor(Math.random() * DeprecatedWidgets.length)];
 
       const wc = window.document.createElement(widget);
       window.document.body.appendChild(wc);

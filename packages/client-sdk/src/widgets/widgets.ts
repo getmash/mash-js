@@ -3,7 +3,7 @@ type Widget = {
   element: string;
 };
 
-export const OldWidgets = [
+export const DeprecatedWidgets = [
   "mash-text-reveal",
   "mash-download-btn",
   "mash-paywall",
@@ -62,8 +62,8 @@ export function isWidgetOnPage() {
   }
 
   // Check for old widgets
-  for (let i = 0; i < OldWidgets.length; i++) {
-    const el = window.document.querySelector(OldWidgets[i]);
+  for (let i = 0; i < DeprecatedWidgets.length; i++) {
+    const el = window.document.querySelector(DeprecatedWidgets[i]);
     if (el) return true;
   }
 
