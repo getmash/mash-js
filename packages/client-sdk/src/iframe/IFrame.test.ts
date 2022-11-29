@@ -5,6 +5,11 @@ import { waitFor } from "@testing-library/dom";
 
 import PostMessageEngine from "@getmash/post-message";
 
+import {
+  WalletButtonFloatPlacement,
+  WalletButtonFloatSide,
+  WalletButtonPosition,
+} from "../api/routes.js";
 import { createDOM } from "../tests/dom.js";
 import IFrame, {
   Targets,
@@ -17,17 +22,17 @@ import IFrame, {
   MIN_CONTENT_HEIGHT,
   MIN_CONTENT_WIDTH,
   MAX_SHIFT_HORIZONTAL,
-  MAX_SHIFT_UP,
+  MAX_SHIFT_VERTICAL,
+  BASIC_SHIFT_HORIZONTAL,
+  BASIC_SHIFT_VERTICAL,
+  GHOST_SHIFT,
+  INTERCOM_SHIFT,
 } from "./IFrame.js";
-import {
-  FloatLocation,
-  getWalletPosition,
-  WalletPosition,
-} from "./position.js";
+import { getWalletPosition } from "./position.js";
 
 const IFRAME_SOURCE = "http://localhost";
 
-const MASH_SETTINGS: { id: string; position: Partial<WalletPosition> } = {
+const MASH_SETTINGS: { id: string; position: Partial<WalletButtonPosition> } = {
   id: "123",
   position: {},
 };
@@ -205,12 +210,14 @@ describe("IFrame", () => {
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(() => ({}), {
       desktop: {
-        floatLocation: FloatLocation.BottomLeft,
-        shiftLeft: 5,
-        shiftRight: 10,
-        shiftUp: 15,
+        floatSide: WalletButtonFloatSide.Left,
+        floatPlacement: WalletButtonFloatPlacement.Custom,
+        customShiftConfiguration: {
+          horizontal: 10,
+          vertical: 15,
+        },
       },
-      mobile: { floatLocation: FloatLocation.BottomRight },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, "15px");
@@ -224,12 +231,14 @@ describe("IFrame", () => {
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(() => ({}), {
       desktop: {
-        floatLocation: FloatLocation.BottomRight,
-        shiftLeft: 5,
-        shiftRight: 10,
-        shiftUp: 2,
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Custom,
+        customShiftConfiguration: {
+          horizontal: 5,
+          vertical: 2,
+        },
       },
-      mobile: { floatLocation: FloatLocation.BottomRight },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, "2px");
@@ -243,12 +252,14 @@ describe("IFrame", () => {
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(() => ({}), {
       desktop: {
-        floatLocation: FloatLocation.BottomRight,
-        shiftLeft: 5,
-        shiftRight: 10,
-        shiftUp: 2,
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Custom,
+        customShiftConfiguration: {
+          horizontal: 5,
+          vertical: 2,
+        },
       },
-      mobile: { floatLocation: FloatLocation.BottomLeft },
+      mobile: { floatSide: WalletButtonFloatSide.Left },
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, "0px");
@@ -262,12 +273,14 @@ describe("IFrame", () => {
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(() => ({}), {
       desktop: {
-        floatLocation: FloatLocation.BottomRight,
-        shiftLeft: 5,
-        shiftRight: 10,
-        shiftUp: 2,
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Custom,
+        customShiftConfiguration: {
+          horizontal: 10,
+          vertical: 2,
+        },
       },
-      mobile: { floatLocation: FloatLocation.BottomRight },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, "0px");
@@ -281,12 +294,14 @@ describe("IFrame", () => {
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(() => ({}), {
       desktop: {
-        floatLocation: FloatLocation.BottomRight,
-        shiftLeft: -100,
-        shiftRight: 5,
-        shiftUp: 0,
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Custom,
+        customShiftConfiguration: {
+          horizontal: -100,
+          vertical: 0,
+        },
       },
-      mobile: { floatLocation: FloatLocation.BottomRight },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
     });
 
     assert.equal(getIframe().parentElement?.style.right, "0px");
@@ -298,12 +313,14 @@ describe("IFrame", () => {
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(() => ({}), {
       desktop: {
-        floatLocation: FloatLocation.BottomLeft,
-        shiftLeft: 5,
-        shiftRight: -100,
-        shiftUp: 0,
+        floatSide: WalletButtonFloatSide.Left,
+        floatPlacement: WalletButtonFloatPlacement.Custom,
+        customShiftConfiguration: {
+          horizontal: -100,
+          vertical: 0,
+        },
       },
-      mobile: { floatLocation: FloatLocation.BottomRight },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
     });
 
     assert.equal(getIframe().parentElement?.style.left, "0px");
@@ -315,12 +332,14 @@ describe("IFrame", () => {
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(() => ({}), {
       desktop: {
-        floatLocation: FloatLocation.BottomRight,
-        shiftLeft: MAX_SHIFT_HORIZONTAL + 100,
-        shiftRight: 10,
-        shiftUp: 0,
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Custom,
+        customShiftConfiguration: {
+          horizontal: MAX_SHIFT_HORIZONTAL + 100,
+          vertical: 0,
+        },
       },
-      mobile: { floatLocation: FloatLocation.BottomRight },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
     });
 
     assert.equal(
@@ -335,12 +354,14 @@ describe("IFrame", () => {
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(() => ({}), {
       desktop: {
-        floatLocation: FloatLocation.BottomLeft,
-        shiftLeft: 10,
-        shiftRight: MAX_SHIFT_HORIZONTAL + 100,
-        shiftUp: 0,
+        floatSide: WalletButtonFloatSide.Left,
+        floatPlacement: WalletButtonFloatPlacement.Custom,
+        customShiftConfiguration: {
+          horizontal: MAX_SHIFT_HORIZONTAL + 100,
+          vertical: 0,
+        },
       },
-      mobile: { floatLocation: FloatLocation.BottomRight },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
     });
 
     assert.equal(
@@ -355,12 +376,14 @@ describe("IFrame", () => {
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(() => ({}), {
       desktop: {
-        floatLocation: FloatLocation.BottomRight,
-        shiftLeft: 0,
-        shiftRight: 0,
-        shiftUp: -100,
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Custom,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: -100,
+        },
       },
-      mobile: { floatLocation: FloatLocation.BottomRight },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, "0px");
@@ -372,15 +395,146 @@ describe("IFrame", () => {
     const iframe = new IFrame(IFRAME_SOURCE);
     iframe.mount(() => ({}), {
       desktop: {
-        floatLocation: FloatLocation.BottomRight,
-        shiftLeft: 0,
-        shiftRight: 0,
-        shiftUp: MAX_SHIFT_UP + 100,
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Custom,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: MAX_SHIFT_VERTICAL + 100,
+        },
       },
-      mobile: { floatLocation: FloatLocation.BottomRight },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
     });
 
-    assert.equal(getIframe().parentElement?.style.bottom, `${MAX_SHIFT_UP}px`);
+    assert.equal(
+      getIframe().parentElement?.style.bottom,
+      `${MAX_SHIFT_VERTICAL}px`,
+    );
+  });
+
+  it("basic horizontal shift to the left", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.BasicShiftHorizontal,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
+    });
+
+    assert.equal(
+      getIframe().parentElement?.style.right,
+      `${BASIC_SHIFT_HORIZONTAL}px`,
+    );
+  });
+
+  it("basic horizontal shift to the right", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatSide: WalletButtonFloatSide.Left,
+        floatPlacement: WalletButtonFloatPlacement.BasicShiftHorizontal,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
+    });
+
+    assert.equal(
+      getIframe().parentElement?.style.left,
+      `${BASIC_SHIFT_HORIZONTAL}px`,
+    );
+  });
+
+  it("basic vertical shift up", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.BasicShiftVertical,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
+    });
+
+    assert.equal(
+      getIframe().parentElement?.style.bottom,
+      `${BASIC_SHIFT_VERTICAL}px`,
+    );
+  });
+
+  it("using Ghost shift", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Ghost,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
+    });
+
+    assert.equal(getIframe().parentElement?.style.bottom, `${GHOST_SHIFT}px`);
+  });
+
+  it("using Intercom shift", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Intercom,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
+    });
+
+    assert.equal(
+      getIframe().parentElement?.style.bottom,
+      `${INTERCOM_SHIFT}px`,
+    );
+  });
+  it("using custom shift", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Custom,
+        customShiftConfiguration: {
+          horizontal: 200,
+          vertical: 100,
+        },
+      },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
+    });
+
+    assert.equal(getIframe().parentElement?.style.bottom, "100px");
+    assert.equal(getIframe().parentElement?.style.right, "200px");
   });
 });
 

@@ -1,6 +1,6 @@
 import JsonRPCEngine from "@getmash/jsonrpc-engine";
 
-import { WalletPosition } from "../iframe/position.js";
+import { WalletButtonPosition } from "../api/routes.js";
 import RPCMethods from "./methods.js";
 import Targets from "./targets.js";
 
@@ -40,7 +40,7 @@ class MashRPCApi {
     });
   }
 
-  init(earnerID: string, position: WalletPosition) {
+  init(earnerID: string, position: WalletButtonPosition) {
     return this.engine.call<void>(RPCMethods.Init, { id: earnerID, position });
   }
 

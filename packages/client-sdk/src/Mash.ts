@@ -3,7 +3,11 @@ import { PartialDeep } from "type-fest";
 import * as MashAPI from "./api/routes.js";
 import parseConfig, { PartialConfig, Config } from "./config.js";
 import IFrame from "./iframe/IFrame.js";
-import { getWalletPosition, WalletPosition } from "./iframe/position.js";
+import {
+  getWalletPosition,
+  WalletPosition,
+  formatPosition,
+} from "./iframe/position.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
 import preconnect from "./widgets/preconnect.js";
 import injectTheme from "./widgets/theme.js";
@@ -19,12 +23,14 @@ class Mash {
   private iframe: IFrame;
   private initialized = false;
   private config: Config;
+  private positionPromise: Promise<MashAPI.WalletButtonPosition>;
 
   constructor(config: string | PartialConfig) {
     /**
      * Backwards compatibility to support existing earners
      */
     if (typeof config === "string") {
+      this.positionPromise = Promise.resolve(getWalletPosition());
       this.iframe = new IFrame(config);
       // earnerID will be retrieved through MashSettings on the init call
       this.config = parseConfig({ earnerID: "", walletURL: config });
@@ -42,13 +48,20 @@ class Mash {
       injectWidgets(this.config.widgets.baseURL);
     }
 
-    MashAPI.getEarner(this.config.api, this.config.earnerID)
+    this.positionPromise = MashAPI.getEarner(
+      this.config.api,
+      this.config.earnerID,
+    )
       .then(result => {
         if (this.config.widgets.injectTheme) {
           injectTheme(this.config.widgets.baseURL, result.customization.theme);
         }
+        return result.customization.walletButtonPosition;
       })
       .catch(() => {
+        console.warn(
+          "[MASH] Error when fetching wallet placement from API, using default placement and theme",
+        );
         // If API error, inject default theme
         if (this.config.widgets.injectTheme) {
           injectTheme(this.config.widgets.baseURL, {
@@ -56,6 +69,7 @@ class Mash {
             fontFamily: "inherit",
           });
         }
+        return getWalletPosition();
       });
   }
 
@@ -89,27 +103,17 @@ class Mash {
       this.config.earnerID = settings.id;
     }
 
-    // TODO: Modify this to check if position has already been set
-    // through API call in the constructor
-    const position = getWalletPosition(
-      settings?.position.desktop,
-      settings?.position.mobile,
-    );
+    if (settings?.position) {
+      const formattedPosition = formatPosition(settings?.position);
+      const position = getWalletPosition(
+        formattedPosition.desktop,
+        formattedPosition.mobile,
+      );
+      return this.mount(position);
+    }
 
-    return new Promise((resolve, reject) => {
-      const onIframeLoaded = (iframe: HTMLIFrameElement) => {
-        this.api = new MashRPCAPI(this.iframe.src.origin, iframe.contentWindow);
-
-        this.api
-          .init(this.config.earnerID, position)
-          .then(() => {
-            this.initialized = true;
-            resolve(null);
-          })
-          .catch(err => reject(err));
-      };
-
-      this.iframe.mount(onIframeLoaded, position);
+    return this.positionPromise.then(position => {
+      this.mount(position);
     });
   }
 
@@ -171,6 +175,24 @@ class Mash {
    */
   isReady() {
     return this.initialized;
+  }
+
+  private mount(position: MashAPI.WalletButtonPosition) {
+    return new Promise((resolve, reject) => {
+      const onIframeLoaded = (iframe: HTMLIFrameElement) => {
+        this.api = new MashRPCAPI(this.iframe.src.origin, iframe.contentWindow);
+
+        this.api
+          .init(this.config.earnerID, position)
+          .then(() => {
+            this.initialized = true;
+            resolve(null);
+          })
+          .catch(err => reject(err));
+      };
+
+      this.iframe.mount(onIframeLoaded, position);
+    });
   }
 }
 
