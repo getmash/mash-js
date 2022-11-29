@@ -30,7 +30,7 @@ class Mash {
     this.iframe = new IFrame(this.config.walletURL);
 
     /**
-     * This is too handle backwards compatibility of earnerID not being present
+     * This is to handle backwards compatibility of earnerID not being present
      * in the constructor
      */
     if (!this.config.earnerID) {
