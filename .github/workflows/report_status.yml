@@ -12,6 +12,7 @@ jobs:
   set_status:
     runs-on: ubuntu-latest
     permissions:
+      checks: write
       statuses: write 
     steps:
       - name: "Report Status"
