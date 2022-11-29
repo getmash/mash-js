@@ -2,7 +2,12 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import { createDOM } from "../tests/dom.js";
-import { injectWidgets, isWidgetOnPage, Widgets } from "./widgets.js";
+import {
+  injectWidgets,
+  isWidgetOnPage,
+  Widgets,
+  DeprecatedWidgets,
+} from "./widgets.js";
 
 describe("widgets", () => {
   describe("isWidgetOnPage", () => {
@@ -18,6 +23,18 @@ describe("widgets", () => {
       const widget = widgets[Math.floor(Math.random() * widgets.length)];
 
       const wc = window.document.createElement(widget.element);
+      window.document.body.appendChild(wc);
+
+      const result = isWidgetOnPage();
+      assert.equal(result, true);
+    });
+    it("old mash widget exists, should return true", () => {
+      createDOM();
+
+      const widget =
+        DeprecatedWidgets[Math.floor(Math.random() * DeprecatedWidgets.length)];
+
+      const wc = window.document.createElement(widget);
       window.document.body.appendChild(wc);
 
       const result = isWidgetOnPage();

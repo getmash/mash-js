@@ -1,6 +1,8 @@
 import Mash from "./Mash.js";
 export default Mash;
 
+export { Config } from "./config.js";
+
 export { MashSettings } from "./Mash.js";
 
 export { default as Targets } from "./rpc/targets.js";

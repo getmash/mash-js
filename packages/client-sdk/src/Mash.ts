@@ -25,20 +25,18 @@ class Mash {
   private config: Config;
   private positionPromise: Promise<MashAPI.WalletButtonPosition>;
 
-  constructor(config: string | PartialConfig) {
-    /**
-     * Backwards compatibility to support existing earners
-     */
-    if (typeof config === "string") {
-      this.positionPromise = Promise.resolve(getWalletPosition());
-      this.iframe = new IFrame(config);
-      // earnerID will be retrieved through MashSettings on the init call
-      this.config = parseConfig({ earnerID: "", walletURL: config });
-      return;
-    }
-
+  constructor(config: PartialConfig) {
     this.config = parseConfig(config);
     this.iframe = new IFrame(this.config.walletURL);
+
+    /**
+     * This is to handle backwards compatibility of earnerID not being present
+     * in the constructor
+     */
+    if (!this.config.earnerID) {
+      this.positionPromise = Promise.resolve(getWalletPosition());
+      return;
+    }
 
     if (this.config.widgets.injectTheme || this.config.widgets.injectWidgets) {
       preconnect(this.config.widgets.baseURL);
@@ -97,14 +95,13 @@ class Mash {
       return Promise.resolve(null);
     }
 
-    // Backwards support for older init flow where earnerID is only
-    // passed through settings object in init function
-    if (!this.config.earnerID && settings) {
+    /**
+     * Backward compatibility with existing users who pass settings
+     * through init script
+     */
+    if (settings) {
       this.config.earnerID = settings.id;
-    }
-
-    if (settings?.position) {
-      const formattedPosition = formatPosition(settings?.position);
+      const formattedPosition = formatPosition(settings?.position || {});
       const position = getWalletPosition(
         formattedPosition.desktop,
         formattedPosition.mobile,
