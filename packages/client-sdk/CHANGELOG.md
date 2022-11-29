@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.1.1
+
+### Patch Changes
+
+- [#32](https://github.com/getmash/mash-js/pull/32) [`ad69255`](https://github.com/getmash/mash-js/commit/ad69255e06e6cffeea67ccd98d35bbc91dc05f04) Thanks [@aron-mash](https://github.com/aron-mash)! - changing the model used to position the IFrame
+
 ## 2.1.0
 
 ### Minor Changes
