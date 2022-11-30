@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.1.3
+
+### Patch Changes
+
+- [#38](https://github.com/getmash/mash-js/pull/38) [`4c9380f`](https://github.com/getmash/mash-js/commit/4c9380f67cea285116dfd8e901f690baed7395d5) Thanks [@mdedys](https://github.com/mdedys)! - Fix widgets injection URL creation
+
 ## 2.1.2
 
 ### Patch Changes
