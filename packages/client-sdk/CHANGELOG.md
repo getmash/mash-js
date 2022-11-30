@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.1.5
+
+### Patch Changes
+
+- [#45](https://github.com/getmash/mash-js/pull/45) [`869a3f6`](https://github.com/getmash/mash-js/commit/869a3f6da12337ba3e43dcbe7f99b4aca22f5bef) Thanks [@mdedys](https://github.com/mdedys)! - Make autohide opt-in
+
 ## 2.1.4
 
 ### Patch Changes
