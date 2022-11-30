@@ -29,7 +29,7 @@ const DEFAULT_WIDGETS_CONFIG: WidgetConfig = {
 export default function parse(config: PartialConfig): Config {
   return {
     api: config.api || DefaultAPIBaseURL,
-    autoHide: config.autoHide ?? true,
+    autoHide: config.autoHide ?? false,
     earnerID: config.earnerID,
     walletURL: config.walletURL || DefaultWalletURL,
     widgets: Object.assign({}, DEFAULT_WIDGETS_CONFIG, config.widgets),
