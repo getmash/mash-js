@@ -1,5 +1,15 @@
 # @getmash/client-sdk
 
+## 2.1.4
+
+### Patch Changes
+
+- [#43](https://github.com/getmash/mash-js/pull/43) [`298bf7f`](https://github.com/getmash/mash-js/commit/298bf7fbfc2d3971e0eb4e064eef2efa63cd1ab6) Thanks [@mdedys](https://github.com/mdedys)! - Ensure DOM is loaded before checking if an Mash widgets exist on the page
+
+- [#40](https://github.com/getmash/mash-js/pull/40) [`81d3507`](https://github.com/getmash/mash-js/commit/81d350753d85b825b1f50b59f0b443bfcfd980a4) Thanks [@aron-mash](https://github.com/aron-mash)! - fixing typo in donate button element
+
+- [#42](https://github.com/getmash/mash-js/pull/42) [`551be17`](https://github.com/getmash/mash-js/commit/551be17d5a3902b3278baa8c924980b7095a04e9) Thanks [@aron-mash](https://github.com/aron-mash)! - fixing positioning bug for ghost and intercom
+
 ## 2.1.3
 
 ### Patch Changes
