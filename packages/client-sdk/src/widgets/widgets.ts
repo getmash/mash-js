@@ -42,7 +42,7 @@ export function injectWidgets(baseURL: string) {
   const scripts = Object.values(Widgets).map(value => {
     const script = window.document.createElement("script");
     script.async = true;
-    script.src = `${baseURL}${value.path}`;
+    script.src = `${baseURL}/${value.path}`;
     return script;
   });
   window.document.head.append(...scripts);
