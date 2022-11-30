@@ -83,16 +83,16 @@ class Mash {
   }
 
   init(settings?: MashSettings) {
+    if (this.iframe.mounted) {
+      console.warn("[MASH] Already mounted, ignoring this call to init Mash");
+      return Promise.resolve(null);
+    }
+
     return isWidgetOnPage().then(widgetsExist => {
       if (this.config.autoHide && !widgetsExist) {
         console.info(
           "[MASH] No mash elements found on page. Mash Wallet is hidden",
         );
-        return Promise.resolve(null);
-      }
-
-      if (this.iframe.mounted) {
-        console.warn("[MASH] Already mounted, ignoring this call to init Mash");
         return Promise.resolve(null);
       }
 
