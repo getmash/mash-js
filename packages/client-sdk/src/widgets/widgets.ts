@@ -48,11 +48,7 @@ export function injectWidgets(baseURL: string) {
   window.document.head.append(...scripts);
 }
 
-/**
- * Check if a known Mash Widget exists on the page
- * @returns boolean
- */
-export function isWidgetOnPage() {
+function _isWidgetOnPage() {
   const widgets = Object.values(Widgets);
 
   // Check for new widgets
@@ -68,4 +64,20 @@ export function isWidgetOnPage() {
   }
 
   return false;
+}
+
+/**
+ * Check if a known Mash Widget exists on the page
+ * @returns boolean
+ */
+export function isWidgetOnPage(): Promise<boolean> {
+  return new Promise(resolve => {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () =>
+        resolve(_isWidgetOnPage()),
+      );
+      return;
+    }
+    resolve(_isWidgetOnPage());
+  });
 }

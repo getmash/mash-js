@@ -82,19 +82,7 @@ class Mash {
     return curSpend + cleanCost <= maxSpend;
   }
 
-  init(settings?: MashSettings) {
-    if (this.config.autoHide && !isWidgetOnPage()) {
-      console.info(
-        "[MASH] No mash elements found on page. Mash Wallet is hidden",
-      );
-      return Promise.resolve(null);
-    }
-
-    if (this.iframe.mounted) {
-      console.warn("[MASH] Already mounted, ignoring this call to init Mash");
-      return Promise.resolve(null);
-    }
-
+  private _init(settings?: MashSettings) {
     /**
      * Backward compatibility with existing users who pass settings
      * through init script
@@ -109,8 +97,27 @@ class Mash {
       return this.mount(position);
     }
 
-    return this.positionPromise.then(position => {
-      this.mount(position);
+    return this.positionPromise.then(position => this.mount(position));
+  }
+
+  init(settings?: MashSettings) {
+    if (this.iframe.mounted) {
+      console.warn("[MASH] Already mounted, ignoring this call to init Mash");
+      return Promise.resolve(null);
+    }
+
+    if (!this.config.autoHide) {
+      return this._init(settings);
+    }
+
+    return isWidgetOnPage().then(widgetsExist => {
+      if (!widgetsExist) {
+        console.info(
+          "[MASH] No mash elements found on page. Mash Wallet is hidden",
+        );
+        return Promise.resolve(null);
+      }
+      return this._init(settings);
     });
   }
 
@@ -174,7 +181,7 @@ class Mash {
     return this.initialized;
   }
 
-  private mount(position: MashAPI.WalletButtonPosition) {
+  private mount(position: MashAPI.WalletButtonPosition): Promise<null> {
     return new Promise((resolve, reject) => {
       const onIframeLoaded = (iframe: HTMLIFrameElement) => {
         this.api = new MashRPCAPI(this.iframe.src.origin, iframe.contentWindow);

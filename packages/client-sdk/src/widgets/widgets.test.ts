@@ -11,12 +11,12 @@ import {
 
 describe("widgets", () => {
   describe("isWidgetOnPage", () => {
-    it("no mash widgets, should return false", () => {
+    it("no mash widgets, should return false", async () => {
       createDOM();
-      const result = isWidgetOnPage();
+      const result = await isWidgetOnPage();
       assert.equal(result, false);
     });
-    it("mash widgets exists, should return true", () => {
+    it("mash widgets exists, should return true", async () => {
       createDOM();
 
       const widgets = Object.values(Widgets);
@@ -25,10 +25,10 @@ describe("widgets", () => {
       const wc = window.document.createElement(widget.element);
       window.document.body.appendChild(wc);
 
-      const result = isWidgetOnPage();
+      const result = await isWidgetOnPage();
       assert.equal(result, true);
     });
-    it("old mash widget exists, should return true", () => {
+    it("old mash widget exists, should return true", async () => {
       createDOM();
 
       const widget =
@@ -37,7 +37,7 @@ describe("widgets", () => {
       const wc = window.document.createElement(widget);
       window.document.body.appendChild(wc);
 
-      const result = isWidgetOnPage();
+      const result = await isWidgetOnPage();
       assert.equal(result, true);
     });
   });
