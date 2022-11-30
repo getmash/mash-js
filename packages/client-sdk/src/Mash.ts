@@ -83,34 +83,34 @@ class Mash {
   }
 
   init(settings?: MashSettings) {
-    if (this.config.autoHide && !isWidgetOnPage()) {
-      console.info(
-        "[MASH] No mash elements found on page. Mash Wallet is hidden",
-      );
-      return Promise.resolve(null);
-    }
+    return isWidgetOnPage().then(widgetsExist => {
+      if (this.config.autoHide && !widgetsExist) {
+        console.info(
+          "[MASH] No mash elements found on page. Mash Wallet is hidden",
+        );
+        return Promise.resolve(null);
+      }
 
-    if (this.iframe.mounted) {
-      console.warn("[MASH] Already mounted, ignoring this call to init Mash");
-      return Promise.resolve(null);
-    }
+      if (this.iframe.mounted) {
+        console.warn("[MASH] Already mounted, ignoring this call to init Mash");
+        return Promise.resolve(null);
+      }
 
-    /**
-     * Backward compatibility with existing users who pass settings
-     * through init script
-     */
-    if (settings) {
-      this.config.earnerID = settings.id;
-      const formattedPosition = formatPosition(settings?.position || {});
-      const position = getWalletPosition(
-        formattedPosition.desktop,
-        formattedPosition.mobile,
-      );
-      return this.mount(position);
-    }
+      /**
+       * Backward compatibility with existing users who pass settings
+       * through init script
+       */
+      if (settings) {
+        this.config.earnerID = settings.id;
+        const formattedPosition = formatPosition(settings?.position || {});
+        const position = getWalletPosition(
+          formattedPosition.desktop,
+          formattedPosition.mobile,
+        );
+        return this.mount(position);
+      }
 
-    return this.positionPromise.then(position => {
-      this.mount(position);
+      return this.positionPromise.then(position => this.mount(position));
     });
   }
 
@@ -174,7 +174,7 @@ class Mash {
     return this.initialized;
   }
 
-  private mount(position: MashAPI.WalletButtonPosition) {
+  private mount(position: MashAPI.WalletButtonPosition): Promise<null> {
     return new Promise((resolve, reject) => {
       const onIframeLoaded = (iframe: HTMLIFrameElement) => {
         this.api = new MashRPCAPI(this.iframe.src.origin, iframe.contentWindow);
