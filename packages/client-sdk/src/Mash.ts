@@ -82,10 +82,32 @@ class Mash {
     return curSpend + cleanCost <= maxSpend;
   }
 
+  private _init(settings?: MashSettings) {
+    /**
+     * Backward compatibility with existing users who pass settings
+     * through init script
+     */
+    if (settings) {
+      this.config.earnerID = settings.id;
+      const formattedPosition = formatPosition(settings?.position || {});
+      const position = getWalletPosition(
+        formattedPosition.desktop,
+        formattedPosition.mobile,
+      );
+      return this.mount(position);
+    }
+
+    return this.positionPromise.then(position => this.mount(position));
+  }
+
   init(settings?: MashSettings) {
     if (this.iframe.mounted) {
       console.warn("[MASH] Already mounted, ignoring this call to init Mash");
       return Promise.resolve(null);
+    }
+
+    if (!this.config.autoHide) {
+      return this._init(settings);
     }
 
     return isWidgetOnPage().then(widgetsExist => {
@@ -95,22 +117,7 @@ class Mash {
         );
         return Promise.resolve(null);
       }
-
-      /**
-       * Backward compatibility with existing users who pass settings
-       * through init script
-       */
-      if (settings) {
-        this.config.earnerID = settings.id;
-        const formattedPosition = formatPosition(settings?.position || {});
-        const position = getWalletPosition(
-          formattedPosition.desktop,
-          formattedPosition.mobile,
-        );
-        return this.mount(position);
-      }
-
-      return this.positionPromise.then(position => this.mount(position));
+      return this._init(settings);
     });
   }
 
