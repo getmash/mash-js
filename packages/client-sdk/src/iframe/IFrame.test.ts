@@ -477,7 +477,7 @@ describe("IFrame", () => {
     );
   });
 
-  it("using Ghost shift", async () => {
+  it("using Ghost shift, right side", async () => {
     mockMatchMedia();
 
     const iframe = new IFrame(IFRAME_SOURCE);
@@ -494,9 +494,10 @@ describe("IFrame", () => {
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, `${GHOST_SHIFT}px`);
+    assert.equal(getIframe().parentElement?.style.right, "0px");
   });
 
-  it("using Intercom shift", async () => {
+  it("using Intercom shift, right side", async () => {
     mockMatchMedia();
 
     const iframe = new IFrame(IFRAME_SOURCE);
@@ -516,6 +517,49 @@ describe("IFrame", () => {
       getIframe().parentElement?.style.bottom,
       `${INTERCOM_SHIFT}px`,
     );
+    assert.equal(getIframe().parentElement?.style.right, "0px");
+  });
+  it("using Ghost shift, left side", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatSide: WalletButtonFloatSide.Left,
+        floatPlacement: WalletButtonFloatPlacement.Ghost,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
+    });
+
+    assert.equal(getIframe().parentElement?.style.bottom, `${GHOST_SHIFT}px`);
+    assert.equal(getIframe().parentElement?.style.left, "0px");
+  });
+
+  it("using Intercom shift, left side", async () => {
+    mockMatchMedia();
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatSide: WalletButtonFloatSide.Left,
+        floatPlacement: WalletButtonFloatPlacement.Intercom,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+      mobile: { floatSide: WalletButtonFloatSide.Right },
+    });
+
+    assert.equal(
+      getIframe().parentElement?.style.bottom,
+      `${INTERCOM_SHIFT}px`,
+    );
+    assert.equal(getIframe().parentElement?.style.left, "0px");
   });
   it("using custom shift", async () => {
     mockMatchMedia();
