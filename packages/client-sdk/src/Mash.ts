@@ -111,7 +111,7 @@ class Mash {
     }
 
     return isWidgetOnPage().then(widgetsExist => {
-      if (this.config.autoHide && !widgetsExist) {
+      if (!widgetsExist) {
         console.info(
           "[MASH] No mash elements found on page. Mash Wallet is hidden",
         );
