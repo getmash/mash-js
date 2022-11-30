@@ -234,14 +234,34 @@ export default class IFrame {
     }
     switch (this.desktopFloatPlacement) {
       case WalletButtonFloatPlacement.Ghost: {
-        this.container.style.right = "0";
-        this.container.style.left = "";
+        switch (this.desktopFloatSide) {
+          case WalletButtonFloatSide.Left: {
+            this.container.style.left = "0";
+            this.container.style.right = "";
+            break;
+          }
+          case WalletButtonFloatSide.Right: {
+            this.container.style.right = "0";
+            this.container.style.left = "";
+            break;
+          }
+        }
         this.container.style.bottom = `${GHOST_SHIFT}px`;
         break;
       }
       case WalletButtonFloatPlacement.Intercom: {
-        this.container.style.right = "0";
-        this.container.style.left = "";
+        switch (this.desktopFloatSide) {
+          case WalletButtonFloatSide.Left: {
+            this.container.style.left = "0";
+            this.container.style.right = "";
+            break;
+          }
+          case WalletButtonFloatSide.Right: {
+            this.container.style.right = "0";
+            this.container.style.left = "";
+            break;
+          }
+        }
         this.container.style.bottom = `${INTERCOM_SHIFT}px`;
         break;
       }
