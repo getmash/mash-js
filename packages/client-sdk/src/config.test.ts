@@ -13,7 +13,7 @@ describe("Config", () => {
     const result = parse({ earnerID: "1" });
     assert.deepEqual<Config>(result, {
       api: DefaultAPIBaseURL,
-      autoHide: false
+      autoHide: false,
       earnerID: "1",
       walletURL: DefaultWalletURL,
       widgets: {
