@@ -24,7 +24,7 @@ export const Widgets: Record<string, Widget> = {
   },
   DonateButton: {
     path: "donate/donate-button.js",
-    element: "masn-donate-button",
+    element: "mash-donate-button",
   },
   DownloadButton: {
     path: "download/download-button.js",
