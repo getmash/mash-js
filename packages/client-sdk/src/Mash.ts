@@ -31,12 +31,6 @@ class Mash {
     this.localConfig = parseConfig(config);
     this.iframe = new IFrame(this.localConfig.walletURL);
 
-    // This is to handle backwards compatibility of earnerID not being present in the constructor.
-    if (!this.localConfig.earnerID) {
-      this.cloudConfig = Promise.resolve(getWalletPosition());
-      return;
-    }
-
     if (
       this.localConfig.widgets.injectTheme ||
       this.localConfig.widgets.injectWidgets
@@ -88,7 +82,7 @@ class Mash {
   }
 
   private _init(settings?: MashSettings) {
-    // settings on page override any other sources
+    // Just for backward compatibility with existing users who pass in settings.
     if (settings) {
       this.localConfig.earnerID = settings.id;
       const formattedPosition = formatPosition(settings?.position || {});
