@@ -44,7 +44,10 @@ jobs:
      
       # Fails if project references drift from package.json, fix with reference script
       - name: Check project reference
-        run: yarn references:check
+        run: yarn references
+
+      - name: Check package format
+        run: yarn --verbose workspaces foreach --parallel run fmt
 
       - name: Lint packages
         run: yarn --verbose workspaces foreach --parallel run lint

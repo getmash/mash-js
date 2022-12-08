@@ -16,6 +16,8 @@
   "scripts": {
     "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist",
     "build": "tsc --build",
+    "fmt": "prettier --check src/",
+    "fmt:fix": "prettier --write src/",
     "lint": "tsc --build && eslint .",
     "lint:fix": "tsc --build && eslint --fix .",
     "test": "tsc --build && c8 --reporter=text --all --reporter=lcov node --enable-source-maps --test dist/"
@@ -37,7 +39,6 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^3.5.2",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-prettier": "^4.2.1",
     "jsdom": "^20.0.2",
     "prettier": "^2.7.1",
     "typescript": "^4.8.4"

@@ -8,15 +8,14 @@ Install the package with:
 
 ```shell
 yarn add @getmash/post-message
-# or 
+# or
 npm install @getmash/post-message --save
 ```
 
 ## Usage
 
 ```typescript
-
-import PostMessageEngine from "@getmash/post-message"
+import PostMessageEngine from "@getmash/post-message";
 
 // in iframe
 
@@ -24,10 +23,10 @@ const receiver = new PostMessageEngine({
   name: "receiver",
   targetName: "sender",
   targetOrigin: "mysite.com",
-  targetWindow: window.parent
-})
+  targetWindow: window.parent,
+});
 
-receiver.listen(msg => console.log(msg))
+receiver.listen(msg => console.log(msg));
 
 // in host page
 
@@ -35,10 +34,10 @@ const sender = new PostMessageEngine({
   name: "sender",
   targetName: "receiver",
   targetOrigin: "myiframe.com",
-  targetWindow: iframe.window
-})
+  targetWindow: iframe.window,
+});
 
-sender.send({ hello: "world" })
+sender.send({ hello: "world" });
 ```
 
-* debug logs can be enabled with the environment variable `DEBUG=mash:post-message`
+- debug logs can be enabled with the environment variable `DEBUG=mash:post-message`
