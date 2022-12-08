@@ -37,7 +37,25 @@ export type WalletButtonPosition = {
   mobile: WalletButtonMobilePosition;
 };
 
-export type BoostConfiguration = {};
+export type BoostDesktopConfiguration = {
+  size: string;
+  mode: string;
+  position: string;
+};
+
+export type BoostMobileConfiguration = {
+  size: string;
+  mode: string;
+  position: string;
+};
+
+export type BoostConfiguration = {
+  active: boolean;
+  icon: string;
+  style: string;
+  desktop: BoostDesktopConfiguration;
+  mobile: BoostMobileConfiguration;
+};
 
 export type EarnerCustomizationConfiguration = {
   walletButtonPosition: WalletButtonPosition;
