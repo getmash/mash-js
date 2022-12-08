@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "references": "workspaces-to-typescript-project-references --includesRoot --check",
-    "references:fix": "workspaces-to-typescript-project-references --includesRoot --check",
+    "references:fix": "workspaces-to-typescript-project-references --includesRoot",
     "release:add:empty": "changeset add --empty",
     "release:add": "changeset add",
     "release:status": "changeset status --since origin/main --output",
