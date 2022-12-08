@@ -37,9 +37,12 @@ export type WalletButtonPosition = {
   mobile: WalletButtonMobilePosition;
 };
 
+export type BoostConfiguration = {};
+
 export type EarnerCustomizationConfiguration = {
   walletButtonPosition: WalletButtonPosition;
   theme: Theme;
+  boostConfigurations: BoostConfiguration[];
 };
 
 export type Earner = {

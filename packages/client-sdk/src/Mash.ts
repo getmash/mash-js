@@ -22,10 +22,10 @@ class Mash {
   private api: MashRPCAPI | null = null;
   private iframe: IFrame;
   private initialized = false;
-  // Configuration set in the source.
+  // Configuration set in the local source.
   private localConfig: Config;
-  // Configuration pulled down from the cloud.
-  private cloudConfig: Promise<MashAPI.WalletButtonPosition>;
+  // Configuration pulled down from the remote source.
+  private remoteConfig: Promise<MashAPI.EarnerCustomizationConfiguration>;
 
   constructor(config: PartialConfig) {
     this.localConfig = parseConfig(config);
@@ -42,7 +42,7 @@ class Mash {
       injectWidgets(this.localConfig.widgets.baseURL);
     }
 
-    this.cloudConfig = MashAPI.getEarner(
+    this.remoteConfig = MashAPI.getEarner(
       this.localConfig.api,
       this.localConfig.earnerID,
     )
@@ -53,20 +53,31 @@ class Mash {
             result.customization.theme,
           );
         }
-        return result.customization.walletButtonPosition;
+        return result.customization;
       })
       .catch(() => {
         console.warn(
-          "[MASH] Error when fetching cloud config, using default placement and theme",
+          "[MASH] Error when fetching remote configuration, using default configuration",
         );
-        // If API error, inject default theme
-        if (this.localConfig.widgets.injectTheme) {
-          injectTheme(this.localConfig.widgets.baseURL, {
+
+        const defaultConfiguration: MashAPI.EarnerCustomizationConfiguration = {
+          walletButtonPosition: getWalletPosition(),
+          theme: {
             primaryColor: "#000",
             fontFamily: "inherit",
-          });
+          },
+          boostConfigurations: [],
+        };
+
+        // If API error, inject default theme
+        if (this.localConfig.widgets.injectTheme) {
+          injectTheme(
+            this.localConfig.widgets.baseURL,
+            defaultConfiguration.theme,
+          );
         }
-        return getWalletPosition();
+
+        return defaultConfiguration;
       });
   }
 
@@ -93,7 +104,9 @@ class Mash {
       return this.mount(position);
     }
 
-    return this.cloudConfig.then(position => this.mount(position));
+    return this.remoteConfig.then(config =>
+      this.mount(config.walletButtonPosition),
+    );
   }
 
   /**
