@@ -1,6 +1,6 @@
 /**
- * Preconnect to given URL. https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preconnect
- * @param baseURL
+ * Preconnect to given URL in order to improve user experience.
+ * https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preconnect
  */
 export default function preconnect(baseURL: string) {
   const link = window.document.createElement("link");
