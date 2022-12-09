@@ -31,6 +31,22 @@ class Mash {
     this.localConfig = parseConfig(config);
     this.iframe = new IFrame(this.localConfig.walletURL);
 
+    const defaultConfiguration: MashAPI.EarnerCustomizationConfiguration = {
+      walletButtonPosition: getWalletPosition(),
+      theme: {
+        primaryColor: "#000",
+        fontFamily: "inherit",
+      },
+      boostConfigurations: [],
+    };
+
+    // If localConfig doesn't have an earner ID, just set the default configuration.
+    // This handles a backwards compatibility case.
+    if (!this.localConfig.earnerID) {
+      this.remoteConfig = Promise.resolve(defaultConfiguration);
+      return;
+    }
+
     if (
       this.localConfig.widgets.injectTheme ||
       this.localConfig.widgets.injectWidgets
@@ -59,15 +75,6 @@ class Mash {
         console.warn(
           "[MASH] Error when fetching remote configuration, using default configuration",
         );
-
-        const defaultConfiguration: MashAPI.EarnerCustomizationConfiguration = {
-          walletButtonPosition: getWalletPosition(),
-          theme: {
-            primaryColor: "#000",
-            fontFamily: "inherit",
-          },
-          boostConfigurations: [],
-        };
 
         // If API error, inject default theme
         if (this.localConfig.widgets.injectTheme) {
@@ -111,7 +118,7 @@ class Mash {
 
   /**
    * Initialize the Mash Button app and connect it to the site.
-   * @param settings is deprecated, use the constructor instead.
+   * @param settings is deprecated, use the constructor for local settings.
    */
   init(settings?: MashSettings) {
     if (this.iframe.mounted) {
