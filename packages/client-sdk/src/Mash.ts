@@ -9,6 +9,7 @@ import {
   formatPosition,
 } from "./iframe/position.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
+import injectFloatingBoosts from "./widgets/boost.js";
 import preconnect from "./widgets/preconnect.js";
 import injectTheme from "./widgets/theme.js";
 import { injectWidgets, isWidgetOnPage } from "./widgets/widgets.js";
@@ -68,6 +69,10 @@ class Mash {
             this.localConfig.widgets.baseURL,
             result.customization.theme,
           );
+        }
+
+        if (result.customization.boostConfigurations) {
+          injectFloatingBoosts(result.customization.boostConfigurations);
         }
         return result.customization;
       })
