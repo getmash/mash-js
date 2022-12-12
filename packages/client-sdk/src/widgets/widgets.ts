@@ -67,8 +67,7 @@ function _isWidgetOnPage() {
 }
 
 /**
- * Check if a known Mash Widget exists on the page
- * @returns boolean
+ * Check if a known Mash Widget exists on the page.
  */
 export function isWidgetOnPage(): Promise<boolean> {
   return new Promise(resolve => {
