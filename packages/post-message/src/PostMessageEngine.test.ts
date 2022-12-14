@@ -34,11 +34,7 @@ describe("PostMessageEngine", () => {
   });
 
   it("check postMessage is sent with correct details", () => {
-    const m = mock.fn({
-      original: window.postMessage,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      implementation: () => {},
-    });
+    const m = mock.fn(window.postMessage);
 
     Object.defineProperty(window, "postMessage", {
       value: m,
