@@ -1,18 +1,9 @@
 import assert from "node:assert/strict";
-import { afterEach, beforeEach, describe, it } from "node:test";
+import { beforeEach, describe, it, mock } from "node:test";
 
 import { JSDOM } from "jsdom";
-import sinon from "sinon";
 
-import PostMessageEngine from "./PostMessageEngine.js";
-
-// help out sinon with overloaded function by defining the one post message uses
-// https://github.com/DefinitelyTyped/DefinitelyTyped/issues/36436
-type PostMessageSpy = sinon.SinonSpy<
-  /* eslint-disable-next-line */
-  [message: any, targetOrigin: string, transfer?: Transferable[]],
-  void
->;
+import PostMessageEngine, { PostMessageEvent } from "./PostMessageEngine.js";
 
 describe("PostMessageEngine", () => {
   beforeEach(() => {
@@ -32,12 +23,6 @@ describe("PostMessageEngine", () => {
     };
   });
 
-  // setup sandbox
-  const sandbox = sinon.createSandbox();
-  afterEach(() => {
-    sandbox.restore();
-  });
-
   it("can set target origin", () => {
     const engine = new PostMessageEngine({
       name: "",
@@ -49,10 +34,12 @@ describe("PostMessageEngine", () => {
   });
 
   it("check postMessage is sent with correct details", () => {
-    const spy = sandbox.stub(
-      window,
-      "postMessage",
-    ) as unknown as PostMessageSpy;
+    const m = mock.fn(window.postMessage);
+
+    Object.defineProperty(window, "postMessage", {
+      value: m,
+    });
+
     const engine = new PostMessageEngine({
       name: "",
       targetName: "b",
@@ -61,16 +48,7 @@ describe("PostMessageEngine", () => {
 
     const payload = { value: "test" };
     engine.send(payload);
-
-    assert.ok(
-      spy.calledWith(
-        {
-          targetName: "b",
-          data: payload,
-        },
-        "http://test-origin.com",
-      ),
-    );
+    assert.equal(m.mock.callCount(), 1);
   });
 
   // postMessage is a async event so in order for the messages to be recieved this
@@ -87,7 +65,9 @@ describe("PostMessageEngine", () => {
       targetName: "pm_a",
       targetOrigin: "*",
     });
-    const cb = sinon.fake();
+
+    // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
+    const cb = mock.fn((_: PostMessageEvent) => {});
     reciever.listen(cb);
 
     // Valid Request - Should call cb
@@ -101,7 +81,7 @@ describe("PostMessageEngine", () => {
 
     await new Promise(resolve => {
       setTimeout(() => {
-        assert.ok(cb.calledOnce);
+        assert.equal(cb.mock.callCount(), 1);
         sender.destroy();
         reciever.destroy();
         resolve(null);
