@@ -2,6 +2,7 @@ import { PartialDeep } from "type-fest";
 
 import * as MashAPI from "./api/routes.js";
 import parseConfig, { PartialConfig, Config } from "./config.js";
+import { MashEvent } from "./events.js";
 import IFrame from "./iframe/IFrame.js";
 import {
   getWalletPosition,
@@ -12,7 +13,7 @@ import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
 import injectFloatingBoosts from "./widgets/boost.js";
 import preconnect from "./widgets/preconnect.js";
 import injectTheme from "./widgets/theme.js";
-import { injectWidgets, isWidgetOnPage } from "./widgets/widgets.js";
+import { injectWidgets } from "./widgets/widgets.js";
 
 export type MashSettings = {
   id: string;
@@ -23,14 +24,29 @@ class Mash {
   private api: MashRPCAPI | null = null;
   private iframe: IFrame;
   private initialized = false;
-  // Configuration set in the local source.
+  /**
+   * Configuration set in the local source.
+   */
   private localConfig: Config;
-  // Configuration pulled down from the remote source.
+  /**
+   * Configuration pulled down from the remote source.
+   */
   private remoteConfig: Promise<MashAPI.EarnerCustomizationConfiguration>;
+  /**
+   * Signals when a (web component) widget connects to the SDK.
+   */
+  private widgetConnected: Promise<void>;
 
   constructor(config: PartialConfig) {
     this.localConfig = parseConfig(config);
     this.iframe = new IFrame(this.localConfig.walletURL);
+
+    // Listen for connect events from widgets
+    this.widgetConnected = new Promise<void>(res => {
+      // Note: subsequent calls to res will be a no-op, which allows us to ignore more than the initial received event.
+      // See here: https://stackoverflow.com/questions/20328073#comment92822918_29491617
+      window.addEventListener(MashEvent.WidgetConnected, () => res());
+    });
 
     const defaultConfiguration: MashAPI.EarnerCustomizationConfiguration = {
       walletButtonPosition: getWalletPosition(),
@@ -131,19 +147,20 @@ class Mash {
       return Promise.resolve(null);
     }
 
-    if (!this.localConfig.autoHide) {
-      return this._init(settings);
+    // If autohiding, wait to see if a web component mounts
+    if (this.localConfig.autoHide) {
+      console.info(
+        "[MASH] Autohide is enabled - waiting for a web component to connect",
+      );
+      return this.widgetConnected.then(() => {
+        console.info(
+          "[MASH] A web component connected to the SDK - calling init",
+        );
+        this._init(settings);
+      });
     }
 
-    return isWidgetOnPage().then(widgetsExist => {
-      if (!widgetsExist) {
-        console.info(
-          "[MASH] No mash elements found on page. Mash Wallet is hidden",
-        );
-        return Promise.resolve(null);
-      }
-      return this._init(settings);
-    });
+    return this._init(settings);
   }
 
   /**

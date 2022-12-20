@@ -63,6 +63,7 @@ const IFRAME_STYLE = {
   width: "100%",
   height: "100%",
   "background-color": "inherit !important",
+  "color-scheme": "normal",
 };
 
 export type EventMessage<T = Record<string, unknown>> = {
