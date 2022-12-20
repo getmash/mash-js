@@ -6,7 +6,7 @@ import { MashEvent } from "./events.js";
 import { createDOM } from "./tests/dom.js";
 
 function mockMethod<T>(obj: unknown, methodName: string, fn: T) {
-  // Note: mock.method should in theory work, but node < v19.3.0 has a bug where it doesn't search up
+  // Note: mock.method should in theory work, but node <= v19.3.0 has a bug where it doesn't search up
   // the prototype chain for methods. Fix here: https://github.com/nodejs/node/commit/929aada39d
   // As the fix is still unreleased at time of writing, usuing Object.defineProperty directly for now
   const _init = mock.fn(fn);
