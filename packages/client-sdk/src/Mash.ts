@@ -45,7 +45,7 @@ class Mash {
     this.widgetConnected = new Promise<void>(res => {
       // Note: subsequent calls to res will be a no-op, which allows us to ignore more than the initial received event.
       // See here: https://stackoverflow.com/questions/20328073#comment92822918_29491617
-      window.addEventListener(MashEvent.WidgetConnected, () => res());
+      window.addEventListener(MashEvent.WebComponentConnected, () => res());
     });
 
     const defaultConfiguration: MashWebAPI.EarnerCustomizationConfiguration = {

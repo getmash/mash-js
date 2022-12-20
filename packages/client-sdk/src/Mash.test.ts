@@ -47,7 +47,9 @@ test("Mash", async t => {
       assert.equal(_init.mock.callCount(), 0);
       // Make sure multiple events don't cause issues
       for (let i = 0; i < 3; i++) {
-        window.dispatchEvent(new window.CustomEvent(MashEvent.WidgetConnected));
+        window.dispatchEvent(
+          new window.CustomEvent(MashEvent.WebComponentConnected),
+        );
       }
       await initialized;
       assert.equal(_init.mock.callCount(), 1);
