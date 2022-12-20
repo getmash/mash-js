@@ -29,7 +29,7 @@ test("Mash", async t => {
 
     const _init = mockMethod(mash, "_init", async () => null);
     await mash.init();
-    assert.strictEqual(_init.mock.callCount(), 1);
+    assert.equal(_init.mock.callCount(), 1);
   });
 
   // Tests that mounting is initiated only on receiving an event when autohiding
@@ -44,13 +44,13 @@ test("Mash", async t => {
       const _init = mockMethod(mash, "_init", async () => null);
 
       const initialized = mash.init();
-      assert.strictEqual(_init.mock.callCount(), 0);
+      assert.equal(_init.mock.callCount(), 0);
       // Make sure multiple events don't cause issues
       for (let i = 0; i < 3; i++) {
         window.dispatchEvent(new window.CustomEvent(MashEvent.WidgetConnected));
       }
       await initialized;
-      assert.strictEqual(_init.mock.callCount(), 1);
+      assert.equal(_init.mock.callCount(), 1);
     },
   );
 });
