@@ -153,9 +153,7 @@ class Mash {
         "[MASH] Autohide is enabled - waiting for a web component widget to connect",
       );
       return this.widgetConnected.then(() => {
-        console.info(
-          "[MASH] A web component widget connected to the SDK - mounting",
-        );
+        console.info("[MASH] A web component widget connected - mounting");
         return this._init(settings);
       });
     }
