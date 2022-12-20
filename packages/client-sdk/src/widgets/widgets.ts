@@ -47,36 +47,3 @@ export function injectWidgets(baseURL: string) {
   });
   window.document.head.append(...scripts);
 }
-
-function _isWidgetOnPage() {
-  const widgets = Object.values(Widgets);
-
-  // Check for new widgets
-  for (let i = 0; i < widgets.length; i++) {
-    const el = window.document.querySelector(widgets[i].element);
-    if (el) return true;
-  }
-
-  // Check for old widgets
-  for (let i = 0; i < DeprecatedWidgets.length; i++) {
-    const el = window.document.querySelector(DeprecatedWidgets[i]);
-    if (el) return true;
-  }
-
-  return false;
-}
-
-/**
- * Check if a known Mash Widget exists on the page.
- */
-export function isWidgetOnPage(): Promise<boolean> {
-  return new Promise(resolve => {
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", () =>
-        resolve(_isWidgetOnPage()),
-      );
-      return;
-    }
-    resolve(_isWidgetOnPage());
-  });
-}

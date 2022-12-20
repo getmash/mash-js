@@ -7,7 +7,7 @@ import PostMessageEngine, { PostMessageEvent } from "./PostMessageEngine.js";
 
 describe("PostMessageEngine", () => {
   beforeEach(() => {
-    // @ts-expect-errorJSDOM Window mismatch
+    // @ts-expect-error JSDOM Window mismatch
     global.window = new JSDOM("").window;
     // Replaces the global window instance's postMessage implementation in order to
     // set event source or origin which our post message engine depends on to filter messages: https://github.com/jsdom/jsdom/issues/2745

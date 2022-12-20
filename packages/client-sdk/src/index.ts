@@ -18,3 +18,5 @@ export {
   Events as IFrameEvents,
   IFRAME_NAME as MashIFrameName,
 } from "./iframe/IFrame.js";
+
+export { MashEvent } from "./events.js";

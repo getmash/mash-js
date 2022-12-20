@@ -1,7 +1,8 @@
 import { PartialDeep } from "type-fest";
 
-import * as MashAPI from "./api/routes.js";
+import * as MashWebAPI from "./api/routes.js";
 import parseConfig, { PartialConfig, Config } from "./config.js";
+import { MashEvent } from "./events.js";
 import IFrame from "./iframe/IFrame.js";
 import {
   getWalletPosition,
@@ -12,7 +13,7 @@ import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
 import injectFloatingBoosts from "./widgets/boost.js";
 import preconnect from "./widgets/preconnect.js";
 import injectTheme from "./widgets/theme.js";
-import { injectWidgets, isWidgetOnPage } from "./widgets/widgets.js";
+import { injectWidgets } from "./widgets/widgets.js";
 
 export type MashSettings = {
   id: string;
@@ -20,19 +21,34 @@ export type MashSettings = {
 };
 
 class Mash {
-  private api: MashRPCAPI | null = null;
+  private rpcAPI: MashRPCAPI | null = null;
   private iframe: IFrame;
   private initialized = false;
-  // Configuration set in the local source.
+  /**
+   * Configuration set in the local source.
+   */
   private localConfig: Config;
-  // Configuration pulled down from the remote source.
-  private remoteConfig: Promise<MashAPI.EarnerCustomizationConfiguration>;
+  /**
+   * Configuration pulled down from the remote source.
+   */
+  private remoteConfig: Promise<MashWebAPI.EarnerCustomizationConfiguration>;
+  /**
+   * Signals when a (web component) widget connects to the SDK.
+   */
+  private widgetConnected: Promise<void>;
 
   constructor(config: PartialConfig) {
     this.localConfig = parseConfig(config);
     this.iframe = new IFrame(this.localConfig.walletURL);
 
-    const defaultConfiguration: MashAPI.EarnerCustomizationConfiguration = {
+    // Listen for connect events from widgets
+    this.widgetConnected = new Promise<void>(res => {
+      // Note: subsequent calls to res will be a no-op, which allows us to ignore more than the initial received event.
+      // See here: https://stackoverflow.com/questions/20328073#comment92822918_29491617
+      window.addEventListener(MashEvent.WebComponentConnected, () => res());
+    });
+
+    const defaultConfiguration: MashWebAPI.EarnerCustomizationConfiguration = {
       walletButtonPosition: getWalletPosition(),
       theme: {
         primaryColor: "#000",
@@ -59,7 +75,7 @@ class Mash {
       injectWidgets(this.localConfig.widgets.baseURL);
     }
 
-    this.remoteConfig = MashAPI.getEarner(
+    this.remoteConfig = MashWebAPI.getEarner(
       this.localConfig.api,
       this.localConfig.earnerID,
     )
@@ -131,28 +147,27 @@ class Mash {
       return Promise.resolve(null);
     }
 
-    if (!this.localConfig.autoHide) {
-      return this._init(settings);
+    // If autohiding, wait to see if a web component mounts
+    if (this.localConfig.autoHide) {
+      console.info(
+        "[MASH] Autohide is enabled - waiting for a web component widget to connect",
+      );
+      return this.widgetConnected.then(() => {
+        console.info("[MASH] A web component widget connected - mounting");
+        return this._init(settings);
+      });
     }
 
-    return isWidgetOnPage().then(widgetsExist => {
-      if (!widgetsExist) {
-        console.info(
-          "[MASH] No mash elements found on page. Mash Wallet is hidden",
-        );
-        return Promise.resolve(null);
-      }
-      return this._init(settings);
-    });
+    return this._init(settings);
   }
 
   /**
    * Request access for given resource. If users does not have access it will trigger payment flow.
    */
   access(resourceID: string): Promise<boolean> {
-    if (!this.api) return Promise.resolve(false);
+    if (!this.rpcAPI) return Promise.resolve(false);
 
-    return this.api
+    return this.rpcAPI
       .access(resourceID)
       .then(res => res.hasAccess)
       .catch(() => false);
@@ -170,8 +185,8 @@ class Mash {
    */
   donate(): Promise<void> {
     return new Promise((resolve, reject) => {
-      if (!this.api) return reject("cannot connect to Mash widget");
-      this.api
+      if (!this.rpcAPI) return reject("cannot connect to Mash widget");
+      this.rpcAPI
         .donate()
         .then(() => resolve())
         .catch(err => reject(err));
@@ -182,10 +197,10 @@ class Mash {
    * Determine if user has a valid budget configured for the current site.
    */
   userHasValidBudget(resourceID: string): Promise<boolean> {
-    if (!this.api) return Promise.resolve(false);
+    if (!this.rpcAPI) return Promise.resolve(false);
     return Promise.all([
-      this.api.getAutopayAuthorization(),
-      this.api.getResourceCost(resourceID),
+      this.rpcAPI.getAutopayAuthorization(),
+      this.rpcAPI.getResourceCost(resourceID),
     ]).then(result => {
       const [authorization, cost] = result;
       return Mash.hasValidAutopayAuthorization(cost.fiat.value, authorization);
@@ -202,12 +217,15 @@ class Mash {
   /**
    * Mount the Button App iframe.
    */
-  private mount(position: MashAPI.WalletButtonPosition): Promise<null> {
+  private mount(position: MashWebAPI.WalletButtonPosition): Promise<null> {
     return new Promise((resolve, reject) => {
       const onIframeLoaded = (iframe: HTMLIFrameElement) => {
-        this.api = new MashRPCAPI(this.iframe.src.origin, iframe.contentWindow);
+        this.rpcAPI = new MashRPCAPI(
+          this.iframe.src.origin,
+          iframe.contentWindow,
+        );
 
-        this.api
+        this.rpcAPI
           .init(this.localConfig.earnerID, position)
           .then(() => {
             this.initialized = true;
