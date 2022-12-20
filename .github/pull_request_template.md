@@ -8,3 +8,8 @@
 
 - Closes #XXX
 - Closes #YYY
+
+### Testing Completed
+
+- I did thing X to test thing A...
+- I did thing Y to test thing B...
