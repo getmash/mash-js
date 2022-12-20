@@ -1,4 +1,9 @@
-import { BoostConfiguration, PageMatcher, PageTarget } from "../api/routes.js";
+import {
+  BoostConfiguration,
+  MatchType,
+  PageMatcher,
+  PageTarget,
+} from "../api/routes.js";
 
 /**
  * Convert enums to web component attribute style.
@@ -11,6 +16,19 @@ function toAttributeStyle(attribute: string): string {
  * Determine if page matched.
  */
 function pageMatched(pathname: string, matchers: PageMatcher[]): boolean {
+  matchers.forEach(matcher => {
+    if (matcher.matchType == MatchType.Equals) {
+      return pathname === matcher.matchText;
+    } else if (matcher.matchType == MatchType.DoesNotEqual) {
+      return pathname !== matcher.matchText;
+    } else if (matcher.matchType == MatchType.StartsWith) {
+      return pathname.startsWith(matcher.matchText);
+    } else if (matcher.matchType == MatchType.Contains) {
+      return pathname.includes(matcher.matchText);
+    }
+  });
+
+  // unhandled match type, default to false
   return false;
 }
 

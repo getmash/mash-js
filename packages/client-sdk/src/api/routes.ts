@@ -18,6 +18,13 @@ export enum PageTarget {
   Include = "include_pages",
 }
 
+export enum MatchType {
+  StartsWith = "starts_with",
+  Contains = "contains",
+  Equals = "equals",
+  DoesNotEqual = "does_not_equal",
+}
+
 export type Theme = {
   primaryColor: string;
   fontFamily: string;
@@ -57,7 +64,7 @@ export type BoostMobileConfiguration = {
 
 export type PageMatcher = {
   id: string;
-  matchType: string;
+  matchType: MatchType;
   matchText: string;
 };
 
