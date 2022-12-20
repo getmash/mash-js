@@ -1,5 +1,13 @@
 # @getmash/client-sdk
 
+## 2.2.0
+
+### Minor Changes
+
+- [#49](https://github.com/getmash/mash-js/pull/49) [`f39d2b8`](https://github.com/getmash/mash-js/commit/f39d2b8c9ce6597f6cca4bc2a130fab5a20fb028) Thanks [@nyonson](https://github.com/nyonson)! - Inject floating boosts based on remote configuration
+
+- [#52](https://github.com/getmash/mash-js/pull/52) [`7502ec4`](https://github.com/getmash/mash-js/commit/7502ec47e9f632d6895bde62d0574fdf2d13f3f7) Thanks [@jstol](https://github.com/jstol)! - When in autohide mode, mount the Mash iframe after receiving a custom event (rather than querying the DOM)
+
 ## 2.1.5
 
 ### Patch Changes
