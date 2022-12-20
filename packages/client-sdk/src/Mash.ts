@@ -1,6 +1,6 @@
 import { PartialDeep } from "type-fest";
 
-import * as MashAPI from "./api/routes.js";
+import * as MashWebAPI from "./api/routes.js";
 import parseConfig, { PartialConfig, Config } from "./config.js";
 import { MashEvent } from "./events.js";
 import IFrame from "./iframe/IFrame.js";
@@ -21,7 +21,7 @@ export type MashSettings = {
 };
 
 class Mash {
-  private api: MashRPCAPI | null = null;
+  private rpcAPI: MashRPCAPI | null = null;
   private iframe: IFrame;
   private initialized = false;
   /**
@@ -31,7 +31,7 @@ class Mash {
   /**
    * Configuration pulled down from the remote source.
    */
-  private remoteConfig: Promise<MashAPI.EarnerCustomizationConfiguration>;
+  private remoteConfig: Promise<MashWebAPI.EarnerCustomizationConfiguration>;
   /**
    * Signals when a (web component) widget connects to the SDK.
    */
@@ -48,7 +48,7 @@ class Mash {
       window.addEventListener(MashEvent.WidgetConnected, () => res());
     });
 
-    const defaultConfiguration: MashAPI.EarnerCustomizationConfiguration = {
+    const defaultConfiguration: MashWebAPI.EarnerCustomizationConfiguration = {
       walletButtonPosition: getWalletPosition(),
       theme: {
         primaryColor: "#000",
@@ -75,7 +75,7 @@ class Mash {
       injectWidgets(this.localConfig.widgets.baseURL);
     }
 
-    this.remoteConfig = MashAPI.getEarner(
+    this.remoteConfig = MashWebAPI.getEarner(
       this.localConfig.api,
       this.localConfig.earnerID,
     )
@@ -150,13 +150,13 @@ class Mash {
     // If autohiding, wait to see if a web component mounts
     if (this.localConfig.autoHide) {
       console.info(
-        "[MASH] Autohide is enabled - waiting for a web component to connect",
+        "[MASH] Autohide is enabled - waiting for a web component widget to connect",
       );
       return this.widgetConnected.then(() => {
         console.info(
-          "[MASH] A web component connected to the SDK - calling init",
+          "[MASH] A web component widget connected to the SDK - mounting",
         );
-        this._init(settings);
+        return this._init(settings);
       });
     }
 
@@ -167,9 +167,9 @@ class Mash {
    * Request access for given resource. If users does not have access it will trigger payment flow.
    */
   access(resourceID: string): Promise<boolean> {
-    if (!this.api) return Promise.resolve(false);
+    if (!this.rpcAPI) return Promise.resolve(false);
 
-    return this.api
+    return this.rpcAPI
       .access(resourceID)
       .then(res => res.hasAccess)
       .catch(() => false);
@@ -187,8 +187,8 @@ class Mash {
    */
   donate(): Promise<void> {
     return new Promise((resolve, reject) => {
-      if (!this.api) return reject("cannot connect to Mash widget");
-      this.api
+      if (!this.rpcAPI) return reject("cannot connect to Mash widget");
+      this.rpcAPI
         .donate()
         .then(() => resolve())
         .catch(err => reject(err));
@@ -199,10 +199,10 @@ class Mash {
    * Determine if user has a valid budget configured for the current site.
    */
   userHasValidBudget(resourceID: string): Promise<boolean> {
-    if (!this.api) return Promise.resolve(false);
+    if (!this.rpcAPI) return Promise.resolve(false);
     return Promise.all([
-      this.api.getAutopayAuthorization(),
-      this.api.getResourceCost(resourceID),
+      this.rpcAPI.getAutopayAuthorization(),
+      this.rpcAPI.getResourceCost(resourceID),
     ]).then(result => {
       const [authorization, cost] = result;
       return Mash.hasValidAutopayAuthorization(cost.fiat.value, authorization);
@@ -219,12 +219,15 @@ class Mash {
   /**
    * Mount the Button App iframe.
    */
-  private mount(position: MashAPI.WalletButtonPosition): Promise<null> {
+  private mount(position: MashWebAPI.WalletButtonPosition): Promise<null> {
     return new Promise((resolve, reject) => {
       const onIframeLoaded = (iframe: HTMLIFrameElement) => {
-        this.api = new MashRPCAPI(this.iframe.src.origin, iframe.contentWindow);
+        this.rpcAPI = new MashRPCAPI(
+          this.iframe.src.origin,
+          iframe.contentWindow,
+        );
 
-        this.api
+        this.rpcAPI
           .init(this.localConfig.earnerID, position)
           .then(() => {
             this.initialized = true;

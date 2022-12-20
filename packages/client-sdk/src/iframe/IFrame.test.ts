@@ -54,6 +54,8 @@ const replacePostMessage = (sourceWindow: Window | null) => {
 };
 
 // JSDOM does not implement the matchMedia function on window.
+// Mock based on Jest-documented workaround:
+// https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
 function mockMatchMedia(mobile = false) {
   Object.defineProperty(window, "matchMedia", {
     value: (query: string) => ({

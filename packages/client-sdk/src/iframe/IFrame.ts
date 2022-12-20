@@ -97,7 +97,14 @@ export const IFRAME_NAME = "mash_wallet";
 
 export default class IFrame {
   readonly src: URL;
-  mounted = false;
+
+  private _mounted = false;
+  get mounted() {
+    return this._mounted;
+  }
+  private set mounted(val: boolean) {
+    this._mounted = val;
+  }
 
   private open = false;
   private notificationCount = 0;
