@@ -49,12 +49,24 @@ export type BoostMobileConfiguration = {
   position: string;
 };
 
+export type PageMatcher = {
+  id: string;
+  matchType: string;
+  matchText: string;
+};
+
+export type BoostConfigurationPageSelection = {
+  target: string;
+  matchers: PageMatcher[];
+};
+
 export type BoostConfiguration = {
   active: boolean;
   icon: string;
   style: string;
   desktop: BoostDesktopConfiguration;
   mobile: BoostMobileConfiguration;
+  pages: BoostConfigurationPageSelection;
 };
 
 export type EarnerCustomizationConfiguration = {
