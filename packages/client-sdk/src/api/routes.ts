@@ -12,6 +12,12 @@ export enum WalletButtonFloatPlacement {
   BasicShiftHorizontal = "basic_shift_horizontal",
 }
 
+export enum PageTarget {
+  All = "all",
+  Exclude = "exclude_pages",
+  Include = "include_pages",
+}
+
 export type Theme = {
   primaryColor: string;
   fontFamily: string;
@@ -56,7 +62,7 @@ export type PageMatcher = {
 };
 
 export type BoostConfigurationPageSelection = {
-  target: string;
+  target: PageTarget;
   matchers: PageMatcher[];
 };
 

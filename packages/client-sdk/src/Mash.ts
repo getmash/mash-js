@@ -88,7 +88,10 @@ class Mash {
         }
 
         if (result.customization.boostConfigurations) {
-          injectFloatingBoosts(result.customization.boostConfigurations);
+          injectFloatingBoosts(
+            result.customization.boostConfigurations,
+            window.location.pathname,
+          );
         }
         return result.customization;
       })
