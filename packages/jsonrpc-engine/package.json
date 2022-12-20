@@ -16,6 +16,7 @@
   "scripts": {
     "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist",
     "build": "tsc --build",
+    "build:watch": "tsc --build --watch",
     "fmt": "prettier --check src/",
     "fmt:fix": "prettier --write src/",
     "lint": "tsc --build && eslint .",
