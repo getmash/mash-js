@@ -22,7 +22,6 @@ export enum MatchType {
   StartsWith = "starts_with",
   Contains = "contains",
   Equals = "equals",
-  DoesNotEqual = "does_not_equal",
 }
 
 export type Theme = {

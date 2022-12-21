@@ -13,20 +13,18 @@ function toAttributeStyle(attribute: string): string {
 }
 
 /**
- * Determine if page matched.
+ * Page matched if any matcher returns true.
  */
 function pageMatched(pathname: string, matchers: PageMatcher[]): boolean {
-  matchers.forEach(matcher => {
+  for (const matcher of matchers) {
     if (matcher.matchType == MatchType.Equals) {
       return pathname === matcher.matchText;
-    } else if (matcher.matchType == MatchType.DoesNotEqual) {
-      return pathname !== matcher.matchText;
     } else if (matcher.matchType == MatchType.StartsWith) {
       return pathname.startsWith(matcher.matchText);
     } else if (matcher.matchType == MatchType.Contains) {
       return pathname.includes(matcher.matchText);
     }
-  });
+  }
 
   // unhandled match type, default to false
   return false;
