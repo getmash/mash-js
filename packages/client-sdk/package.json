@@ -1,6 +1,6 @@
 {
   "name": "@getmash/client-sdk",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Mash Client SDK to interact with the Mash Wallet on a site",
   "keywords": [
     "lightning",
