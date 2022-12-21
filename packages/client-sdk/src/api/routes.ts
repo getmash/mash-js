@@ -12,6 +12,18 @@ export enum WalletButtonFloatPlacement {
   BasicShiftHorizontal = "basic_shift_horizontal",
 }
 
+export enum PageTarget {
+  All = "all",
+  Exclude = "exclude_pages",
+  Include = "include_pages",
+}
+
+export enum MatchType {
+  StartsWith = "starts_with",
+  Contains = "contains",
+  Equals = "equals",
+}
+
 export type Theme = {
   primaryColor: string;
   fontFamily: string;
@@ -49,12 +61,24 @@ export type BoostMobileConfiguration = {
   position: string;
 };
 
+export type PageMatcher = {
+  id: string;
+  matchType: MatchType;
+  matchText: string;
+};
+
+export type BoostConfigurationPageSelection = {
+  target: PageTarget;
+  matchers: PageMatcher[];
+};
+
 export type BoostConfiguration = {
   active: boolean;
   icon: string;
   style: string;
   desktop: BoostDesktopConfiguration;
   mobile: BoostMobileConfiguration;
+  pages: BoostConfigurationPageSelection;
 };
 
 export type EarnerCustomizationConfiguration = {
