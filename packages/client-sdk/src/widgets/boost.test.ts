@@ -71,6 +71,23 @@ describe("boosts", () => {
     );
   });
 
+  it("page selected target include is match with multiple matchers", () => {
+    assert.ok(
+      pageSelected("/test/path", PageTarget.Include, [
+        {
+          id: "1",
+          matchType: MatchType.Contains,
+          matchText: "nope",
+        },
+        {
+          id: "2",
+          matchType: MatchType.Contains,
+          matchText: "test",
+        },
+      ]),
+    );
+  });
+
   it("page selected target exclude is match inverse", () => {
     assert.ok(
       !pageSelected("/test/path", PageTarget.Exclude, [
