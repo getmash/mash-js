@@ -74,68 +74,6 @@ function mockMatchMedia(mobile = false) {
 // pull the SDK iframe off of the global window for inspection.
 const getIframe = () => document.getElementsByName(IFRAME_NAME).item(0);
 
-describe("IFrame Mobile", () => {
-  beforeEach(() => {
-    createDOM();
-  });
-
-  it("mobile, position iframe on left, should have valid css settigns", async () => {
-    mockMatchMedia(true);
-
-    const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(() => ({}), {
-      desktop: {
-        floatSide: WalletButtonFloatSide.Right,
-        floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
-      },
-      mobile: {
-        floatSide: WalletButtonFloatSide.Left,
-        floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
-      },
-    });
-    
-    assert.equal(getIframe().parentElement?.style.bottom, "0px");
-    assert.equal(getIframe().parentElement?.style.left, "0px");
-    assert.equal(getIframe().parentElement?.style.right, "");
-  });
-
-  it("mobile, position iframe on right, should have valid css settigns", async () => {
-    mockMatchMedia(true);
-
-    const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(() => ({}), {
-      desktop: {
-        floatSide: WalletButtonFloatSide.Right,
-        floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
-      },
-      mobile: {
-        floatSide: WalletButtonFloatSide.Right,
-        floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
-      },
-    });
-    
-    assert.equal(getIframe().parentElement?.style.bottom, "0px");
-    assert.equal(getIframe().parentElement?.style.left, "");
-    assert.equal(getIframe().parentElement?.style.right, "0px");
-  });
-});
-
 describe("IFrame Events", () => {
   beforeEach(() => {
     createDOM();
@@ -291,8 +229,8 @@ describe("IFrame Desktop", () => {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
         customShiftConfiguration: {
-          horizontal: 10,
-          vertical: 15,
+          horizontal: 0,
+          vertical: 0,
         },
       },
     });
@@ -319,8 +257,8 @@ describe("IFrame Desktop", () => {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
         customShiftConfiguration: {
-          horizontal: 5,
-          vertical: 2,
+          horizontal: 0,
+          vertical: 0,
         },
       },
     });
@@ -339,7 +277,7 @@ describe("IFrame Desktop", () => {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Custom,
         customShiftConfiguration: {
-          horizontal: -100,
+          horizontal: 0,
           vertical: 0,
         },
       },
@@ -347,7 +285,7 @@ describe("IFrame Desktop", () => {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
         customShiftConfiguration: {
-          horizontal: -100,
+          horizontal: 0,
           vertical: 0,
         },
       },
@@ -373,7 +311,7 @@ describe("IFrame Desktop", () => {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
         customShiftConfiguration: {
-          horizontal: -100,
+          horizontal: 0,
           vertical: 0,
         },
       },
@@ -399,7 +337,7 @@ describe("IFrame Desktop", () => {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
         customShiftConfiguration: {
-          horizontal: MAX_SHIFT_HORIZONTAL + 100,
+          horizontal: 0,
           vertical: 0,
         },
       },
@@ -428,7 +366,7 @@ describe("IFrame Desktop", () => {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
         customShiftConfiguration: {
-          horizontal: MAX_SHIFT_HORIZONTAL + 100,
+          horizontal: 0,
           vertical: 0,
         },
       },
@@ -450,7 +388,7 @@ describe("IFrame Desktop", () => {
         floatPlacement: WalletButtonFloatPlacement.Custom,
         customShiftConfiguration: {
           horizontal: 0,
-          vertical: -100,
+          vertical: 0,
         },
       },
       mobile: {
@@ -458,7 +396,7 @@ describe("IFrame Desktop", () => {
         floatPlacement: WalletButtonFloatPlacement.Default,
         customShiftConfiguration: {
           horizontal: 0,
-          vertical: -100,
+          vertical: 0,
         },
       },
     });
@@ -484,7 +422,7 @@ describe("IFrame Desktop", () => {
         floatPlacement: WalletButtonFloatPlacement.Default,
         customShiftConfiguration: {
           horizontal: 0,
-          vertical: MAX_SHIFT_VERTICAL + 100,
+          vertical: 0,
         },
       },
     });
@@ -712,14 +650,76 @@ describe("IFrame Desktop", () => {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
         customShiftConfiguration: {
-          horizontal: 200,
-          vertical: 100,
+          horizontal: 0,
+          vertical: 0,
         },
       },
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, "100px");
     assert.equal(getIframe().parentElement?.style.right, "200px");
+  });
+});
+
+describe("IFrame Mobile", () => {
+  beforeEach(() => {
+    createDOM();
+  });
+
+  it("mobile, position iframe on left, should have valid css settigns", async () => {
+    mockMatchMedia(true);
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Left,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+    });
+
+    assert.equal(getIframe().parentElement?.style.bottom, "0px");
+    assert.equal(getIframe().parentElement?.style.left, "0px");
+    assert.equal(getIframe().parentElement?.style.right, "");
+  });
+
+  it("mobile, position iframe on right, should have valid css settigns", async () => {
+    mockMatchMedia(true);
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+    });
+
+    assert.equal(getIframe().parentElement?.style.bottom, "0px");
+    assert.equal(getIframe().parentElement?.style.left, "");
+    assert.equal(getIframe().parentElement?.style.right, "0px");
   });
 });
 
