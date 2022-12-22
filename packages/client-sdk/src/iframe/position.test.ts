@@ -50,6 +50,11 @@ describe("settings", () => {
         },
         mobile: {
           floatSide: WalletButtonFloatSide.Right,
+          floatPlacement: WalletButtonFloatPlacement.Default,
+          customShiftConfiguration: {
+            horizontal: 50,
+            vertical: 60,
+          },
         },
       };
 

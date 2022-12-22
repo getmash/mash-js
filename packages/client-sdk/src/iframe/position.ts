@@ -23,7 +23,9 @@ export type DesktopSettings = LocationSettings & {
   shiftRight: number;
 };
 
-export type MobileSettings = LocationSettings;
+export type MobileSettings = LocationSettings & {
+  shiftUp: number;
+};
 
 export type WalletPosition = {
   desktop: DesktopSettings;
@@ -86,6 +88,11 @@ function getMobileLocation(
 ): WalletButtonMobilePosition {
   return {
     floatSide: normalizeFloatSide(mobile?.floatSide),
+    floatPlacement: normalizeFloatPlacement(mobile?.floatPlacement),
+    customShiftConfiguration: {
+      horizontal: mobile?.customShiftConfiguration?.horizontal || 0,
+      vertical: mobile?.customShiftConfiguration?.vertical || 0,
+    },
   };
 }
 
@@ -127,6 +134,12 @@ export function formatPosition(position?: PartialDeep<WalletPosition>) {
     formattedPosition.mobile.floatSide = WalletButtonFloatSide.Left;
   } else if (position?.mobile?.floatLocation === FloatLocation.BottomRight) {
     formattedPosition.mobile.floatSide = WalletButtonFloatSide.Right;
+  }
+
+  if (position?.mobile?.shiftUp) {
+    formattedPosition.mobile.floatPlacement = WalletButtonFloatPlacement.Custom;
+    formattedPosition.mobile.customShiftConfiguration.vertical =
+      position.mobile?.shiftUp || 0;
   }
 
   return formattedPosition;

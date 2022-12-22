@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
-import { beforeEach, describe, it } from "node:test";
 
 import { waitFor } from "@testing-library/dom";
+import { beforeEach, describe, it } from "node:test";
 
 import PostMessageEngine from "@getmash/post-message";
 
@@ -219,7 +219,14 @@ describe("IFrame", () => {
           vertical: 15,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 10,
+          vertical: 15,
+        },
+      },
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, "15px");
@@ -240,7 +247,14 @@ describe("IFrame", () => {
           vertical: 2,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 5,
+          vertical: 2,
+        },
+      },
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, "2px");
@@ -261,7 +275,14 @@ describe("IFrame", () => {
           vertical: 2,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Left },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 5,
+          vertical: 2,
+        },
+      },
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, "0px");
@@ -282,7 +303,14 @@ describe("IFrame", () => {
           vertical: 2,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 10,
+          vertical: 2,
+        },
+      },
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, "0px");
@@ -303,7 +331,14 @@ describe("IFrame", () => {
           vertical: 0,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: -100,
+          vertical: 0,
+        },
+      },
     });
 
     assert.equal(getIframe().parentElement?.style.right, "0px");
@@ -322,7 +357,14 @@ describe("IFrame", () => {
           vertical: 0,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: -100,
+          vertical: 0,
+        },
+      },
     });
 
     assert.equal(getIframe().parentElement?.style.left, "0px");
@@ -341,7 +383,14 @@ describe("IFrame", () => {
           vertical: 0,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: MAX_SHIFT_HORIZONTAL + 100,
+          vertical: 0,
+        },
+      },
     });
 
     assert.equal(
@@ -363,7 +412,14 @@ describe("IFrame", () => {
           vertical: 0,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: MAX_SHIFT_HORIZONTAL + 100,
+          vertical: 0,
+        },
+      },
     });
 
     assert.equal(
@@ -385,7 +441,14 @@ describe("IFrame", () => {
           vertical: -100,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: -100,
+        },
+      },
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, "0px");
@@ -404,7 +467,14 @@ describe("IFrame", () => {
           vertical: MAX_SHIFT_VERTICAL + 100,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: MAX_SHIFT_VERTICAL + 100,
+        },
+      },
     });
 
     assert.equal(
@@ -426,7 +496,14 @@ describe("IFrame", () => {
           vertical: 0,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
     });
 
     assert.equal(
@@ -448,7 +525,14 @@ describe("IFrame", () => {
           vertical: 0,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
     });
 
     assert.equal(
@@ -470,7 +554,14 @@ describe("IFrame", () => {
           vertical: 0,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
     });
 
     assert.equal(
@@ -492,7 +583,14 @@ describe("IFrame", () => {
           vertical: 0,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, `${GHOST_SHIFT}px`);
@@ -512,7 +610,14 @@ describe("IFrame", () => {
           vertical: 0,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
     });
 
     assert.equal(
@@ -534,7 +639,14 @@ describe("IFrame", () => {
           vertical: 0,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, `${GHOST_SHIFT}px`);
@@ -554,7 +666,14 @@ describe("IFrame", () => {
           vertical: 0,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
     });
 
     assert.equal(
@@ -576,7 +695,14 @@ describe("IFrame", () => {
           vertical: 100,
         },
       },
-      mobile: { floatSide: WalletButtonFloatSide.Right },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 200,
+          vertical: 100,
+        },
+      },
     });
 
     assert.equal(getIframe().parentElement?.style.bottom, "100px");

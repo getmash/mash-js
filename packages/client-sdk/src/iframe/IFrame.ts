@@ -41,6 +41,8 @@ export const BASIC_SHIFT_HORIZONTAL = 100;
 export const GHOST_SHIFT = 80;
 /* Amount used to shift for Intercom */
 export const INTERCOM_SHIFT = 60;
+/* Amount used to shift for Wix Action Bar */
+export const WIX_ACTION_BAR = 74;
 
 const CONTAINER_STYLE = {
   position: "fixed",
@@ -116,6 +118,11 @@ export default class IFrame {
     vertical: 0,
   };
   private mobileFloatSide = WalletButtonFloatSide.Right;
+  private mobileFloatPlacement = WalletButtonFloatPlacement.Default;
+  private mobileShiftConfiguration: WalletButtonShiftConfiguration = {
+    horizontal: 0,
+    vertical: 0,
+  };
 
   private container: HTMLDivElement;
   private iframe: HTMLIFrameElement;
@@ -222,6 +229,20 @@ export default class IFrame {
         case WalletButtonFloatSide.Right: {
           this.container.style.right = "0";
           this.container.style.left = "";
+          break;
+        }
+      }
+      switch (this.mobileFloatPlacement) {
+        case WalletButtonFloatPlacement.WixActionBar: {
+          this.container.style.bottom = `${WIX_ACTION_BAR}px`;
+          break;
+        }
+        case WalletButtonFloatPlacement.BasicShiftVertical: {
+          this.container.style.bottom = `${BASIC_SHIFT_VERTICAL}px`;
+          break;
+        }
+        case WalletButtonFloatPlacement.Custom: {
+          this.container.style.bottom = `${this.mobileShiftConfiguration.vertical}px`;
           break;
         }
       }
@@ -424,6 +445,13 @@ export default class IFrame {
       MAX_SHIFT_VERTICAL,
     );
     this.mobileFloatSide = position.mobile.floatSide;
+    this.mobileFloatPlacement = position.mobile.floatPlacement;
+
+    // Only supported for manual init configuration, remote config might not be present
+    this.mobileShiftConfiguration.vertical = this.normalizeShift(
+      position.mobile.customShiftConfiguration?.vertical || 0,
+      MAX_SHIFT_VERTICAL,
+    );
 
     // Must init engine here to have the correct contentWindow.
     // If referencing this.iframe before it is mounted to the
