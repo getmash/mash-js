@@ -10,6 +10,7 @@ export enum WalletButtonFloatPlacement {
   Intercom = "intercom",
   BasicShiftVertical = "basic_shift_vertical",
   BasicShiftHorizontal = "basic_shift_horizontal",
+  WixActionBar = "wix_action_bar",
 }
 
 export enum PageTarget {
@@ -42,6 +43,8 @@ export type WalletButtonDesktopPosition = {
 
 export type WalletButtonMobilePosition = {
   floatSide: WalletButtonFloatSide;
+  floatPlacement: WalletButtonFloatPlacement;
+  customShiftConfiguration: WalletButtonShiftConfiguration;
 };
 
 export type WalletButtonPosition = {
