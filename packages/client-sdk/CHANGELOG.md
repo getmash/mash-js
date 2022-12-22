@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.4.0
+
+### Minor Changes
+
+- [#55](https://github.com/getmash/mash-js/pull/55) [`dbb5f2f`](https://github.com/getmash/mash-js/commit/dbb5f2fa6089cbd6fe361a0ea1c215f8a152fd3c) Thanks [@jstol](https://github.com/jstol)! - Use autohide setting from remote config
+
 ## 2.3.0
 
 ### Minor Changes
