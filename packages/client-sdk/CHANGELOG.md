@@ -1,5 +1,13 @@
 # @getmash/client-sdk
 
+## 2.5.0
+
+### Minor Changes
+
+- [#58](https://github.com/getmash/mash-js/pull/58) [`66c5893`](https://github.com/getmash/mash-js/commit/66c5893c89505f2e8f9d9536681586ecd30a222a) Thanks [@nyonson](https://github.com/nyonson)! - Fix boost configuration selection logic
+
+- [#56](https://github.com/getmash/mash-js/pull/56) [`25f4de5`](https://github.com/getmash/mash-js/commit/25f4de5af4b7c25e46ce6ed41b1913d7b8d911bf) Thanks [@cartonioh](https://github.com/cartonioh)! - Add support for mobile wallet button placement
+
 ## 2.4.0
 
 ### Minor Changes
