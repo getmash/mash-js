@@ -1,4 +1,9 @@
-import { BoostConfiguration } from "../api/routes.js";
+import {
+  BoostConfiguration,
+  MatchType,
+  PageMatcher,
+  PageTarget,
+} from "../api/routes.js";
 
 /**
  * Convert enums to web component attribute style.
@@ -8,13 +13,56 @@ function toAttributeStyle(attribute: string): string {
 }
 
 /**
+ * Page matched if any matcher returns true.
+ */
+function pageMatched(pathname: string, matchers: PageMatcher[]): boolean {
+  for (const matcher of matchers) {
+    if (matcher.matchType == MatchType.Equals) {
+      return pathname === matcher.matchText;
+    } else if (matcher.matchType == MatchType.StartsWith) {
+      return pathname.startsWith(matcher.matchText);
+    } else if (matcher.matchType == MatchType.Contains) {
+      return pathname.includes(matcher.matchText);
+    }
+  }
+
+  // unhandled match type, default to false
+  return false;
+}
+
+/**
+ * Determine if page is selected to load boosts.
+ */
+export function pageSelected(
+  pathname: string,
+  target: PageTarget,
+  matchers: PageMatcher[],
+): boolean {
+  if (target == PageTarget.All) {
+    return true;
+  } else if (target == PageTarget.Exclude) {
+    return !pageMatched(pathname, matchers);
+  } else if (target == PageTarget.Include) {
+    return pageMatched(pathname, matchers);
+  } else {
+    // unhandled target case, default to true
+    return true;
+  }
+}
+
+/**
  * Inject floating boost buttons onto site.
+ * @param pathname of the current location (e.g. /my/url) to filter configurations.
  */
 export default function injectFloatingBoosts(
   boostConfigurations: BoostConfiguration[],
+  pathname: string,
 ) {
   boostConfigurations.forEach(config => {
-    if (config.active) {
+    if (
+      config.active &&
+      pageSelected(pathname, config.pages.target, config.pages.matchers)
+    ) {
       const boost = window.document.createElement("mash-boost-button");
       // these must be floating boosts
       boost.setAttribute("layout-mode", "float");

@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.3.0
+
+### Minor Changes
+
+- [#53](https://github.com/getmash/mash-js/pull/53) [`166d2ea`](https://github.com/getmash/mash-js/commit/166d2ea12342845b9c30195e6dacbf8be9b21554) Thanks [@nyonson](https://github.com/nyonson)! - Add page selection to boost configurations
+
 ## 2.2.0
 
 ### Minor Changes
