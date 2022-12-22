@@ -31,7 +31,7 @@ class Mash {
   /**
    * Configuration pulled down from the remote source.
    */
-  private remoteConfig: Promise<MashWebAPI.EarnerCustomizationConfiguration>;
+  private remoteCustomizationConfig: Promise<MashWebAPI.EarnerCustomizationConfiguration>;
   /**
    * Signals when a (web component) widget connects to the SDK.
    */
@@ -55,12 +55,13 @@ class Mash {
         fontFamily: "inherit",
       },
       boostConfigurations: [],
+      autoHide: false,
     };
 
     // If localConfig doesn't have an earner ID, just set the default configuration.
     // This handles a backwards compatibility case.
     if (!this.localConfig.earnerID) {
-      this.remoteConfig = Promise.resolve(defaultConfiguration);
+      this.remoteCustomizationConfig = Promise.resolve(defaultConfiguration);
       return;
     }
 
@@ -75,7 +76,7 @@ class Mash {
       injectWidgets(this.localConfig.widgets.baseURL);
     }
 
-    this.remoteConfig = MashWebAPI.getEarner(
+    this.remoteCustomizationConfig = MashWebAPI.getEarner(
       this.localConfig.api,
       this.localConfig.earnerID,
     )
@@ -95,9 +96,10 @@ class Mash {
         }
         return result.customization;
       })
-      .catch(() => {
+      .catch(err => {
         console.warn(
-          "[MASH] Error when fetching remote configuration, using default configuration",
+          "[MASH] Error when fetching remote configuration, using default configuration.\n",
+          err,
         );
 
         // If API error, inject default theme
@@ -135,7 +137,7 @@ class Mash {
       return this.mount(position);
     }
 
-    return this.remoteConfig.then(config =>
+    return this.remoteCustomizationConfig.then(config =>
       this.mount(config.walletButtonPosition),
     );
   }
@@ -144,14 +146,16 @@ class Mash {
    * Initialize the Mash Button app and connect it to the site.
    * @param settings is deprecated, use the constructor for local settings.
    */
-  init(settings?: MashSettings) {
+  async init(settings?: MashSettings) {
     if (this.iframe.mounted) {
       console.warn("[MASH] Already mounted, ignoring this call to init Mash");
       return Promise.resolve(null);
     }
 
     // If autohiding, wait to see if a web component mounts
-    if (this.localConfig.autoHide) {
+    const customizationConfig = await this.remoteCustomizationConfig;
+    const autohide = this.localConfig.autoHide ?? customizationConfig.autoHide;
+    if (autohide) {
       console.info(
         "[MASH] Autohide is enabled - waiting for a web component widget to connect",
       );
