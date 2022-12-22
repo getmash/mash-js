@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
+import { beforeEach, describe, it } from "node:test";
 
 import { waitFor } from "@testing-library/dom";
-import { beforeEach, describe, it } from "node:test";
 
 import PostMessageEngine from "@getmash/post-message";
 
