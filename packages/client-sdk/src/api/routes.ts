@@ -88,6 +88,7 @@ export type EarnerCustomizationConfiguration = {
   walletButtonPosition: WalletButtonPosition;
   theme: Theme;
   boostConfigurations: BoostConfiguration[];
+  autoHide: boolean;
 };
 
 export type Earner = {

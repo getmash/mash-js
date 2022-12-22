@@ -8,10 +8,12 @@ type WidgetConfig = {
 
 export type Config = {
   api: string;
-  autoHide: boolean;
   earnerID: string;
   walletURL: string;
   widgets: WidgetConfig;
+  // Local properties that are replicated serverside in the remote
+  // config. Specifying them overrides remote (local takes precendence).
+  autoHide?: boolean;
 };
 
 export type PartialConfig = PartialDeep<Config> & { earnerID: string };
@@ -30,8 +32,8 @@ export default function parse(config: PartialConfig): Config {
   return {
     earnerID: config.earnerID,
     api: config.api || DefaultAPIBaseURL,
-    autoHide: config.autoHide ?? false,
     walletURL: config.walletURL || DefaultWalletURL,
     widgets: { ...DEFAULT_WIDGETS_CONFIG, ...config.widgets },
+    autoHide: config.autoHide,
   };
 }
