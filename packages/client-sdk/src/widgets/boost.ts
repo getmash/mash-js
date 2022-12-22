@@ -17,16 +17,19 @@ function toAttributeStyle(attribute: string): string {
  */
 function pageMatched(pathname: string, matchers: PageMatcher[]): boolean {
   for (const matcher of matchers) {
-    if (matcher.matchType == MatchType.Equals) {
-      return pathname === matcher.matchText;
-    } else if (matcher.matchType == MatchType.StartsWith) {
-      return pathname.startsWith(matcher.matchText);
-    } else if (matcher.matchType == MatchType.Contains) {
-      return pathname.includes(matcher.matchText);
-    }
+    const equals =
+      matcher.matchType == MatchType.Equals && pathname === matcher.matchText;
+    const startsWith =
+      matcher.matchType == MatchType.StartsWith &&
+      pathname.startsWith(matcher.matchText);
+    const contains =
+      matcher.matchType == MatchType.Contains &&
+      pathname.includes(matcher.matchText);
+
+    if (equals || startsWith || contains) return true;
   }
 
-  // unhandled match type, default to false
+  // defaults to false
   return false;
 }
 
