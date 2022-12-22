@@ -217,6 +217,7 @@ export default class IFrame {
   private position = () => {
     const mediaQuery = this.getMediaQuery();
 
+    // Mobile
     if (mediaQuery.matches) {
       this.container.style.bottom = "0";
 
@@ -249,6 +250,7 @@ export default class IFrame {
       return;
     }
 
+    // Desktop
     switch (this.desktopFloatSide) {
       case WalletButtonFloatSide.Left: {
         this.container.style.left = "0";

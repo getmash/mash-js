@@ -74,7 +74,69 @@ function mockMatchMedia(mobile = false) {
 // pull the SDK iframe off of the global window for inspection.
 const getIframe = () => document.getElementsByName(IFRAME_NAME).item(0);
 
-describe("IFrame", () => {
+describe("IFrame Mobile", () => {
+  beforeEach(() => {
+    createDOM();
+  });
+
+  it("mobile, position iframe on left, should have valid css settigns", async () => {
+    mockMatchMedia(true);
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Left,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+    });
+    
+    assert.equal(getIframe().parentElement?.style.bottom, "0px");
+    assert.equal(getIframe().parentElement?.style.left, "0px");
+    assert.equal(getIframe().parentElement?.style.right, "");
+  });
+
+  it("mobile, position iframe on right, should have valid css settigns", async () => {
+    mockMatchMedia(true);
+
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+    });
+    
+    assert.equal(getIframe().parentElement?.style.bottom, "0px");
+    assert.equal(getIframe().parentElement?.style.left, "");
+    assert.equal(getIframe().parentElement?.style.right, "0px");
+  });
+});
+
+describe("IFrame Events", () => {
   beforeEach(() => {
     createDOM();
   });
@@ -205,6 +267,12 @@ describe("IFrame", () => {
       );
     });
   });
+});
+
+describe("IFrame Desktop", () => {
+  beforeEach(() => {
+    createDOM();
+  });
 
   it("desktop, position iframe on left, should have valid css settigns", async () => {
     mockMatchMedia();
@@ -260,62 +328,6 @@ describe("IFrame", () => {
     assert.equal(getIframe().parentElement?.style.bottom, "2px");
     assert.equal(getIframe().parentElement?.style.left, "");
     assert.equal(getIframe().parentElement?.style.right, "5px");
-  });
-
-  it("mobile, position iframe on left, should have valid css settigns", async () => {
-    mockMatchMedia(true);
-
-    const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(() => ({}), {
-      desktop: {
-        floatSide: WalletButtonFloatSide.Right,
-        floatPlacement: WalletButtonFloatPlacement.Custom,
-        customShiftConfiguration: {
-          horizontal: 5,
-          vertical: 2,
-        },
-      },
-      mobile: {
-        floatSide: WalletButtonFloatSide.Right,
-        floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 5,
-          vertical: 2,
-        },
-      },
-    });
-
-    assert.equal(getIframe().parentElement?.style.bottom, "0px");
-    assert.equal(getIframe().parentElement?.style.left, "0px");
-    assert.equal(getIframe().parentElement?.style.right, "");
-  });
-
-  it("mobile, position iframe on right, should have valid css settigns", async () => {
-    mockMatchMedia(true);
-
-    const iframe = new IFrame(IFRAME_SOURCE);
-    iframe.mount(() => ({}), {
-      desktop: {
-        floatSide: WalletButtonFloatSide.Right,
-        floatPlacement: WalletButtonFloatPlacement.Custom,
-        customShiftConfiguration: {
-          horizontal: 10,
-          vertical: 2,
-        },
-      },
-      mobile: {
-        floatSide: WalletButtonFloatSide.Right,
-        floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 10,
-          vertical: 2,
-        },
-      },
-    });
-
-    assert.equal(getIframe().parentElement?.style.bottom, "0px");
-    assert.equal(getIframe().parentElement?.style.left, "");
-    assert.equal(getIframe().parentElement?.style.right, "0px");
   });
 
   it("bottom-right, horizontal shift is less than 0, should normalize to 0", async () => {
@@ -682,6 +694,7 @@ describe("IFrame", () => {
     );
     assert.equal(getIframe().parentElement?.style.left, "0px");
   });
+
   it("using custom shift", async () => {
     mockMatchMedia();
 
