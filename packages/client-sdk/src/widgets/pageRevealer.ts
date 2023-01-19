@@ -23,7 +23,7 @@ export default function injectPageRevealers(
       );
       pageRevealer.setAttribute(
         "template-image-color",
-        toAttributeStyle(config.templateImageColor),
+        config.templateImageColor,
       );
       pageRevealer.setAttribute("logo", config.logoEnabled.toString());
       pageRevealer.setAttribute("logo-src", config.logoURL);
