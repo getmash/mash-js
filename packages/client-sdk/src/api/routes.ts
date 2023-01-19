@@ -70,7 +70,7 @@ export type PageMatcher = {
   matchText: string;
 };
 
-export type BoostConfigurationPageSelection = {
+export type PageSelection = {
   target: PageTarget;
   matchers: PageMatcher[];
 };
@@ -81,13 +81,19 @@ export type BoostConfiguration = {
   style: string;
   desktop: BoostDesktopConfiguration;
   mobile: BoostMobileConfiguration;
-  pages: BoostConfigurationPageSelection;
+  pages: PageSelection;
+};
+
+export type PageRevealer = {
+  active: boolean;
+  pages: PageSelection;
 };
 
 export type EarnerCustomizationConfiguration = {
   walletButtonPosition: WalletButtonPosition;
   theme: Theme;
   boostConfigurations: BoostConfiguration[];
+  pageRevealers: PageRevealer[];
   autoHide: boolean;
 };
 
