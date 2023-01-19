@@ -87,6 +87,18 @@ export type BoostConfiguration = {
 export type PageRevealer = {
   active: boolean;
   pages: PageSelection;
+  contentTypeID: string;
+  template: string;
+  templateImage: string;
+  templateImageColor: string;
+  logoEnabled: boolean;
+  logoURL: string;
+  textAlignment: string;
+  title: string;
+  message: string;
+  bullets: string[];
+  buttonColor: string;
+  fontFamily: string;
 };
 
 export type EarnerCustomizationConfiguration = {

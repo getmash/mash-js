@@ -1,4 +1,5 @@
 import { PageRevealer } from "../api/routes.js";
+import toAttributeStyle from "./attribute.js";
 import { pageSelected } from "./pageMatcher.js";
 
 /**
@@ -9,18 +10,42 @@ export default function injectPageRevealers(
   pageRevealers: PageRevealer[],
   pathname: string,
 ) {
-  pageRevealers.forEach(pageRevealer => {
+  pageRevealers.forEach(config => {
     if (
-      pageRevealer.active &&
-      pageSelected(
-        pathname,
-        pageRevealer.pages.target,
-        pageRevealer.pages.matchers,
-      )
+      config.active &&
+      pageSelected(pathname, config.pages.target, config.pages.matchers)
     ) {
-      const boost = window.document.createElement("mash-page-revealer");
+      const pageRevealer = window.document.createElement("mash-page-revealer");
+      pageRevealer.setAttribute("template", toAttributeStyle(config.template));
+      pageRevealer.setAttribute(
+        "template-image",
+        toAttributeStyle(config.templateImage),
+      );
+      pageRevealer.setAttribute(
+        "template-image-color",
+        toAttributeStyle(config.templateImageColor),
+      );
+      pageRevealer.setAttribute("logo", config.logoEnabled.toString());
+      pageRevealer.setAttribute("logo-src", config.logoURL);
+      pageRevealer.setAttribute(
+        "text-align",
+        toAttributeStyle(config.textAlignment),
+      );
+      pageRevealer.setAttribute("title", config.title);
+      pageRevealer.setAttribute("message", config.message);
+      // lit should handle parsing the array on the other side
+      pageRevealer.setAttribute("bullets", JSON.stringify(config.bullets));
+      pageRevealer.setAttribute("button-color", config.buttonColor);
+      pageRevealer.setAttribute(
+        "font-family",
+        toAttributeStyle(config.fontFamily),
+      );
+
+      // tie to content type
+      pageRevealer.setAttribute("resource", config.contentTypeID);
+
       // inject onto site
-      document.body.appendChild(boost);
+      document.body.appendChild(pageRevealer);
     }
   });
 }
