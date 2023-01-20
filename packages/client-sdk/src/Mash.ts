@@ -11,6 +11,7 @@ import {
 } from "./iframe/position.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
 import injectFloatingBoosts from "./widgets/boost.js";
+import injectPageRevealers from "./widgets/pageRevealer.js";
 import preconnect from "./widgets/preconnect.js";
 import injectTheme from "./widgets/theme.js";
 import { injectWidgets } from "./widgets/widgets.js";
@@ -55,6 +56,7 @@ class Mash {
         fontFamily: "inherit",
       },
       boostConfigurations: [],
+      pageRevealers: [],
       autoHide: false,
     };
 
@@ -91,6 +93,13 @@ class Mash {
         if (result.customization.boostConfigurations) {
           injectFloatingBoosts(
             result.customization.boostConfigurations,
+            window.location.pathname,
+          );
+        }
+
+        if (result.customization.pageRevealers) {
+          injectPageRevealers(
+            result.customization.pageRevealers,
             window.location.pathname,
           );
         }
