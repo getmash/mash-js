@@ -56,7 +56,7 @@ jobs:
         run: yarn --verbose workspaces foreach --parallel run test
 
       - name: Post coverage
-        uses: eeshdarthvader/code-coverage-assistant@0.1 
+        uses: ScaCap/code-coverage-assistant@1.0 
         # only post on PRs
         if: github.event_name == 'pull_request'
         with:
