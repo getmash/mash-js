@@ -98,7 +98,7 @@ export type PageRevealer = {
   message: string;
   bullets: string[];
   buttonColor: string;
-  fontFamily: string;
+  fontFamily?: string;
 };
 
 export type EarnerCustomizationConfiguration = {

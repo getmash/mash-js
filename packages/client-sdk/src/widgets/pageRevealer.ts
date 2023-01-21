@@ -36,10 +36,13 @@ export default function injectPageRevealers(
       // lit should handle parsing the array on the other side
       pageRevealer.setAttribute("bullets", JSON.stringify(config.bullets));
       pageRevealer.setAttribute("button-color", config.buttonColor);
-      pageRevealer.setAttribute(
-        "font-family",
-        toAttributeStyle(config.fontFamily),
-      );
+
+      if (config.fontFamily) {
+        pageRevealer.setAttribute(
+          "font-family",
+          toAttributeStyle(config.fontFamily),
+        );
+      }
 
       // tie to content type
       pageRevealer.setAttribute("resource", config.contentTypeID);
