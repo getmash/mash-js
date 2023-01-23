@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.6.0
+
+### Minor Changes
+
+- [#61](https://github.com/getmash/mash-js/pull/61) [`77cfb43`](https://github.com/getmash/mash-js/commit/77cfb43676ffbf935bb7f08821a63ec1f827c946) Thanks [@nyonson](https://github.com/nyonson)! - Add page revealer configurations
+
 ## 2.5.0
 
 ### Minor Changes
