@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.7.0
+
+### Minor Changes
+
+- [#64](https://github.com/getmash/mash-js/pull/64) [`1c4b449`](https://github.com/getmash/mash-js/commit/1c4b4498c35b14c6e0917e17bad2c159631b3604) Thanks [@cartonioh](https://github.com/cartonioh)! - Add demos and tutorials to documentation
+
 ## 2.6.0
 
 ### Minor Changes
