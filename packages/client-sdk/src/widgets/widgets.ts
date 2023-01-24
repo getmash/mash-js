@@ -22,6 +22,10 @@ export const Widgets: Record<string, Widget> = {
     path: "content/content-revealer.js",
     element: "mash-content-revealer",
   },
+  ContentPageRevealer: {
+    path: "content/page-revealer.js",
+    element: "mash-page-revealer",
+  },
   DonateButton: {
     path: "donate/donate-button.js",
     element: "mash-donate-button",
