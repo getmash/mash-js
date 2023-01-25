@@ -16,26 +16,45 @@ export default function injectPageRevealers(
       pageSelected(pathname, config.pages.target, config.pages.matchers)
     ) {
       const pageRevealer = window.document.createElement("mash-page-revealer");
+      pageRevealer.setAttribute("name", toAttributeStyle(config.template));
       pageRevealer.setAttribute("template", toAttributeStyle(config.template));
-      pageRevealer.setAttribute(
-        "template-image",
-        toAttributeStyle(config.templateImage),
-      );
-      pageRevealer.setAttribute(
-        "template-image-color",
-        config.templateImageColor,
-      );
-      pageRevealer.setAttribute("logo", config.logoEnabled.toString());
-      pageRevealer.setAttribute("logo-src", config.logoURL);
+      if (config.templateImage) {
+        pageRevealer.setAttribute(
+          "template-image",
+          toAttributeStyle(config.templateImage),
+        );
+      }
+      if (config.templateImageColor) {
+        pageRevealer.setAttribute(
+          "template-image-color",
+          toAttributeStyle(config.templateImageColor),
+        );
+      }
+
+      // lit boolean properties are truthy if exist
+      if (config.logoEnabled) {
+        pageRevealer.setAttribute("logo", "true");
+      }
+
+      if (config.logoURL) {
+        pageRevealer.setAttribute("logo-src", toAttributeStyle(config.logoURL));
+      }
       pageRevealer.setAttribute(
         "text-align",
         toAttributeStyle(config.textAlignment),
       );
       pageRevealer.setAttribute("title", config.title);
-      pageRevealer.setAttribute("message", config.message);
+      if (config.message) {
+        pageRevealer.setAttribute("message", toAttributeStyle(config.message));
+      }
       // lit should handle parsing the array on the other side
       pageRevealer.setAttribute("bullets", JSON.stringify(config.bullets));
-      pageRevealer.setAttribute("button-color", config.buttonColor);
+      if (config.buttonColor) {
+        pageRevealer.setAttribute(
+          "button-color",
+          toAttributeStyle(config.buttonColor),
+        );
+      }
 
       if (config.fontFamily) {
         pageRevealer.setAttribute(
