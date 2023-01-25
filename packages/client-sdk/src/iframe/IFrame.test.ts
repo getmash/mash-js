@@ -30,7 +30,8 @@ import IFrame, {
 } from "./IFrame.js";
 import { getWalletPosition } from "./position.js";
 
-const IFRAME_SOURCE = "http://localhost";
+const WALLET_IFRAME_URL = "http://localhost/widget";
+const MODAL_IFRAME_URL = "http://localhost/modal";
 
 const MASH_SETTINGS: { id: string; position: Partial<WalletButtonPosition> } = {
   id: "123",
@@ -46,7 +47,7 @@ const replacePostMessage = (sourceWindow: Window | null) => {
     window.dispatchEvent(
       new window.MessageEvent("message", {
         source: sourceWindow,
-        origin: IFRAME_SOURCE,
+        origin: new URL(WALLET_IFRAME_URL).origin,
         data: message,
       }),
     );
@@ -82,7 +83,7 @@ describe("IFrame Events", () => {
   it("mount iframe, should exist in dom", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(
       () => ({}),
       getWalletPosition(
@@ -97,7 +98,7 @@ describe("IFrame Events", () => {
   it("trigger open event, should resize iframe correctly", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(
       () => ({}),
       getWalletPosition(
@@ -136,7 +137,7 @@ describe("IFrame Events", () => {
   it("trigger close event, should resize iframe correctly", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(
       () => ({}),
       getWalletPosition(
@@ -174,7 +175,7 @@ describe("IFrame Events", () => {
   it("trigger 2 notifications, should resize iframe correctly", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(
       () => ({}),
       getWalletPosition(
@@ -215,7 +216,7 @@ describe("IFrame Desktop", () => {
   it("desktop, position iframe on left, should have valid css settigns", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Left,
@@ -243,7 +244,7 @@ describe("IFrame Desktop", () => {
   it("desktop, position iframe on right, should have valid css settigns", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Right,
@@ -271,7 +272,7 @@ describe("IFrame Desktop", () => {
   it("bottom-right, horizontal shift is less than 0, should normalize to 0", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Right,
@@ -297,7 +298,7 @@ describe("IFrame Desktop", () => {
   it("bottom-left, horizontal shift is less than 0, should normalize to 0", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Left,
@@ -323,7 +324,7 @@ describe("IFrame Desktop", () => {
   it("bottom-right, horizontal shift is greater than max, should normalize to max", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Right,
@@ -352,7 +353,7 @@ describe("IFrame Desktop", () => {
   it("bottom-left, horizontal shift is greater than max, should normalize to max", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Left,
@@ -381,7 +382,7 @@ describe("IFrame Desktop", () => {
   it("vertical shift is less than 0, should normalize to 0", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Right,
@@ -407,7 +408,7 @@ describe("IFrame Desktop", () => {
   it("vertical shift is greater than max, should normalize to max", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Right,
@@ -436,7 +437,7 @@ describe("IFrame Desktop", () => {
   it("basic horizontal shift to the left", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Right,
@@ -465,7 +466,7 @@ describe("IFrame Desktop", () => {
   it("basic horizontal shift to the right", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Left,
@@ -494,7 +495,7 @@ describe("IFrame Desktop", () => {
   it("basic vertical shift up", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Right,
@@ -523,7 +524,7 @@ describe("IFrame Desktop", () => {
   it("using Ghost shift, right side", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Right,
@@ -550,7 +551,7 @@ describe("IFrame Desktop", () => {
   it("using Intercom shift, right side", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Right,
@@ -579,7 +580,7 @@ describe("IFrame Desktop", () => {
   it("using Ghost shift, left side", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Left,
@@ -606,7 +607,7 @@ describe("IFrame Desktop", () => {
   it("using Intercom shift, left side", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Left,
@@ -636,7 +637,7 @@ describe("IFrame Desktop", () => {
   it("using custom shift", async () => {
     mockMatchMedia();
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Right,
@@ -669,7 +670,7 @@ describe("IFrame Mobile", () => {
   it("mobile, position iframe on left, should have valid css settigns", async () => {
     mockMatchMedia(true);
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Right,
@@ -697,7 +698,7 @@ describe("IFrame Mobile", () => {
   it("mobile, position iframe on right, should have valid css settigns", async () => {
     mockMatchMedia(true);
 
-    const iframe = new IFrame(IFRAME_SOURCE);
+    const iframe = new IFrame(WALLET_IFRAME_URL, MODAL_IFRAME_URL);
     iframe.mount(() => ({}), {
       desktop: {
         floatSide: WalletButtonFloatSide.Right,

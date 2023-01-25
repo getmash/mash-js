@@ -160,8 +160,8 @@ export default class IFrame {
   private modalIframe: HTMLIFrameElement;
   private engine: PostMessageEngine<EventMessage> | null = null;
 
-  constructor(src: string) {
-    this.src = new URL(src);
+  constructor(walletSrc: string, modalSrc: string) {
+    this.src = new URL(walletSrc);
 
     // Create wallet dom elements
     this.walletContainer = document.createElement("div");
@@ -171,7 +171,7 @@ export default class IFrame {
     this.walletIframe = document.createElement("iframe");
     this.walletIframe.setAttribute("class", "mash-this.iframe");
     this.walletIframe.setAttribute("style", toHTMLStyle(WALLET_IFRAME_STYLE));
-    this.walletIframe.setAttribute("src", src);
+    this.walletIframe.setAttribute("src", walletSrc);
     this.walletIframe.setAttribute("title", "Mash Wallet");
     this.walletIframe.setAttribute("name", IFRAME_NAME);
     this.walletIframe.allowFullscreen = true;
@@ -184,7 +184,7 @@ export default class IFrame {
     this.modalIframe.setAttribute("title", "Mash Pre-Boarding");
     this.modalIframe.setAttribute("style", toHTMLStyle(MODAL_IFRAME_STYLE));
     this.modalIframe.setAttribute("name", MODAL_IFRAME_NAME);
-    this.modalIframe.setAttribute("src", "https://wallet.getmash.com/earn");
+    this.modalIframe.setAttribute("src", modalSrc);
     this.modalIframe.allowFullscreen = true;
   }
 

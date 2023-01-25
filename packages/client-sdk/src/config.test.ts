@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
+
 import { describe, it } from "node:test";
 
 import parse, {
   Config,
   DefaultAPIBaseURL,
+  DefaultModalURL,
   DefaultWalletURL,
   DefaultWidgetBaseURL,
 } from "./config.js";
@@ -16,6 +18,7 @@ describe("Config", () => {
       autoHide: undefined,
       earnerID: "1",
       walletURL: DefaultWalletURL,
+      modalURL: DefaultModalURL,
       widgets: {
         baseURL: DefaultWidgetBaseURL,
         injectTheme: true,
@@ -30,6 +33,7 @@ describe("Config", () => {
       earnerID: "1",
       autoHide: undefined,
       walletURL: "testsite",
+      modalURL: "testsitemodal",
       widgets: {
         baseURL: "tester.com",
         injectTheme: false,
