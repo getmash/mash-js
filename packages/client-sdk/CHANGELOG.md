@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.8.0
+
+### Minor Changes
+
+- [#66](https://github.com/getmash/mash-js/pull/66) [`25ec5bc`](https://github.com/getmash/mash-js/commit/25ec5bcc442508394433e93fb56a8abff214c93f) Thanks [@nyonson](https://github.com/nyonson)! - Pull the page revealer widget in with the SDK
+
 ## 2.7.0
 
 ### Minor Changes
