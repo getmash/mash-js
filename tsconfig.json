@@ -1,17 +1,5 @@
 {
-  "compilerOptions": {
-    "paths": {
-      "@mash/jsonrpc-engine": [
-        "./packages/jsonrpc-engine"
-      ],
-      "@mash/post-message": [
-        "./packages/post-message"
-      ]
-    }
-  },
-  "exclude": [
-    "node_modules"
-  ],
+  "files": [],
   "references": [
     {
       "path": "packages/client-sdk"
