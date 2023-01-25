@@ -89,8 +89,8 @@ const WALLET_IFRAME_STYLE = {
 const MODAL_IFRAME_STYLE = {
   border: "none",
   "border-radius": "20px",
-  width: "70%",
-  height: "70%",
+  width: "1000px",
+  height: "665px",
   "background-color": "inherit !important",
   "color-scheme": "normal",
 };
