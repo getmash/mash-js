@@ -1,5 +1,17 @@
 # @getmash/client-sdk
 
+## 2.7.0
+
+### Minor Changes
+
+- [#64](https://github.com/getmash/mash-js/pull/64) [`1c4b449`](https://github.com/getmash/mash-js/commit/1c4b4498c35b14c6e0917e17bad2c159631b3604) Thanks [@cartonioh](https://github.com/cartonioh)! - Add demos and tutorials to documentation
+
+## 2.6.0
+
+### Minor Changes
+
+- [#61](https://github.com/getmash/mash-js/pull/61) [`77cfb43`](https://github.com/getmash/mash-js/commit/77cfb43676ffbf935bb7f08821a63ec1f827c946) Thanks [@nyonson](https://github.com/nyonson)! - Add page revealer configurations
+
 ## 2.5.0
 
 ### Minor Changes

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import { MatchType, PageTarget } from "../api/routes.js";
-import { pageSelected } from "./boost.js";
+import { pageSelected } from "./pageMatcher.js";
 
 describe("boosts", () => {
   it("page selected target all is always true", () => {
