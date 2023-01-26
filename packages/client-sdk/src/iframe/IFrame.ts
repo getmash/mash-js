@@ -71,7 +71,7 @@ const MODAL_CONTAINER_STYLE = {
   left: "0",
   "z-index": MAX_Z_INDEX,
   visibility: "hidden",
-}
+};
 
 const IFRAME_STYLE = {
   border: "none",
@@ -152,7 +152,10 @@ export default class IFrame {
     // Create wallet dom elements
     this.walletContainer = document.createElement("div");
     this.walletContainer.setAttribute("class", "mash mash-root");
-    this.walletContainer.setAttribute("style", toHTMLStyle(WALLET_CONTAINER_STYLE));
+    this.walletContainer.setAttribute(
+      "style",
+      toHTMLStyle(WALLET_CONTAINER_STYLE),
+    );
 
     this.walletIframe = document.createElement("iframe");
     this.walletIframe.setAttribute("class", "mash-this.iframe");
@@ -164,7 +167,10 @@ export default class IFrame {
 
     // Create modal dom elements
     this.modalContainer = document.createElement("div");
-    this.modalContainer.setAttribute("style", toHTMLStyle(MODAL_CONTAINER_STYLE));
+    this.modalContainer.setAttribute(
+      "style",
+      toHTMLStyle(MODAL_CONTAINER_STYLE),
+    );
 
     this.modalIframe = document.createElement("iframe");
     this.modalIframe.setAttribute("title", "Mash Pre-Boarding");
@@ -205,14 +211,14 @@ export default class IFrame {
    */
   private showModal = () => {
     this.modalContainer.style.visibility = "visible";
-  }
+  };
 
   /**
    * Close full screen modal
    */
   private hideModal = () => {
     this.modalContainer.style.visibility = "hidden";
-  }
+  };
 
   /**
    * Resize the iframe container based on open state, notification count and
@@ -506,7 +512,7 @@ export default class IFrame {
       MAX_SHIFT_VERTICAL,
     );
     this.mobileFloatSide = position.mobile.floatSide;
-    this.mobileFloatPlacement = position.mobile.floatPlacement;    
+    this.mobileFloatPlacement = position.mobile.floatPlacement;
     this.mobileShiftConfiguration.vertical = this.normalizeShift(
       position.mobile.customShiftConfiguration?.vertical || 0,
       MAX_SHIFT_VERTICAL,

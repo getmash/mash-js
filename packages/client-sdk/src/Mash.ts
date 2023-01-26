@@ -40,7 +40,10 @@ class Mash {
 
   constructor(config: PartialConfig) {
     this.localConfig = parseConfig(config);
-    this.iframe = new IFrame(this.localConfig.walletURL, this.localConfig.modalURL);
+    this.iframe = new IFrame(
+      this.localConfig.walletURL,
+      this.localConfig.modalURL,
+    );
 
     // Listen for connect events from widgets
     this.widgetConnected = new Promise<void>(res => {
