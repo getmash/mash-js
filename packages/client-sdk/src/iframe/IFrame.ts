@@ -64,33 +64,19 @@ const WALLET_CONTAINER_STYLE = {
 
 const MODAL_CONTAINER_STYLE = {
   border: "none",
-  width: "100vw",
+  width: "100%",
   height: "100vh",
   position: "fixed",
   top: "0",
   left: "0",
   "z-index": MAX_Z_INDEX,
-  "backdrop-filter": "blur(7.5px)",
   visibility: "hidden",
-  display: "flex",
-  "flex-direction": "column",
-  "align-items": "center",
-  "justify-content": "center",
 }
 
-const WALLET_IFRAME_STYLE = {
+const IFRAME_STYLE = {
   border: "none",
   width: "100%",
   height: "100%",
-  "background-color": "inherit !important",
-  "color-scheme": "normal",
-};
-
-const MODAL_IFRAME_STYLE = {
-  border: "none",
-  "border-radius": "20px",
-  width: "1000px",
-  height: "665px",
   "background-color": "inherit !important",
   "color-scheme": "normal",
 };
@@ -170,7 +156,7 @@ export default class IFrame {
 
     this.walletIframe = document.createElement("iframe");
     this.walletIframe.setAttribute("class", "mash-this.iframe");
-    this.walletIframe.setAttribute("style", toHTMLStyle(WALLET_IFRAME_STYLE));
+    this.walletIframe.setAttribute("style", toHTMLStyle(IFRAME_STYLE));
     this.walletIframe.setAttribute("src", walletSrc);
     this.walletIframe.setAttribute("title", "Mash Wallet");
     this.walletIframe.setAttribute("name", IFRAME_NAME);
@@ -182,7 +168,7 @@ export default class IFrame {
 
     this.modalIframe = document.createElement("iframe");
     this.modalIframe.setAttribute("title", "Mash Pre-Boarding");
-    this.modalIframe.setAttribute("style", toHTMLStyle(MODAL_IFRAME_STYLE));
+    this.modalIframe.setAttribute("style", toHTMLStyle(IFRAME_STYLE));
     this.modalIframe.setAttribute("name", MODAL_IFRAME_NAME);
     this.modalIframe.setAttribute("src", modalSrc);
     this.modalIframe.allowFullscreen = true;
@@ -537,6 +523,7 @@ export default class IFrame {
       targetName: Targets.Wallet,
       targetWindow: this.walletIframe.contentWindow,
       targetOrigin: this.src.origin,
+      targetWindowFilter: false,
     });
 
     this.setupListeners();
