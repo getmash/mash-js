@@ -3,7 +3,6 @@ import { beforeEach, describe, it } from "node:test";
 
 import { waitFor } from "@testing-library/dom";
 
-
 import PostMessageEngine from "@getmash/post-message";
 
 import {
