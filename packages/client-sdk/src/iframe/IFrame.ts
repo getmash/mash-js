@@ -46,7 +46,7 @@ export const WIX_ACTION_BAR = 74;
 
 const MAX_Z_INDEX = 2147483647;
 
-const WALLET_CONTAINER_STYLE = {
+const CONTAINER_STYLE = {
   position: "fixed",
   bottom: "0",
   right: "0",
@@ -60,17 +60,6 @@ const WALLET_CONTAINER_STYLE = {
   animation: "none !important",
   "background-color": "transparent !important",
   transition: "none !important",
-};
-
-const MODAL_CONTAINER_STYLE = {
-  border: "none",
-  width: "100%",
-  height: "100vh",
-  position: "fixed",
-  top: "0",
-  left: "0",
-  "z-index": MAX_Z_INDEX,
-  visibility: "hidden",
 };
 
 const IFRAME_STYLE = {
@@ -140,44 +129,25 @@ export default class IFrame {
     vertical: 0,
   };
 
-  private walletContainer: HTMLDivElement;
-  private walletIframe: HTMLIFrameElement;
-  private modalContainer: HTMLDivElement;
-  private modalIframe: HTMLIFrameElement;
+  private container: HTMLDivElement;
+  private iframe: HTMLIFrameElement;
   private engine: PostMessageEngine<EventMessage> | null = null;
 
-  constructor(walletSrc: string, modalSrc: string) {
+  constructor(walletSrc: string) {
     this.src = new URL(walletSrc);
 
     // Create wallet dom elements
-    this.walletContainer = document.createElement("div");
-    this.walletContainer.setAttribute("class", "mash mash-root");
-    this.walletContainer.setAttribute(
-      "style",
-      toHTMLStyle(WALLET_CONTAINER_STYLE),
-    );
+    this.container = document.createElement("div");
+    this.container.setAttribute("class", "mash mash-root");
+    this.container.setAttribute("style", toHTMLStyle(CONTAINER_STYLE));
 
-    this.walletIframe = document.createElement("iframe");
-    this.walletIframe.setAttribute("class", "mash-this.iframe");
-    this.walletIframe.setAttribute("style", toHTMLStyle(IFRAME_STYLE));
-    this.walletIframe.setAttribute("src", walletSrc);
-    this.walletIframe.setAttribute("title", "Mash Wallet");
-    this.walletIframe.setAttribute("name", IFRAME_NAME);
-    this.walletIframe.allowFullscreen = true;
-
-    // Create modal dom elements
-    this.modalContainer = document.createElement("div");
-    this.modalContainer.setAttribute(
-      "style",
-      toHTMLStyle(MODAL_CONTAINER_STYLE),
-    );
-
-    this.modalIframe = document.createElement("iframe");
-    this.modalIframe.setAttribute("title", "Mash Pre-Boarding");
-    this.modalIframe.setAttribute("style", toHTMLStyle(IFRAME_STYLE));
-    this.modalIframe.setAttribute("name", MODAL_IFRAME_NAME);
-    this.modalIframe.setAttribute("src", modalSrc);
-    this.modalIframe.allowFullscreen = true;
+    this.iframe = document.createElement("iframe");
+    this.iframe.setAttribute("class", "mash-this.iframe");
+    this.iframe.setAttribute("style", toHTMLStyle(IFRAME_STYLE));
+    this.iframe.setAttribute("src", walletSrc);
+    this.iframe.setAttribute("title", "Mash Wallet");
+    this.iframe.setAttribute("name", IFRAME_NAME);
+    this.iframe.allowFullscreen = true;
   }
 
   /**
@@ -192,32 +162,18 @@ export default class IFrame {
     unit: "%" | "px",
     margin: boolean,
   ) => {
-    this.walletContainer.style.height = `${height}${unit}`;
-    this.walletContainer.style.width = `${width}${unit}`;
+    this.container.style.height = `${height}${unit}`;
+    this.container.style.width = `${width}${unit}`;
 
     if (margin) {
-      this.walletContainer.style.marginRight = "20px";
-      this.walletContainer.style.marginLeft = "20px";
-      this.walletContainer.style.marginBottom = "20px";
+      this.container.style.marginRight = "20px";
+      this.container.style.marginLeft = "20px";
+      this.container.style.marginBottom = "20px";
     } else {
-      this.walletContainer.style.marginRight = "0";
-      this.walletContainer.style.marginLeft = "0";
-      this.walletContainer.style.marginBottom = "0";
+      this.container.style.marginRight = "0";
+      this.container.style.marginLeft = "0";
+      this.container.style.marginBottom = "0";
     }
-  };
-
-  /**
-   * Show full screen modal
-   */
-  private showModal = () => {
-    this.modalContainer.style.visibility = "visible";
-  };
-
-  /**
-   * Close full screen modal
-   */
-  private hideModal = () => {
-    this.modalContainer.style.visibility = "hidden";
   };
 
   /**
@@ -269,31 +225,31 @@ export default class IFrame {
 
     // Mobile
     if (mediaQuery.matches) {
-      this.walletContainer.style.bottom = "0";
+      this.container.style.bottom = "0";
 
       switch (this.mobileFloatSide) {
         case WalletButtonFloatSide.Left: {
-          this.walletContainer.style.right = "";
-          this.walletContainer.style.left = "0";
+          this.container.style.right = "";
+          this.container.style.left = "0";
           break;
         }
         case WalletButtonFloatSide.Right: {
-          this.walletContainer.style.right = "0";
-          this.walletContainer.style.left = "";
+          this.container.style.right = "0";
+          this.container.style.left = "";
           break;
         }
       }
       switch (this.mobileFloatPlacement) {
         case WalletButtonFloatPlacement.WixActionBar: {
-          this.walletContainer.style.bottom = `${WIX_ACTION_BAR}px`;
+          this.container.style.bottom = `${WIX_ACTION_BAR}px`;
           break;
         }
         case WalletButtonFloatPlacement.BasicShiftVertical: {
-          this.walletContainer.style.bottom = `${BASIC_SHIFT_VERTICAL}px`;
+          this.container.style.bottom = `${BASIC_SHIFT_VERTICAL}px`;
           break;
         }
         case WalletButtonFloatPlacement.Custom: {
-          this.walletContainer.style.bottom = `${this.mobileShiftConfiguration.vertical}px`;
+          this.container.style.bottom = `${this.mobileShiftConfiguration.vertical}px`;
           break;
         }
       }
@@ -303,13 +259,13 @@ export default class IFrame {
     // Desktop
     switch (this.desktopFloatSide) {
       case WalletButtonFloatSide.Left: {
-        this.walletContainer.style.left = "0";
-        this.walletContainer.style.right = "";
+        this.container.style.left = "0";
+        this.container.style.right = "";
         break;
       }
       case WalletButtonFloatSide.Right: {
-        this.walletContainer.style.right = "0";
-        this.walletContainer.style.left = "";
+        this.container.style.right = "0";
+        this.container.style.left = "";
         break;
       }
     }
@@ -317,68 +273,68 @@ export default class IFrame {
       case WalletButtonFloatPlacement.Ghost: {
         switch (this.desktopFloatSide) {
           case WalletButtonFloatSide.Left: {
-            this.walletContainer.style.left = "0";
-            this.walletContainer.style.right = "";
+            this.container.style.left = "0";
+            this.container.style.right = "";
             break;
           }
           case WalletButtonFloatSide.Right: {
-            this.walletContainer.style.right = "0";
-            this.walletContainer.style.left = "";
+            this.container.style.right = "0";
+            this.container.style.left = "";
             break;
           }
         }
-        this.walletContainer.style.bottom = `${GHOST_SHIFT}px`;
+        this.container.style.bottom = `${GHOST_SHIFT}px`;
         break;
       }
       case WalletButtonFloatPlacement.Intercom: {
         switch (this.desktopFloatSide) {
           case WalletButtonFloatSide.Left: {
-            this.walletContainer.style.left = "0";
-            this.walletContainer.style.right = "";
+            this.container.style.left = "0";
+            this.container.style.right = "";
             break;
           }
           case WalletButtonFloatSide.Right: {
-            this.walletContainer.style.right = "0";
-            this.walletContainer.style.left = "";
+            this.container.style.right = "0";
+            this.container.style.left = "";
             break;
           }
         }
-        this.walletContainer.style.bottom = `${INTERCOM_SHIFT}px`;
+        this.container.style.bottom = `${INTERCOM_SHIFT}px`;
         break;
       }
       case WalletButtonFloatPlacement.BasicShiftHorizontal: {
         switch (this.desktopFloatSide) {
           case WalletButtonFloatSide.Left: {
-            this.walletContainer.style.left = `${BASIC_SHIFT_HORIZONTAL}px`;
-            this.walletContainer.style.right = "";
+            this.container.style.left = `${BASIC_SHIFT_HORIZONTAL}px`;
+            this.container.style.right = "";
             break;
           }
           case WalletButtonFloatSide.Right: {
-            this.walletContainer.style.right = `${BASIC_SHIFT_HORIZONTAL}px`;
-            this.walletContainer.style.left = "";
+            this.container.style.right = `${BASIC_SHIFT_HORIZONTAL}px`;
+            this.container.style.left = "";
             break;
           }
         }
         break;
       }
       case WalletButtonFloatPlacement.BasicShiftVertical: {
-        this.walletContainer.style.bottom = `${BASIC_SHIFT_VERTICAL}px`;
+        this.container.style.bottom = `${BASIC_SHIFT_VERTICAL}px`;
         break;
       }
       case WalletButtonFloatPlacement.Custom: {
         switch (this.desktopFloatSide) {
           case WalletButtonFloatSide.Left: {
-            this.walletContainer.style.left = `${this.desktopShiftConfiguration.horizontal}px`;
-            this.walletContainer.style.right = "";
+            this.container.style.left = `${this.desktopShiftConfiguration.horizontal}px`;
+            this.container.style.right = "";
             break;
           }
           case WalletButtonFloatSide.Right: {
-            this.walletContainer.style.right = `${this.desktopShiftConfiguration.horizontal}px`;
-            this.walletContainer.style.left = "";
+            this.container.style.right = `${this.desktopShiftConfiguration.horizontal}px`;
+            this.container.style.left = "";
             break;
           }
         }
-        this.walletContainer.style.bottom = `${this.desktopShiftConfiguration.vertical}px`;
+        this.container.style.bottom = `${this.desktopShiftConfiguration.vertical}px`;
         break;
       }
     }
@@ -443,16 +399,6 @@ export default class IFrame {
       if (!data) return;
 
       switch (data.name) {
-        case Events.ModalOpen: {
-          this.open = false;
-          this.showModal();
-          break;
-        }
-        case Events.ModalClose: {
-          this.open = false;
-          this.hideModal();
-          break;
-        }
         case Events.WalletOpened: {
           this.open = true;
           this.resize();
@@ -477,7 +423,7 @@ export default class IFrame {
             metadata: { mode: mq.matches ? Layout.Mobile : Layout.Web },
           });
 
-          onLoadCallback(this.walletIframe);
+          onLoadCallback(this.iframe);
           break;
         }
       }
@@ -491,11 +437,8 @@ export default class IFrame {
    */
   mount(onLoad: OnLoadCallback, position: WalletButtonPosition) {
     if (!this.mounted) {
-      this.walletContainer.appendChild(this.walletIframe);
-      document.body.appendChild(this.walletContainer);
-
-      this.modalContainer.appendChild(this.modalIframe);
-      document.body.appendChild(this.modalContainer);
+      this.container.appendChild(this.iframe);
+      document.body.appendChild(this.container);
 
       this.mounted = true;
     }
@@ -524,9 +467,8 @@ export default class IFrame {
     this.engine = new PostMessageEngine({
       name: Targets.HostSiteFrame,
       targetName: Targets.Wallet,
-      targetWindow: this.walletIframe.contentWindow,
+      targetWindow: this.iframe.contentWindow,
       targetOrigin: this.src.origin,
-      targetWindowFilter: false,
     });
 
     this.setupListeners();
