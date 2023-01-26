@@ -1,5 +1,11 @@
 import PostMessageEngine from "@getmash/post-message";
-import { EventMessage, Events, MAX_Z_INDEX, Targets, toHTMLStyle } from "./blocks.js";
+import {
+  EventMessage,
+  Events,
+  MAX_Z_INDEX,
+  Targets,
+  toHTMLStyle,
+} from "./blocks.js";
 
 const CONTAINER_STYLE = {
   border: "none",

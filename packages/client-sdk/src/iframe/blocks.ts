@@ -11,10 +11,10 @@ export enum Events {
 }
 
 export enum Targets {
-    HostSiteFrame = "@mash/host-site-iframe",
-    Wallet = "@mash/wallet",
-    Modal = "@mash/modal",
-  }
+  HostSiteFrame = "@mash/host-site-iframe",
+  Wallet = "@mash/wallet",
+  Modal = "@mash/modal",
+}
 
 export type EventMessage<T = Record<string, unknown>> = {
   name: string;

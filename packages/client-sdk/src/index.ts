@@ -14,12 +14,8 @@ export {
   MobileSettings,
 } from "./iframe/position.js";
 
-export {
-  IFRAME_NAME as MashIFrameName,
-} from "./iframe/IFrame.js";
+export { IFRAME_NAME as MashIFrameName } from "./iframe/IFrame.js";
 
-export {
-  Events as IFrameEvents,
-} from "./iframe/blocks.js";
+export { Events as IFrameEvents } from "./iframe/blocks.js";
 
 export { MashEvent } from "./events.js";

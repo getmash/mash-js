@@ -6,7 +6,14 @@ import {
   WalletButtonPosition,
   WalletButtonShiftConfiguration,
 } from "../api/routes.js";
-import { EventMessage, Events, MAX_Z_INDEX, OnLoadCallback, Targets, toHTMLStyle } from "./blocks.js";
+import {
+  EventMessage,
+  Events,
+  MAX_Z_INDEX,
+  OnLoadCallback,
+  Targets,
+  toHTMLStyle,
+} from "./blocks.js";
 
 enum Layout {
   Web = "web",
