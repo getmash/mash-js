@@ -1,8 +1,8 @@
 export const MAX_Z_INDEX = 2147483647;
 
 export enum Events {
-  ModalOpen = "modal:open",
-  ModalClose = "modal:close",
+  PreboardingOpen = "preboarding:open",
+  PreboardingClose = "preboarding:close",
   WalletOpened = "wallet:open",
   WalletClosed = "wallet:close",
   WalletLoaded = "wallet:loaded",
@@ -13,7 +13,7 @@ export enum Events {
 export enum Targets {
   HostSiteFrame = "@mash/host-site-iframe",
   Wallet = "@mash/wallet",
-  Modal = "@mash/modal",
+  Preboard = "@mash/preboarding",
 }
 
 export type EventMessage<T = Record<string, unknown>> = {

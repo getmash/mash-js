@@ -2,4 +2,4 @@
 "@getmash/client-sdk": minor
 ---
 
-Adds a modal iframe that gets mounted in hidden visibility with the ability to show via a modal open event.
+Adds a preboarding iframe that gets mounted in hidden visibility with the ability to show via open/close events

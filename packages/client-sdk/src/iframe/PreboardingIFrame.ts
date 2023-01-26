@@ -27,12 +27,12 @@ const IFRAME_STYLE = {
   "color-scheme": "normal",
 };
 
-const MODAL_IFRAME_NAME = "mash_modal";
+const IFRAME_NAME = "mash_preboarding";
 
 /**
- * A full screen modal iframe
+ * A full screen iframe used to preboard users
  */
-export class ModalIFrame {
+export class PreboardingIFrame {
   readonly src: URL;
 
   private _mounted = false;
@@ -57,22 +57,22 @@ export class ModalIFrame {
     this.iframe = document.createElement("iframe");
     this.iframe.setAttribute("title", "Mash Pre-Boarding");
     this.iframe.setAttribute("style", toHTMLStyle(IFRAME_STYLE));
-    this.iframe.setAttribute("name", MODAL_IFRAME_NAME);
+    this.iframe.setAttribute("name", IFRAME_NAME);
     this.iframe.setAttribute("src", src);
     this.iframe.allowFullscreen = true;
   }
 
   /**
-   * Show full screen modal
+   * Show full screen iframe
    */
-  private showModal = () => {
+  private showPreboarding = () => {
     this.container.style.visibility = "visible";
   };
 
   /**
-   * Close full screen modal
+   * Close full screen iframe
    */
-  private hideModal = () => {
+  private hidePreboarding = () => {
     this.container.style.visibility = "hidden";
   };
 
@@ -88,12 +88,12 @@ export class ModalIFrame {
       if (!data) return;
 
       switch (data.name) {
-        case Events.ModalOpen: {
-          this.showModal();
+        case Events.PreboardingOpen: {
+          this.showPreboarding();
           break;
         }
-        case Events.ModalClose: {
-          this.hideModal();
+        case Events.PreboardingClose: {
+          this.hidePreboarding();
           break;
         }
       }
@@ -115,7 +115,7 @@ export class ModalIFrame {
 
     this.engine = new PostMessageEngine({
       name: Targets.HostSiteFrame,
-      targetName: Targets.Modal,
+      targetName: Targets.Preboard,
       targetWindow: this.iframe.contentWindow,
       targetOrigin: this.src.origin,
       targetWindowFilter: false,
