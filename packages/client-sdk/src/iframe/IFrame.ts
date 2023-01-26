@@ -406,9 +406,6 @@ export default class IFrame {
    */
   private setupListeners() {
     this.getMediaQuery().addEventListener("change", this.onMediaQueryChanged);
-
-    // Clicking on the modal backdrop closes the modal
-    this.modalContainer.onclick = this.hideModal;
   }
 
   /**
