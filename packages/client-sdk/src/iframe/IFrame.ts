@@ -72,7 +72,6 @@ const IFRAME_STYLE = {
 };
 
 export const IFRAME_NAME = "mash_wallet";
-export const MODAL_IFRAME_NAME = "mash_modal";
 
 export default class IFrame {
   readonly src: URL;
@@ -105,8 +104,8 @@ export default class IFrame {
   private iframe: HTMLIFrameElement;
   private engine: PostMessageEngine<EventMessage> | null = null;
 
-  constructor(walletSrc: string) {
-    this.src = new URL(walletSrc);
+  constructor(src: string) {
+    this.src = new URL(src);
 
     // Create wallet dom elements
     this.container = document.createElement("div");
@@ -116,7 +115,7 @@ export default class IFrame {
     this.iframe = document.createElement("iframe");
     this.iframe.setAttribute("class", "mash-this.iframe");
     this.iframe.setAttribute("style", toHTMLStyle(IFRAME_STYLE));
-    this.iframe.setAttribute("src", walletSrc);
+    this.iframe.setAttribute("src", src);
     this.iframe.setAttribute("title", "Mash Wallet");
     this.iframe.setAttribute("name", IFRAME_NAME);
     this.iframe.allowFullscreen = true;
@@ -411,11 +410,9 @@ export default class IFrame {
     if (!this.mounted) {
       this.container.appendChild(this.iframe);
       document.body.appendChild(this.container);
-
       this.mounted = true;
     }
 
-    // Wallet settings
     this.desktopFloatSide = position.desktop.floatSide;
     this.desktopFloatPlacement = position.desktop.floatPlacement;
     this.desktopShiftConfiguration.horizontal = this.normalizeShift(
