@@ -108,7 +108,7 @@ describe("IFrame Events", () => {
     );
 
     // @ts-expect-error grabbing the private iframe to get window
-    replacePostMessage(iframe.iframe.contentWindow);
+    replacePostMessage(iframe.walletIframe.contentWindow);
 
     // pretend to be the app in the iframe asking the SDK to resize it
     const wallet = new PostMessageEngine<EventMessage>({
@@ -147,7 +147,7 @@ describe("IFrame Events", () => {
     );
 
     // @ts-expect-error grabbing the private iframe to get window
-    replacePostMessage(iframe.iframe.contentWindow);
+    replacePostMessage(iframe.walletIframe.contentWindow);
 
     // pretend to be the app in the iframe asking the SDK to resize it
     const wallet = new PostMessageEngine<EventMessage>({
@@ -185,7 +185,7 @@ describe("IFrame Events", () => {
     );
 
     // @ts-expect-error grabbing the private iframe to get window
-    replacePostMessage(iframe.iframe.contentWindow);
+    replacePostMessage(iframe.walletIframe.contentWindow);
 
     // pretend to be the app in the iframe asking the SDK to resize it
     const wallet = new PostMessageEngine<EventMessage>({
