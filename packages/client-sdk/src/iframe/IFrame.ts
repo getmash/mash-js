@@ -6,11 +6,7 @@ import {
   WalletButtonPosition,
   WalletButtonShiftConfiguration,
 } from "../api/routes.js";
-
-export enum Targets {
-  HostSiteFrame = "@mash/host-site-iframe",
-  Wallet = "@mash/wallet",
-}
+import { EventMessage, Events, MAX_Z_INDEX, OnLoadCallback, Targets, toHTMLStyle } from "./blocks.js";
 
 enum Layout {
   Web = "web",
@@ -44,8 +40,6 @@ export const INTERCOM_SHIFT = 60;
 /* Amount used to shift for Wix Action Bar */
 export const WIX_ACTION_BAR = 74;
 
-const MAX_Z_INDEX = 2147483647;
-
 const CONTAINER_STYLE = {
   position: "fixed",
   bottom: "0",
@@ -69,35 +63,6 @@ const IFRAME_STYLE = {
   "background-color": "inherit !important",
   "color-scheme": "normal",
 };
-
-export type EventMessage<T = Record<string, unknown>> = {
-  name: string;
-  metadata: T;
-};
-
-export type OnLoadCallback = (iframe: HTMLIFrameElement) => void;
-
-/**
- * Converts a dict of styles into HTML acceptable style string
- * @param styles Record<string, string|number>
- * @returns string
- */
-export function toHTMLStyle(styles: Record<string, string | number>): string {
-  return Object.keys(styles).reduce((str, key) => {
-    const style = styles[key];
-    return (str += `${key}:${style};`);
-  }, "");
-}
-
-export enum Events {
-  ModalOpen = "modal:open",
-  ModalClose = "modal:close",
-  WalletOpened = "wallet:open",
-  WalletClosed = "wallet:close",
-  WalletLoaded = "wallet:loaded",
-  LayoutChanged = "layout:changed",
-  NotificationUpdate = "notifications:update",
-}
 
 export const IFRAME_NAME = "mash_wallet";
 export const MODAL_IFRAME_NAME = "mash_modal";

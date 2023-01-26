@@ -12,11 +12,7 @@ import {
 } from "../api/routes.js";
 import { createDOM } from "../tests/dom.js";
 import IFrame, {
-  Targets,
-  EventMessage,
-  Events,
   IFRAME_NAME,
-  toHTMLStyle,
   MAX_CONTENT_HEIGHT,
   MAX_CONTENT_WIDTH,
   MIN_CONTENT_HEIGHT,
@@ -29,6 +25,7 @@ import IFrame, {
   INTERCOM_SHIFT,
 } from "./IFrame.js";
 import { getWalletPosition } from "./position.js";
+import { EventMessage, Events, Targets, toHTMLStyle } from "./blocks.js";
 
 const WALLET_IFRAME_URL = "http://localhost/widget";
 

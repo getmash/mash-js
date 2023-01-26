@@ -1,6 +1,5 @@
 import PostMessageEngine from "@getmash/post-message";
-
-const MAX_Z_INDEX = 2147483647;
+import { EventMessage, Events, MAX_Z_INDEX, Targets, toHTMLStyle } from "./blocks.js";
 
 const CONTAINER_STYLE = {
   border: "none",
@@ -21,41 +20,7 @@ const IFRAME_STYLE = {
   "color-scheme": "normal",
 };
 
-export enum Targets {
-  HostSiteFrame = "@mash/host-site-iframe",
-  Modal = "@mash/modal",
-}
-
-export type EventMessage<T = Record<string, unknown>> = {
-  name: string;
-  metadata: T;
-};
-
-export type OnLoadCallback = (iframe: HTMLIFrameElement) => void;
-
-/**
- * Converts a dict of styles into HTML acceptable style string
- * @param styles Record<string, string|number>
- * @returns string
- */
-export function toHTMLStyle(styles: Record<string, string | number>): string {
-  return Object.keys(styles).reduce((str, key) => {
-    const style = styles[key];
-    return (str += `${key}:${style};`);
-  }, "");
-}
-
-export enum Events {
-  ModalOpen = "modal:open",
-  ModalClose = "modal:close",
-  WalletOpened = "wallet:open",
-  WalletClosed = "wallet:close",
-  WalletLoaded = "wallet:loaded",
-  LayoutChanged = "layout:changed",
-  NotificationUpdate = "notifications:update",
-}
-
-export const MODAL_IFRAME_NAME = "mash_modal";
+const MODAL_IFRAME_NAME = "mash_modal";
 
 /**
  * A full screen modal iframe
