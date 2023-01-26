@@ -89,15 +89,15 @@ export type PageRevealer = {
   pages: PageSelection;
   contentTypeID: string;
   template: string;
-  templateImage: string;
-  templateImageColor: string;
+  templateImage?: string;
+  templateImageColor?: string;
   logoEnabled: boolean;
-  logoURL: string;
+  logoURL?: string;
   textAlignment: string;
   title: string;
-  message: string;
-  bullets: string[];
-  buttonColor: string;
+  message?: string;
+  bullets?: string[];
+  buttonColor?: string;
   fontFamily?: string;
 };
 
