@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.9.0
+
+### Minor Changes
+
+- [#68](https://github.com/getmash/mash-js/pull/68) [`d712687`](https://github.com/getmash/mash-js/commit/d7126876b4dc754d5c7e323439ea23e2ae9327c3) Thanks [@nyonson](https://github.com/nyonson)! - Page revealer types better match API
+
 ## 2.8.0
 
 ### Minor Changes
