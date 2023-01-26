@@ -3,6 +3,7 @@ import { beforeEach, describe, it } from "node:test";
 
 import { waitFor } from "@testing-library/dom";
 
+
 import PostMessageEngine from "@getmash/post-message";
 
 import {
@@ -24,8 +25,8 @@ import IFrame, {
   GHOST_SHIFT,
   INTERCOM_SHIFT,
 } from "./IFrame.js";
-import { getWalletPosition } from "./position.js";
 import { EventMessage, Events, Targets, toHTMLStyle } from "./blocks.js";
+import { getWalletPosition } from "./position.js";
 
 const IFRAME_SOURCE = "http://localhost/widget";
 
