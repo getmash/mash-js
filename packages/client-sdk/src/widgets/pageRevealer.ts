@@ -16,7 +16,6 @@ export default function injectPageRevealers(
       pageSelected(pathname, config.pages.target, config.pages.matchers)
     ) {
       const pageRevealer = window.document.createElement("mash-page-revealer");
-      pageRevealer.setAttribute("name", toAttributeStyle(config.template));
       pageRevealer.setAttribute("template", toAttributeStyle(config.template));
       if (config.templateImage) {
         pageRevealer.setAttribute(
