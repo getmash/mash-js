@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.9.1
+
+### Patch Changes
+
+- [#71](https://github.com/getmash/mash-js/pull/71) [`eaa91c2`](https://github.com/getmash/mash-js/commit/eaa91c24e15c78bf0527f6dd934d1c12c0466976) Thanks [@nyonson](https://github.com/nyonson)! - Drop name from page revealer for now
+
 ## 2.9.0
 
 ### Minor Changes
