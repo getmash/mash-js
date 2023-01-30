@@ -186,7 +186,13 @@ class Mash {
     return this.rpcAPI
       .access(resourceID)
       .then(res => res.hasAccess)
-      .catch(() => false);
+      .catch(err => {
+        console.warn(
+          "[MASH] Error when attempting access, is this the correct resource ID?\n",
+          err,
+        );
+        return false;
+      });
   }
 
   /**
