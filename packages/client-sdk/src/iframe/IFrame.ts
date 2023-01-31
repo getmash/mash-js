@@ -28,7 +28,7 @@ export const MIN_CONTENT_WIDTH = 100;
 /* Min Height for Wallet when closed */
 export const MIN_CONTENT_HEIGHT = 100;
 /* Max Height of a notifcation */
-export const MAX_HEIGHT_NOTIFICATION = 140;
+export const MAX_HEIGHT_NOTIFICATION = 216;
 /* Max amount the Wallet can be moved up */
 export const MAX_SHIFT_VERTICAL = 200;
 /* Max amount the Wallet can be moved horizontally */
