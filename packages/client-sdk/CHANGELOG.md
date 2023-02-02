@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.11.0
+
+### Minor Changes
+
+- [#70](https://github.com/getmash/mash-js/pull/70) [`25f51a7`](https://github.com/getmash/mash-js/commit/25f51a735935999eae95c3acfef5c1884ff19fc8) Thanks [@cartonioh](https://github.com/cartonioh)! - Adds a preboarding iframe that gets mounted in hidden visibility with the ability to show via open/close events
+
 ## 2.10.1
 
 ### Patch Changes
