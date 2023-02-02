@@ -1,5 +1,27 @@
 # @getmash/client-sdk
 
+## 2.10.1
+
+### Patch Changes
+
+- [#76](https://github.com/getmash/mash-js/pull/76) [`48f54a1`](https://github.com/getmash/mash-js/commit/48f54a19cd9a899e842ee64365a01d9374c28a92) Thanks [@aron-mash](https://github.com/aron-mash)! - Increasing the max height for notifications
+
+## 2.10.0
+
+### Minor Changes
+
+- [#75](https://github.com/getmash/mash-js/pull/75) [`0d1996b`](https://github.com/getmash/mash-js/commit/0d1996b71389becc41733e9f8f0b9a622db450e6) Thanks [@nyonson](https://github.com/nyonson)! - Fix open button placement
+
+### Patch Changes
+
+- [#73](https://github.com/getmash/mash-js/pull/73) [`c8ce9c0`](https://github.com/getmash/mash-js/commit/c8ce9c03980ad36054711bffc2bb7552f3108a86) Thanks [@nyonson](https://github.com/nyonson)! - Add console log for easier debugging setting up IDs
+
+## 2.9.1
+
+### Patch Changes
+
+- [#71](https://github.com/getmash/mash-js/pull/71) [`eaa91c2`](https://github.com/getmash/mash-js/commit/eaa91c24e15c78bf0527f6dd934d1c12c0466976) Thanks [@nyonson](https://github.com/nyonson)! - Drop name from page revealer for now
+
 ## 2.9.0
 
 ### Minor Changes

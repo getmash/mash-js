@@ -130,6 +130,48 @@ describe("IFrame Events", () => {
     });
   });
 
+  it("trigger open event on mobile, should reset to full viewport", async () => {
+    mockMatchMedia(true);
+
+    // mount with a custom mobile shift
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(() => ({}), {
+      desktop: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 0,
+        },
+      },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: {
+          horizontal: 0,
+          vertical: 100,
+        },
+      },
+    });
+
+    // @ts-expect-error grabbing the private iframe to get window
+    replacePostMessage(iframe.iframe.contentWindow);
+
+    // pretend to be the app in the iframe asking the SDK to resize it
+    const wallet = new PostMessageEngine<EventMessage>({
+      name: Targets.Wallet,
+      targetName: Targets.HostSiteFrame,
+      targetWindow: window,
+      targetOrigin: "*",
+    });
+    wallet.send({ name: Events.WalletOpened, metadata: {} });
+
+    // make sure 0'd out on open
+    await waitFor(() => {
+      assert.equal(getIframe().parentElement?.style.bottom, "0px");
+    });
+  });
+
   it("trigger close event, should resize iframe correctly", async () => {
     mockMatchMedia();
 
@@ -193,7 +235,7 @@ describe("IFrame Events", () => {
 
     wallet.send({ name: Events.NotificationUpdate, metadata: { count: 2 } });
     await waitFor(() => {
-      assert.equal(getIframe().parentElement?.style.height, "280px");
+      assert.equal(getIframe().parentElement?.style.height, "432px");
     });
     await waitFor(() => {
       assert.equal(

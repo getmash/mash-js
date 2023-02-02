@@ -31,7 +31,7 @@ export const MIN_CONTENT_WIDTH = 100;
 /* Min Height for Wallet when closed */
 export const MIN_CONTENT_HEIGHT = 100;
 /* Max Height of a notifcation */
-export const MAX_HEIGHT_NOTIFICATION = 140;
+export const MAX_HEIGHT_NOTIFICATION = 216;
 /* Max amount the Wallet can be moved up */
 export const MAX_SHIFT_VERTICAL = 200;
 /* Max amount the Wallet can be moved horizontally */
@@ -47,6 +47,9 @@ export const INTERCOM_SHIFT = 60;
 /* Amount used to shift for Wix Action Bar */
 export const WIX_ACTION_BAR = 74;
 
+/**
+ * Default iframe style.
+ */
 const CONTAINER_STYLE = {
   position: "fixed",
   bottom: "0",
@@ -210,20 +213,27 @@ export default class IFrame {
           break;
         }
       }
-      switch (this.mobileFloatPlacement) {
-        case WalletButtonFloatPlacement.WixActionBar: {
-          this.container.style.bottom = `${WIX_ACTION_BAR}px`;
-          break;
-        }
-        case WalletButtonFloatPlacement.BasicShiftVertical: {
-          this.container.style.bottom = `${BASIC_SHIFT_VERTICAL}px`;
-          break;
-        }
-        case WalletButtonFloatPlacement.Custom: {
-          this.container.style.bottom = `${this.mobileShiftConfiguration.vertical}px`;
-          break;
+
+      // if open, return to default position
+      if (this.open) {
+        this.container.style.bottom = "0";
+      } else {
+        switch (this.mobileFloatPlacement) {
+          case WalletButtonFloatPlacement.WixActionBar: {
+            this.container.style.bottom = `${WIX_ACTION_BAR}px`;
+            break;
+          }
+          case WalletButtonFloatPlacement.BasicShiftVertical: {
+            this.container.style.bottom = `${BASIC_SHIFT_VERTICAL}px`;
+            break;
+          }
+          case WalletButtonFloatPlacement.Custom: {
+            this.container.style.bottom = `${this.mobileShiftConfiguration.vertical}px`;
+            break;
+          }
         }
       }
+
       return;
     }
 
@@ -373,17 +383,20 @@ export default class IFrame {
         case Events.WalletOpened: {
           this.open = true;
           this.resize();
+          this.position();
           break;
         }
         case Events.WalletClosed: {
           this.open = false;
           this.resize();
+          this.position();
           break;
         }
         case Events.NotificationUpdate: {
           this.notificationCount =
             (data.metadata.count as number | undefined) || 0;
           this.resize();
+          this.position();
           break;
         }
         case Events.WalletLoaded: {
