@@ -4,6 +4,7 @@ import * as MashWebAPI from "./api/routes.js";
 import parseConfig, { PartialConfig, Config } from "./config.js";
 import { MashEvent } from "./events.js";
 import IFrame from "./iframe/IFrame.js";
+import { PreboardingIFrame } from "./iframe/PreboardingIFrame.js";
 import {
   getWalletPosition,
   WalletPosition,
@@ -24,6 +25,7 @@ export type MashSettings = {
 class Mash {
   private rpcAPI: MashRPCAPI | null = null;
   private iframe: IFrame;
+  private preboardIFrame: PreboardingIFrame;
   private initialized = false;
   /**
    * Configuration set in the local source.
@@ -41,6 +43,9 @@ class Mash {
   constructor(config: PartialConfig) {
     this.localConfig = parseConfig(config);
     this.iframe = new IFrame(this.localConfig.walletURL);
+    this.preboardIFrame = new PreboardingIFrame(
+      this.localConfig.preboardingURL,
+    );
 
     // Listen for connect events from widgets
     this.widgetConnected = new Promise<void>(res => {
@@ -257,6 +262,7 @@ class Mash {
       };
 
       this.iframe.mount(onIframeLoaded, position);
+      this.preboardIFrame.mount();
     });
   }
 }

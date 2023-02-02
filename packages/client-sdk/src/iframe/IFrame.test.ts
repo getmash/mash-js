@@ -12,11 +12,7 @@ import {
 } from "../api/routes.js";
 import { createDOM } from "../tests/dom.js";
 import IFrame, {
-  Targets,
-  EventMessage,
-  Events,
   IFRAME_NAME,
-  toHTMLStyle,
   MAX_CONTENT_HEIGHT,
   MAX_CONTENT_WIDTH,
   MIN_CONTENT_HEIGHT,
@@ -28,9 +24,10 @@ import IFrame, {
   GHOST_SHIFT,
   INTERCOM_SHIFT,
 } from "./IFrame.js";
+import { EventMessage, Events, Targets, toHTMLStyle } from "./blocks.js";
 import { getWalletPosition } from "./position.js";
 
-const IFRAME_SOURCE = "http://localhost";
+const IFRAME_SOURCE = "http://localhost/widget";
 
 const MASH_SETTINGS: { id: string; position: Partial<WalletButtonPosition> } = {
   id: "123",
@@ -46,7 +43,7 @@ const replacePostMessage = (sourceWindow: Window | null) => {
     window.dispatchEvent(
       new window.MessageEvent("message", {
         source: sourceWindow,
-        origin: IFRAME_SOURCE,
+        origin: new URL(IFRAME_SOURCE).origin,
         data: message,
       }),
     );

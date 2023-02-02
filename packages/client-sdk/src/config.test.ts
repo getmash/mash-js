@@ -4,6 +4,7 @@ import { describe, it } from "node:test";
 import parse, {
   Config,
   DefaultAPIBaseURL,
+  DefaultPreboardingURL,
   DefaultWalletURL,
   DefaultWidgetBaseURL,
 } from "./config.js";
@@ -16,6 +17,7 @@ describe("Config", () => {
       autoHide: undefined,
       earnerID: "1",
       walletURL: DefaultWalletURL,
+      preboardingURL: DefaultPreboardingURL,
       widgets: {
         baseURL: DefaultWidgetBaseURL,
         injectTheme: true,
@@ -30,6 +32,7 @@ describe("Config", () => {
       earnerID: "1",
       autoHide: undefined,
       walletURL: "testsite",
+      preboardingURL: "testpreboardingsite",
       widgets: {
         baseURL: "tester.com",
         injectTheme: false,
