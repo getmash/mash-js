@@ -22,7 +22,7 @@ const FULLSCREEN_THRESHOLD = 480;
 /* Max Width for Wallet in Desktop layout */
 export const MAX_CONTENT_WIDTH = 428;
 /* Max Height for Wallet in Desktop layout */
-export const MAX_CONTENT_HEIGHT = 628;
+export const MAX_CONTENT_HEIGHT = 666;
 /* Min Width for Wallet when closed */
 export const MIN_CONTENT_WIDTH = 100;
 /* Min Height for Wallet when closed */
