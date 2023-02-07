@@ -1,12 +1,11 @@
 # @getmash/client-sdk
 
-## 3.0.0
+## 2.12.0
 
-### Major Changes
+### Patch Changes
 
 - [#79](https://github.com/getmash/mash-js/pull/79) [`e1edfb2`](https://github.com/getmash/mash-js/commit/e1edfb2fd82b55a5179d7864fe4b6bc337aa2104) Thanks [@aron-mash](https://github.com/aron-mash)! - Increasing height of mash button iframe
 
-### Patch Changes
 
 - [#80](https://github.com/getmash/mash-js/pull/80) [`431b5b5`](https://github.com/getmash/mash-js/commit/431b5b5dfd7bc6f32a04e86279171e58a240661a) Thanks [@mdedys](https://github.com/mdedys)! - Add excluded domain list for page matcher
 
