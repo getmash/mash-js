@@ -21,7 +21,8 @@ describe("Config", () => {
       widgets: {
         baseURL: DefaultWidgetBaseURL,
         injectTheme: true,
-        injectWidgets: true,
+        injectWebComponentScripts: true,
+        injectFloatingWidgets: true,
       },
     });
   });
@@ -36,7 +37,8 @@ describe("Config", () => {
       widgets: {
         baseURL: "tester.com",
         injectTheme: false,
-        injectWidgets: false,
+        injectWebComponentScripts: false,
+        injectFloatingWidgets: false,
       },
     };
     const result = parse(config);
