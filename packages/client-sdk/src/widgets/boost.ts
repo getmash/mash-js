@@ -8,18 +8,12 @@ import { pageSelected } from "./pageMatcher.js";
  */
 export default function injectFloatingBoosts(
   boostConfigurations: BoostConfiguration[],
-  hostname: string,
   pathname: string,
 ) {
   boostConfigurations.forEach(config => {
     if (
       config.active &&
-      pageSelected(
-        hostname,
-        pathname,
-        config.pages.target,
-        config.pages.matchers,
-      )
+      pageSelected(pathname, config.pages.target, config.pages.matchers)
     ) {
       const boost = window.document.createElement("mash-boost-button");
       // these must be floating boosts
