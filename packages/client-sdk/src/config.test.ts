@@ -21,7 +21,8 @@ describe("Config", () => {
       widgets: {
         baseURL: DefaultWidgetBaseURL,
         injectTheme: true,
-        injectWidgets: true,
+        injectWebComponentScripts: true,
+        injectFloatingWidgets: true,
       },
     });
   });
@@ -36,10 +37,16 @@ describe("Config", () => {
       widgets: {
         baseURL: "tester.com",
         injectTheme: false,
-        injectWidgets: false,
+        injectWebComponentScripts: false,
+        injectFloatingWidgets: false,
       },
     };
     const result = parse(config);
     assert.deepEqual<Config>(result, config);
+  });
+
+  it("custom config, support injectWidgets value", () => {
+    const result = parse({ earnerID: "1", widgets: { injectWidgets: true } });
+    assert.ok(result.widgets.injectWidgets);
   });
 });

@@ -72,14 +72,15 @@ class Mash {
       return;
     }
 
-    if (
-      this.localConfig.widgets.injectTheme ||
-      this.localConfig.widgets.injectWidgets
-    ) {
+    const injectWebComponentScripts =
+      this.localConfig.widgets.injectWebComponentScripts ||
+      this.localConfig.widgets.injectWidgets;
+
+    if (this.localConfig.widgets.injectTheme || injectWebComponentScripts) {
       preconnect(this.localConfig.widgets.baseURL);
     }
 
-    if (this.localConfig.widgets.injectWidgets) {
+    if (injectWebComponentScripts) {
       injectWidgets(this.localConfig.widgets.baseURL);
     }
 
@@ -95,21 +96,22 @@ class Mash {
           );
         }
 
-        if (result.customization.boostConfigurations) {
-          injectFloatingBoosts(
-            result.customization.boostConfigurations,
-            window.location.host,
-            window.location.pathname,
-          );
+        if (this.localConfig.widgets.injectFloatingWidgets) {
+          if (result.customization.boostConfigurations) {
+            injectFloatingBoosts(
+              result.customization.boostConfigurations,
+              window.location.pathname,
+            );
+          }
+
+          if (result.customization.pageRevealers) {
+            injectPageRevealers(
+              result.customization.pageRevealers,
+              window.location.pathname,
+            );
+          }
         }
 
-        if (result.customization.pageRevealers) {
-          injectPageRevealers(
-            result.customization.pageRevealers,
-            window.location.host,
-            window.location.pathname,
-          );
-        }
         return result.customization;
       })
       .catch(err => {
