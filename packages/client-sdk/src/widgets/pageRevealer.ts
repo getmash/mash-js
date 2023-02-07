@@ -8,18 +8,12 @@ import { pageSelected } from "./pageMatcher.js";
  */
 export default function injectPageRevealers(
   pageRevealers: PageRevealer[],
-  hostname: string,
   pathname: string,
 ) {
   pageRevealers.forEach(config => {
     if (
       config.active &&
-      pageSelected(
-        hostname,
-        pathname,
-        config.pages.target,
-        config.pages.matchers,
-      )
+      pageSelected(pathname, config.pages.target, config.pages.matchers)
     ) {
       const pageRevealer = window.document.createElement("mash-page-revealer");
       pageRevealer.setAttribute("template", toAttributeStyle(config.template));
