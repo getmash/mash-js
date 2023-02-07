@@ -64,7 +64,6 @@ export const DefaultWidgetBaseURL = "https://widgets.getmash.com";
 const DEFAULT_WIDGETS_CONFIG: WidgetConfig = {
   baseURL: DefaultWidgetBaseURL,
   injectTheme: true,
-  injectWidgets: true,
   injectWebComponentScripts: true,
   injectFloatingWidgets: true,
 };
