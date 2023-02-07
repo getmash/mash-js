@@ -6,11 +6,14 @@ import {
   WalletButtonPosition,
   WalletButtonShiftConfiguration,
 } from "../api/routes.js";
-
-export enum Targets {
-  HostSiteFrame = "@mash/host-site-iframe",
-  Wallet = "@mash/wallet",
-}
+import {
+  EventMessage,
+  Events,
+  MAX_Z_INDEX,
+  OnLoadCallback,
+  Targets,
+  toHTMLStyle,
+} from "./blocks.js";
 
 enum Layout {
   Web = "web",
@@ -55,7 +58,7 @@ const CONTAINER_STYLE = {
   "margin-bottom": "20px",
   height: `${MIN_CONTENT_HEIGHT}px`,
   width: `${MIN_CONTENT_WIDTH}px`,
-  "z-index": 2147483647,
+  "z-index": MAX_Z_INDEX - 1,
 
   // Defensive CSS to prevent leaking from host site
   animation: "none !important",
@@ -70,33 +73,6 @@ const IFRAME_STYLE = {
   "background-color": "inherit !important",
   "color-scheme": "normal",
 };
-
-export type EventMessage<T = Record<string, unknown>> = {
-  name: string;
-  metadata: T;
-};
-
-type OnLoadCallback = (iframe: HTMLIFrameElement) => void;
-
-/**
- * Converts a dict of styles into HTML acceptable style string
- * @param styles Record<string, string|number>
- * @returns string
- */
-export function toHTMLStyle(styles: Record<string, string | number>): string {
-  return Object.keys(styles).reduce((str, key) => {
-    const style = styles[key];
-    return (str += `${key}:${style};`);
-  }, "");
-}
-
-export enum Events {
-  WalletOpened = "wallet:open",
-  WalletClosed = "wallet:close",
-  WalletLoaded = "wallet:loaded",
-  LayoutChanged = "layout:changed",
-  NotificationUpdate = "notifications:update",
-}
 
 export const IFRAME_NAME = "mash_wallet";
 
@@ -134,6 +110,7 @@ export default class IFrame {
   constructor(src: string) {
     this.src = new URL(src);
 
+    // Create wallet dom elements
     this.container = document.createElement("div");
     this.container.setAttribute("class", "mash mash-root");
     this.container.setAttribute("style", toHTMLStyle(CONTAINER_STYLE));
@@ -438,7 +415,7 @@ export default class IFrame {
   };
 
   /**
-   * Mount the iframe and load the Mash Wallet. Accepts a callback that triggered
+   * Mount the iframes and load the Mash Wallet. Accepts a callback that triggered
    * when the Wallet has loaded
    * @param onLoad OnLoadCallback
    */
@@ -461,8 +438,6 @@ export default class IFrame {
     );
     this.mobileFloatSide = position.mobile.floatSide;
     this.mobileFloatPlacement = position.mobile.floatPlacement;
-
-    // Only supported for manual init configuration, remote config might not be present
     this.mobileShiftConfiguration.vertical = this.normalizeShift(
       position.mobile.customShiftConfiguration?.vertical || 0,
       MAX_SHIFT_VERTICAL,
