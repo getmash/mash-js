@@ -66,14 +66,20 @@ export class PreboardingIFrame {
    * Show full screen iframe
    */
   private showPreboarding = () => {
+    // Make modal visible
     this.container.style.visibility = "visible";
+    // Prevent background from scrolling
+    document.body.style.position = "fixed";
   };
 
   /**
    * Close full screen iframe
    */
   private hidePreboarding = () => {
+    // Hide modal visibility
     this.container.style.visibility = "hidden";
+    // Revert background to its original position value
+    document.body.style.position = "";
   };
 
   /**
