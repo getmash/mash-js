@@ -5,13 +5,30 @@ import { MatchType, PageTarget } from "../api/routes.js";
 import { pageSelected } from "./pageMatcher.js";
 
 describe("boosts", () => {
+  it("excluded domain, page selected should be false", () => {
+    assert.ok(
+      !pageSelected("wallet.getmash.com", "/test/path", PageTarget.All, []),
+    );
+    assert.ok(
+      !pageSelected(
+        "mash-widget-dev.web.app",
+        "/test/path",
+        PageTarget.All,
+        [],
+      ),
+    );
+    assert.ok(
+      !pageSelected("localhost:3001", "/test/path", PageTarget.All, []),
+    );
+  });
+
   it("page selected target all is always true", () => {
-    assert.ok(pageSelected("/test/path", PageTarget.All, []));
+    assert.ok(pageSelected("test.com", "/test/path", PageTarget.All, []));
   });
 
   it("page selected target include is match", () => {
     assert.ok(
-      pageSelected("/test/path", PageTarget.Include, [
+      pageSelected("test.com", "/test/path", PageTarget.Include, [
         {
           id: "1",
           matchType: MatchType.Equals,
@@ -21,7 +38,7 @@ describe("boosts", () => {
     );
 
     assert.ok(
-      !pageSelected("/test/path", PageTarget.Include, [
+      !pageSelected("test.com", "/test/path", PageTarget.Include, [
         {
           id: "1",
           matchType: MatchType.Equals,
@@ -31,7 +48,7 @@ describe("boosts", () => {
     );
 
     assert.ok(
-      pageSelected("/test/path", PageTarget.Include, [
+      pageSelected("test.com", "/test/path", PageTarget.Include, [
         {
           id: "1",
           matchType: MatchType.StartsWith,
@@ -41,7 +58,7 @@ describe("boosts", () => {
     );
 
     assert.ok(
-      !pageSelected("/test/path", PageTarget.Include, [
+      !pageSelected("test.com", "/test/path", PageTarget.Include, [
         {
           id: "1",
           matchType: MatchType.StartsWith,
@@ -51,7 +68,7 @@ describe("boosts", () => {
     );
 
     assert.ok(
-      pageSelected("/test/path", PageTarget.Include, [
+      pageSelected("test.com", "/test/path", PageTarget.Include, [
         {
           id: "1",
           matchType: MatchType.Contains,
@@ -61,7 +78,7 @@ describe("boosts", () => {
     );
 
     assert.ok(
-      !pageSelected("/test/path", PageTarget.Include, [
+      !pageSelected("test.com", "/test/path", PageTarget.Include, [
         {
           id: "1",
           matchType: MatchType.Contains,
@@ -73,7 +90,7 @@ describe("boosts", () => {
 
   it("page selected target include is match with multiple matchers", () => {
     assert.ok(
-      pageSelected("/test/path", PageTarget.Include, [
+      pageSelected("test.com", "/test/path", PageTarget.Include, [
         {
           id: "1",
           matchType: MatchType.Contains,
@@ -90,7 +107,7 @@ describe("boosts", () => {
 
   it("page selected target exclude is match inverse", () => {
     assert.ok(
-      !pageSelected("/test/path", PageTarget.Exclude, [
+      !pageSelected("test.com", "/test/path", PageTarget.Exclude, [
         {
           id: "1",
           matchType: MatchType.Equals,
@@ -100,7 +117,7 @@ describe("boosts", () => {
     );
 
     assert.ok(
-      pageSelected("/test/path", PageTarget.Exclude, [
+      pageSelected("test.com", "/test/path", PageTarget.Exclude, [
         {
           id: "1",
           matchType: MatchType.Equals,
@@ -110,7 +127,7 @@ describe("boosts", () => {
     );
 
     assert.ok(
-      !pageSelected("/test/path", PageTarget.Exclude, [
+      !pageSelected("test.com", "/test/path", PageTarget.Exclude, [
         {
           id: "1",
           matchType: MatchType.StartsWith,
@@ -120,7 +137,7 @@ describe("boosts", () => {
     );
 
     assert.ok(
-      pageSelected("/test/path", PageTarget.Exclude, [
+      pageSelected("test.com", "/test/path", PageTarget.Exclude, [
         {
           id: "1",
           matchType: MatchType.StartsWith,
@@ -130,7 +147,7 @@ describe("boosts", () => {
     );
 
     assert.ok(
-      !pageSelected("/test/path", PageTarget.Exclude, [
+      !pageSelected("test.com", "/test/path", PageTarget.Exclude, [
         {
           id: "1",
           matchType: MatchType.Contains,
@@ -140,7 +157,7 @@ describe("boosts", () => {
     );
 
     assert.ok(
-      pageSelected("/test/path", PageTarget.Exclude, [
+      pageSelected("test.com", "/test/path", PageTarget.Exclude, [
         {
           id: "1",
           matchType: MatchType.Contains,

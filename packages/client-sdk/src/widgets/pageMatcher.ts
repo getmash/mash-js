@@ -1,5 +1,11 @@
 import { MatchType, PageMatcher, PageTarget } from "../api/routes.js";
 
+const EXCLUDED_DOMAINS = [
+  "wallet.getmash.com",
+  "mash-widget-dev.web.app",
+  "localhost:3001",
+];
+
 /**
  * Page matched if any matcher returns true.
  */
@@ -22,13 +28,16 @@ function pageMatched(pathname: string, matchers: PageMatcher[]): boolean {
 }
 
 /**
- * Determine if page is selected to load boosts.
+ * Determine if page is selected
  */
 export function pageSelected(
+  hostname: string,
   pathname: string,
   target: PageTarget,
   matchers: PageMatcher[],
 ): boolean {
+  if (EXCLUDED_DOMAINS.includes(hostname)) return false;
+
   if (target == PageTarget.All) {
     return true;
   } else if (target == PageTarget.Exclude) {

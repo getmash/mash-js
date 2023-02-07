@@ -98,6 +98,7 @@ class Mash {
         if (result.customization.boostConfigurations) {
           injectFloatingBoosts(
             result.customization.boostConfigurations,
+            window.location.host,
             window.location.pathname,
           );
         }
@@ -105,6 +106,7 @@ class Mash {
         if (result.customization.pageRevealers) {
           injectPageRevealers(
             result.customization.pageRevealers,
+            window.location.host,
             window.location.pathname,
           );
         }
