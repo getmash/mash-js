@@ -263,10 +263,12 @@ class Mash {
             resolve(null);
           })
           .catch(err => reject(err));
+
+        // Mount other dependent iframes
+        this.preboardIFrame.mount();
       };
 
       this.iframe.mount(onIframeLoaded, position);
-      this.preboardIFrame.mount();
     });
   }
 }
