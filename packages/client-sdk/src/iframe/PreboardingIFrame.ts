@@ -48,6 +48,9 @@ export class PreboardingIFrame {
 
   private engine: PostMessageEngine<EventMessage> | null = null;
 
+  private scrollElement: HTMLElement;
+  private scrollTop: number;
+
   constructor(src: string) {
     this.src = new URL(src);
 
@@ -60,20 +63,35 @@ export class PreboardingIFrame {
     this.iframe.setAttribute("name", IFRAME_NAME);
     this.iframe.setAttribute("src", src);
     this.iframe.allowFullscreen = true;
+
+    this.scrollElement = document.documentElement || document.body;
+    this.scrollTop = this.scrollElement.scrollTop;
   }
 
   /**
    * Show full screen iframe
    */
   private showPreboarding = () => {
+    // Make modal visible
     this.container.style.visibility = "visible";
+
+    // Update user's currently scrolled position
+    this.scrollTop = this.scrollElement.scrollTop;
+
+    // Prevent background from scrolling
+    document.body.style.position = "fixed";
   };
 
   /**
    * Close full screen iframe
    */
   private hidePreboarding = () => {
+    // Hide modal visibility
     this.container.style.visibility = "hidden";
+
+    // Revert background to its original position value
+    document.body.style.position = "";
+    this.scrollElement.scrollTop = this.scrollTop;
   };
 
   /**
