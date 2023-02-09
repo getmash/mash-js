@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.13.1
+
+### Patch Changes
+
+- [#85](https://github.com/getmash/mash-js/pull/85) [`b658d82`](https://github.com/getmash/mash-js/commit/b658d829343c270dfea156113a2dcdb91e90205e) Thanks [@cartonioh](https://github.com/cartonioh)! - Load preboarding iframe after main iframe
+
 ## 2.13.0
 
 ### Minor Changes
