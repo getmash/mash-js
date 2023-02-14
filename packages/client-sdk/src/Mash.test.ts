@@ -5,15 +5,6 @@ import Mash from "./Mash.js";
 import { MashEvent } from "./events.js";
 import { createDOM } from "./tests/dom.js";
 
-function mockMethod<T>(obj: unknown, methodName: string, fn: T) {
-  // Note: mock.method should in theory work, but node <= v19.3.0 has a bug where it doesn't search up
-  // the prototype chain for methods. Fix here: https://github.com/nodejs/node/commit/929aada39d
-  // As the fix is still unreleased at time of writing, usuing Object.defineProperty directly for now
-  const _init = mock.fn(fn);
-  Object.defineProperty(obj, "_init", { value: _init });
-  return _init;
-}
-
 // Note: using test instead of describe/it so that we can await the result of the subtests
 // https://nodejs.org/api/test.html#testname-options-fn
 test("Mash", async t => {
@@ -27,9 +18,9 @@ test("Mash", async t => {
       earnerID: "abc123",
     });
 
-    const _init = mockMethod(mash, "_init", async () => null);
+    const mount = mock(mash, "mount", async () => null);
     await mash.init();
-    assert.equal(_init.mock.callCount(), 1);
+    assert.equal(mount.mock.callCount(), 1);
   });
 
   // Tests that mounting is initiated only on receiving an event when autohiding
@@ -41,10 +32,10 @@ test("Mash", async t => {
         autoHide: true,
       });
 
-      const _init = mockMethod(mash, "_init", async () => null);
+      const mount = mock(mash, "mount", async () => null);
 
       const initialized = mash.init();
-      assert.equal(_init.mock.callCount(), 0);
+      assert.equal(mount.mock.callCount(), 0);
       // Make sure multiple events don't cause issues
       for (let i = 0; i < 3; i++) {
         window.dispatchEvent(
@@ -52,7 +43,7 @@ test("Mash", async t => {
         );
       }
       await initialized;
-      assert.equal(_init.mock.callCount(), 1);
+      assert.equal(mount.mock.callCount(), 1);
     },
   );
 });

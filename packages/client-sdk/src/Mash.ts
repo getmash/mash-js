@@ -173,11 +173,11 @@ class Mash {
       );
       return this.widgetConnected.then(() => {
         console.info("[MASH] A web component widget connected - mounting");
-        this.mount(customizationConfig.walletButtonPosition);
+        return this.mount(customizationConfig.walletButtonPosition);
       });
     }
 
-    this.mount(customizationConfig.walletButtonPosition);
+    return this.mount(customizationConfig.walletButtonPosition);
   }
 
   /**
@@ -242,7 +242,7 @@ class Mash {
   /**
    * Mount the Button App iframe.
    */
-  private mount(position: MashWebAPI.WalletButtonPosition): Promise<null> {
+  private async mount(position: MashWebAPI.WalletButtonPosition) {
     return new Promise((resolve, reject) => {
       const onIframeLoaded = (iframe: HTMLIFrameElement) => {
         this.rpcAPI = new MashRPCAPI(
