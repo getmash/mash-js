@@ -1,5 +1,3 @@
-import { PartialDeep } from "type-fest";
-
 import {
   WalletButtonDesktopPosition,
   WalletButtonFloatPlacement,
@@ -7,30 +5,6 @@ import {
   WalletButtonMobilePosition,
   WalletButtonPosition,
 } from "../api/routes.js";
-
-export enum FloatLocation {
-  BottomRight = "bottom-right",
-  BottomLeft = "bottom-left",
-}
-
-interface LocationSettings {
-  floatLocation: FloatLocation;
-}
-
-export type DesktopSettings = LocationSettings & {
-  shiftUp: number;
-  shiftLeft: number;
-  shiftRight: number;
-};
-
-export type MobileSettings = LocationSettings & {
-  shiftUp: number;
-};
-
-export type WalletPosition = {
-  desktop: DesktopSettings;
-  mobile: MobileSettings;
-};
 
 /**
  * Validates the string value is one of the accepted FloatSides
@@ -96,6 +70,9 @@ function getMobileLocation(
   };
 }
 
+/**
+ * Full remote wallet position configuration, any missing parts have default values.
+ */
 export function getWalletPosition(
   desktop?: Partial<WalletButtonDesktopPosition> | undefined,
   mobile?: Partial<WalletButtonMobilePosition> | undefined,
@@ -104,43 +81,4 @@ export function getWalletPosition(
     desktop: getDesktopLocation(desktop),
     mobile: getMobileLocation(mobile),
   };
-}
-
-export function formatPosition(position?: PartialDeep<WalletPosition>) {
-  const formattedPosition: WalletButtonPosition = getWalletPosition();
-  if (position?.desktop?.floatLocation === FloatLocation.BottomLeft) {
-    formattedPosition.desktop.floatSide = WalletButtonFloatSide.Left;
-  } else if (position?.desktop?.floatLocation === FloatLocation.BottomRight) {
-    formattedPosition.desktop.floatSide = WalletButtonFloatSide.Right;
-  }
-
-  if (position?.desktop?.shiftLeft || position?.desktop?.shiftRight) {
-    formattedPosition.desktop.floatPlacement =
-      WalletButtonFloatPlacement.Custom;
-    formattedPosition.desktop.customShiftConfiguration.horizontal =
-      position.desktop.shiftLeft || 0;
-    formattedPosition.desktop.customShiftConfiguration.horizontal =
-      position.desktop.shiftRight || 0;
-  }
-
-  if (position?.desktop?.shiftUp) {
-    formattedPosition.desktop.floatPlacement =
-      WalletButtonFloatPlacement.Custom;
-    formattedPosition.desktop.customShiftConfiguration.vertical =
-      position.desktop.shiftUp || 0;
-  }
-
-  if (position?.mobile?.floatLocation === FloatLocation.BottomLeft) {
-    formattedPosition.mobile.floatSide = WalletButtonFloatSide.Left;
-  } else if (position?.mobile?.floatLocation === FloatLocation.BottomRight) {
-    formattedPosition.mobile.floatSide = WalletButtonFloatSide.Right;
-  }
-
-  if (position?.mobile?.shiftUp) {
-    formattedPosition.mobile.floatPlacement = WalletButtonFloatPlacement.Custom;
-    formattedPosition.mobile.customShiftConfiguration.vertical =
-      position.mobile?.shiftUp || 0;
-  }
-
-  return formattedPosition;
 }
