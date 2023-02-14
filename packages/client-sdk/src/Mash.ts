@@ -158,7 +158,7 @@ class Mash {
    * @param settings is deprecated, use the constructor for local settings.
    */
   async init(settings?: MashSettings) {
-    // Just for backward compatibility with existing users who pass in settings.
+    // Backwards compatibility with legacy local configuration.
     if (settings) {
       this.localConfig.earnerID = settings.id;
     }
