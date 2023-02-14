@@ -24,6 +24,14 @@ declare module "node:test" {
       implementation?: T,
       options?: MockFnOptions,
     ): T & { mock: MockFunctionContext };
+    method(
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      object: Object,
+      methodName: string,
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      implementation: Function,
+      options?: MockFnOptions,
+    ): T & { mock: MockFunctionContext };
     reset: () => void;
     restoreAll: () => void;
   }

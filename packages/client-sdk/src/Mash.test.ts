@@ -18,7 +18,8 @@ test("Mash", async t => {
       earnerID: "abc123",
     });
 
-    const mount = mock(mash, "mount", async () => null);
+    const mount = mock.method(mash, "mount", async () => null);
+
     await mash.init();
     assert.equal(mount.mock.callCount(), 1);
   });
@@ -32,7 +33,7 @@ test("Mash", async t => {
         autoHide: true,
       });
 
-      const mount = mock(mash, "mount", async () => null);
+      const mount = mock.method(mash, "mount", async () => null);
 
       const initialized = mash.init();
       assert.equal(mount.mock.callCount(), 0);

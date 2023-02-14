@@ -242,7 +242,7 @@ class Mash {
   /**
    * Mount the Button App iframe.
    */
-  private async mount(position: MashWebAPI.WalletButtonPosition) {
+  async mount(position: MashWebAPI.WalletButtonPosition) {
     return new Promise((resolve, reject) => {
       const onIframeLoaded = (iframe: HTMLIFrameElement) => {
         this.rpcAPI = new MashRPCAPI(
