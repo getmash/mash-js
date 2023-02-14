@@ -85,6 +85,7 @@ export type BoostConfiguration = {
 };
 
 export type PageRevealer = {
+  id: string;
   active: boolean;
   pages: PageSelection;
   contentTypeID: string;

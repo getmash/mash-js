@@ -65,6 +65,10 @@ export default function injectPageRevealers(
       // tie to content type
       pageRevealer.setAttribute("resource", config.contentTypeID);
 
+      // set key to track when user accessed
+      const key = `mash-${config.id}-${pathname}`;
+      pageRevealer.setAttribute("key", key);
+
       // inject onto site
       document.body.appendChild(pageRevealer);
     }
