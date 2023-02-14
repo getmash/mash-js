@@ -1,15 +1,12 @@
-import { PartialDeep } from "type-fest";
-
 import * as MashWebAPI from "./api/routes.js";
+import {
+  WalletButtonFloatPlacement,
+  WalletButtonFloatSide,
+} from "./api/routes.js";
 import parseConfig, { PartialConfig, Config } from "./config.js";
 import { MashEvent } from "./events.js";
 import IFrame from "./iframe/IFrame.js";
 import { PreboardingIFrame } from "./iframe/PreboardingIFrame.js";
-import {
-  getWalletPosition,
-  WalletPosition,
-  formatPosition,
-} from "./iframe/position.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
 import injectFloatingBoosts from "./widgets/boost.js";
 import injectPageRevealers from "./widgets/pageRevealer.js";
@@ -17,9 +14,11 @@ import preconnect from "./widgets/preconnect.js";
 import injectTheme from "./widgets/theme.js";
 import { injectWidgets } from "./widgets/widgets.js";
 
+/**
+ * @deprecated use constructor local config struct.
+ */
 export type MashSettings = {
   id: string;
-  position: PartialDeep<WalletPosition>;
 };
 
 class Mash {
@@ -55,7 +54,18 @@ class Mash {
     });
 
     const defaultConfiguration: MashWebAPI.EarnerCustomizationConfiguration = {
-      walletButtonPosition: getWalletPosition(),
+      walletButtonPosition: {
+        desktop: {
+          floatSide: WalletButtonFloatSide.Left,
+          floatPlacement: WalletButtonFloatPlacement.Default,
+          customShiftConfiguration: { horizontal: 0, vertical: 0 },
+        },
+        mobile: {
+          floatSide: WalletButtonFloatSide.Left,
+          floatPlacement: WalletButtonFloatPlacement.Default,
+          customShiftConfiguration: { horizontal: 0, vertical: 0 },
+        },
+      },
       theme: {
         primaryColor: "#000",
         fontFamily: "inherit",
@@ -143,23 +153,6 @@ class Mash {
     return curSpend + cleanCost <= maxSpend;
   }
 
-  private _init(settings?: MashSettings) {
-    // Just for backward compatibility with existing users who pass in settings.
-    if (settings) {
-      this.localConfig.earnerID = settings.id;
-      const formattedPosition = formatPosition(settings?.position || {});
-      const position = getWalletPosition(
-        formattedPosition.desktop,
-        formattedPosition.mobile,
-      );
-      return this.mount(position);
-    }
-
-    return this.remoteCustomizationConfig.then(config =>
-      this.mount(config.walletButtonPosition),
-    );
-  }
-
   /**
    * Initialize the Mash Button app and connect it to the site.
    * @param settings is deprecated, use the constructor for local settings.
@@ -170,8 +163,9 @@ class Mash {
       return Promise.resolve(null);
     }
 
-    // If autohiding, wait to see if a web component mounts
     const customizationConfig = await this.remoteCustomizationConfig;
+
+    // If autohiding, wait to see if a web component mounts
     const autohide = this.localConfig.autoHide ?? customizationConfig.autoHide;
     if (autohide) {
       console.info(
@@ -179,11 +173,11 @@ class Mash {
       );
       return this.widgetConnected.then(() => {
         console.info("[MASH] A web component widget connected - mounting");
-        return this._init(settings);
+        this.mount(customizationConfig.walletButtonPosition);
       });
     }
 
-    return this._init(settings);
+    this.mount(customizationConfig.walletButtonPosition);
   }
 
   /**

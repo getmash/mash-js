@@ -24,8 +24,8 @@ type WidgetConfig = {
   injectFloatingWidgets: boolean;
 };
 
-// Local properties that are replicated serverside in the remote
-// config. Specifying them overrides remote (local takes precendence).
+// Local properties that are replicated server-side in the remote config.
+// Specifying them overrides remote (local takes precedence).
 export type Config = {
   /**
    * URL of Mash API.
