@@ -17,15 +17,17 @@ import IFrame, {
   MAX_CONTENT_WIDTH,
   MIN_CONTENT_HEIGHT,
   MIN_CONTENT_WIDTH,
-  MAX_SHIFT_HORIZONTAL,
-  MAX_SHIFT_VERTICAL,
-  BASIC_SHIFT_HORIZONTAL,
-  BASIC_SHIFT_VERTICAL,
-  GHOST_SHIFT,
-  INTERCOM_SHIFT,
 } from "./IFrame.js";
 import { EventMessage, Events, Targets, toHTMLStyle } from "./blocks.js";
-import { getWalletPosition } from "./position.js";
+import {
+  BASIC_SHIFT_HORIZONTAL,
+  BASIC_SHIFT_VERTICAL,
+  getWalletPosition,
+  GHOST_SHIFT,
+  INTERCOM_SHIFT,
+  MAX_SHIFT_HORIZONTAL,
+  MAX_SHIFT_VERTICAL,
+} from "./position.js";
 
 const IFRAME_SOURCE = "http://localhost/widget";
 

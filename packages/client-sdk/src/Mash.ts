@@ -7,6 +7,7 @@ import parseConfig, { PartialConfig, Config } from "./config.js";
 import { MashEvent } from "./events.js";
 import IFrame from "./iframe/IFrame.js";
 import { PreboardingIFrame } from "./iframe/PreboardingIFrame.js";
+import { getLocation } from "./iframe/position.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
 import injectFloatingBoosts from "./widgets/boost.js";
 import injectPageRevealers from "./widgets/pageRevealer.js";
@@ -99,6 +100,14 @@ class Mash {
       this.localConfig.earnerID,
     )
       .then(result => {
+        // set local overrides
+        result.customization.walletButtonPosition.desktop.floatSide =
+          this.localConfig.mashButtonPosition?.desktop?.floatSide ??
+          result.customization.walletButtonPosition.desktop.floatSide;
+        result.customization.walletButtonPosition.mobile.floatSide =
+          this.localConfig.mashButtonPosition?.mobile?.floatSide ??
+          result.customization.walletButtonPosition.mobile.floatSide;
+
         if (this.localConfig.widgets.injectTheme) {
           injectTheme(
             this.localConfig.widgets.baseURL,
@@ -111,6 +120,7 @@ class Mash {
             injectFloatingBoosts(
               result.customization.boostConfigurations,
               window.location.pathname,
+              getLocation(result.customization.walletButtonPosition),
             );
           }
 
