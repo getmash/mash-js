@@ -69,7 +69,7 @@ export default function injectFloatingBoosts(
           config.mobile.position === "bottom-right")
       ) {
         const yOffsetMobile = mashButtonLocation.mobile.bottom ?? 0;
-        boost.setAttribute("y-offset-mobile", yOffsetMobile.toString());
+        boost.setAttribute("mobile-y-offset", yOffsetMobile.toString());
       }
 
       // inject onto site
