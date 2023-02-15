@@ -1,5 +1,17 @@
 # @getmash/client-sdk
 
+## 2.14.0
+
+### Minor Changes
+
+- [#90](https://github.com/getmash/mash-js/pull/90) [`7854a4c`](https://github.com/getmash/mash-js/commit/7854a4cc8798247f195c6291c70c041ab76916d0) Thanks [@nyonson](https://github.com/nyonson)! - Set boost button offsets based on Mash button location.
+
+- [#87](https://github.com/getmash/mash-js/pull/87) [`034783b`](https://github.com/getmash/mash-js/commit/034783be18c5b3d6cd4a6cd9512fd9deeb54b5d7) Thanks [@nyonson](https://github.com/nyonson)! - Drop legacy local configuration for Button posistion.
+
+### Patch Changes
+
+- [#89](https://github.com/getmash/mash-js/pull/89) [`1dc6faa`](https://github.com/getmash/mash-js/commit/1dc6faaddf164668410464a341600b6e7dfa0811) Thanks [@mdedys](https://github.com/mdedys)! - Bugfix: Add key property to injected page revealer
+
 ## 2.13.1
 
 ### Patch Changes
