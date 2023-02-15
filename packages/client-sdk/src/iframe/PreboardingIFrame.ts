@@ -1,12 +1,7 @@
 import PostMessageEngine from "@getmash/post-message";
 
-import {
-  EventMessage,
-  Events,
-  MAX_Z_INDEX,
-  Targets,
-  toHTMLStyle,
-} from "./blocks.js";
+import { EventMessage, Events, Targets, toHTMLStyle } from "./blocks.js";
+import zIndex from "./zIndex.js";
 
 const CONTAINER_STYLE = {
   border: "none",
@@ -15,7 +10,7 @@ const CONTAINER_STYLE = {
   position: "fixed",
   top: "0",
   left: "0",
-  "z-index": MAX_Z_INDEX,
+  "z-index": zIndex.preboarding,
   visibility: "hidden",
 };
 
