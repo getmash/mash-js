@@ -14,7 +14,7 @@ import {
   Targets,
   toHTMLStyle,
 } from "./blocks.js";
-import { WalletButtonLocation } from "./position.js";
+import { getLocation, toPixel, WalletButtonLocation } from "./position.js";
 
 enum Layout {
   Web = "web",
@@ -221,22 +221,6 @@ export default class IFrame {
   }
 
   /**
-   * Normalize shift to ensure valid value
-   * @param value number
-   * @param max number
-   * @returns number
-   */
-  private normalizeShift(value: number, max: number) {
-    if (value < 0) {
-      return 0;
-    }
-    if (value > max) {
-      return max;
-    }
-    return value;
-  }
-
-  /**
    * Setup post message tunnel between the host site and the Mash Wallet
    * @param onLoadCallback OnLoadCallback
    */
@@ -295,22 +279,7 @@ export default class IFrame {
       this.mounted = true;
     }
 
-    this.desktopFloatSide = position.desktop.floatSide;
-    this.desktopFloatPlacement = position.desktop.floatPlacement;
-    this.desktopShiftConfiguration.horizontal = this.normalizeShift(
-      position.desktop.customShiftConfiguration.horizontal,
-      MAX_SHIFT_HORIZONTAL,
-    );
-    this.desktopShiftConfiguration.vertical = this.normalizeShift(
-      position.desktop.customShiftConfiguration.vertical,
-      MAX_SHIFT_VERTICAL,
-    );
-    this.mobileFloatSide = position.mobile.floatSide;
-    this.mobileFloatPlacement = position.mobile.floatPlacement;
-    this.mobileShiftConfiguration.vertical = this.normalizeShift(
-      position.mobile.customShiftConfiguration?.vertical || 0,
-      MAX_SHIFT_VERTICAL,
-    );
+    this.location = getLocation(position);
 
     // Must init engine here to have the correct contentWindow.
     // If referencing this.iframe before it is mounted to the
@@ -327,7 +296,4 @@ export default class IFrame {
     this.resize();
     this.position();
   }
-}
-function toPixel(bottom: number | undefined): string {
-  throw new Error("Function not implemented.");
 }

@@ -103,128 +103,146 @@ function getMobileConfig(
       vertical: mobile?.customShiftConfiguration?.vertical || 0,
     },
   };
+}
 
-  /**
-   * Full wallet position configuration, any missing parts have default values.
-   */
-  export function getPositionConfig(
-    desktop?: Partial<WalletButtonDesktopPosition> | undefined,
-    mobile?: Partial<WalletButtonMobilePosition> | undefined,
-  ): WalletButtonPosition {
-    return {
-      desktop: getDesktopConfig(desktop),
-      mobile: getMobileConfig(mobile),
-    };
+/**
+ * Full wallet position configuration, any missing parts have default values.
+ */
+export function getWalletPosition(
+  desktop?: Partial<WalletButtonDesktopPosition> | undefined,
+  mobile?: Partial<WalletButtonMobilePosition> | undefined,
+): WalletButtonPosition {
+  return {
+    desktop: getDesktopConfig(desktop),
+    mobile: getMobileConfig(mobile),
+  };
+}
+
+/**
+ * Normalize shift to ensure valid value.
+ */
+function normalizeShift(value: number, max: number) {
+  if (value < 0) {
+    return 0;
   }
-
-  /**
-   * Transform number value to css pixel representation.
-   */
-  export function toPixel(n?: number): string {
-    if (n) {
-      return `${n}px`;
-    }
-
-    // empty string is not set
-    return "";
+  if (value > max) {
+    return max;
   }
+  return value;
+}
 
-  /**
-   * Calculate location based on configuration.
-   */
-  export function getLocation(
-    config: WalletButtonPosition,
-  ): WalletButtonLocation {
-    // initialize mobile location based on float side, override specifics below
-    const mobileLocation =
-      config.mobile.floatSide === WalletButtonFloatSide.Right
-        ? {
-            floatLocation: FloatLocation.BottomRight,
-            bottom: 0,
-            right: 0,
-          }
-        : {
-            floatLocation: FloatLocation.BottomLeft,
-            bottom: 0,
-            left: 0,
-          };
+/**
+ * Transform number value to css pixel representation.
+ */
+export function toPixel(n?: number): string {
+  // empty string is not set
+  return n == null ? "" : `${n}px`;
+}
 
-    // overrides if needed
-    switch (config.mobile.floatPlacement) {
-      case WalletButtonFloatPlacement.WixActionBar: {
-        mobileLocation.bottom = WIX_ACTION_BAR;
-        break;
-      }
-      case WalletButtonFloatPlacement.BasicShiftVertical: {
-        mobileLocation.bottom = BASIC_SHIFT_VERTICAL;
-        break;
-      }
-      case WalletButtonFloatPlacement.Custom: {
-        mobileLocation.bottom = config.mobile.customShiftConfiguration.vertical;
-        break;
-      }
-    }
-
-    // initialize desktop location based on float side, override specifics below
-    const desktopLocation =
-      config.desktop.floatSide === WalletButtonFloatSide.Right
-        ? {
-            floatLocation: FloatLocation.BottomRight,
-            bottom: 0,
-            right: 0,
-          }
-        : {
-            floatLocation: FloatLocation.BottomLeft,
-            bottom: 0,
-            left: 0,
-          };
-
-    // overrides if needed
-    switch (config.desktop.floatPlacement) {
-      case WalletButtonFloatPlacement.Ghost: {
-        desktopLocation.bottom = GHOST_SHIFT;
-        break;
-      }
-      case WalletButtonFloatPlacement.Intercom: {
-        desktopLocation.bottom = INTERCOM_SHIFT;
-        break;
-      }
-      case WalletButtonFloatPlacement.BasicShiftVertical: {
-        desktopLocation.bottom = BASIC_SHIFT_VERTICAL;
-        break;
-      }
-      case WalletButtonFloatPlacement.BasicShiftHorizontal: {
-        switch (config.desktop.floatSide) {
-          case WalletButtonFloatSide.Left: {
-            desktopLocation.left = BASIC_SHIFT_HORIZONTAL;
-            break;
-          }
-          case WalletButtonFloatSide.Right: {
-            desktopLocation.right = BASIC_SHIFT_HORIZONTAL;
-            break;
-          }
+/**
+ * Calculate location based on configuration.
+ */
+export function getLocation(
+  config: WalletButtonPosition,
+): WalletButtonLocation {
+  // initialize mobile location based on float side, override specifics below
+  const mobileLocation =
+    config.mobile.floatSide === WalletButtonFloatSide.Right
+      ? {
+          floatLocation: FloatLocation.BottomRight,
+          bottom: 0,
+          right: 0,
         }
-        break;
-      }
-      case WalletButtonFloatPlacement.Custom: {
-        switch (config.desktop.floatSide) {
-          case WalletButtonFloatSide.Left: {
-            desktopLocation.left =
-              config.desktop.customShiftConfiguration.horizontal;
-            break;
-          }
-          case WalletButtonFloatSide.Right: {
-            desktopLocation.right =
-              config.desktop.customShiftConfiguration.horizontal;
-            break;
-          }
-        }
-        desktopLocation.bottom =
-          config.desktop.customShiftConfiguration.vertical;
-        break;
-      }
-    }
+      : {
+          floatLocation: FloatLocation.BottomLeft,
+          bottom: 0,
+          left: 0,
+        };
 
-    return { mobile: mobileLocation, desktop: desktopLocation };
+  // overrides if needed
+  switch (config.mobile.floatPlacement) {
+    case WalletButtonFloatPlacement.WixActionBar: {
+      mobileLocation.bottom = WIX_ACTION_BAR;
+      break;
+    }
+    case WalletButtonFloatPlacement.BasicShiftVertical: {
+      mobileLocation.bottom = BASIC_SHIFT_VERTICAL;
+      break;
+    }
+    case WalletButtonFloatPlacement.Custom: {
+      mobileLocation.bottom = normalizeShift(
+        config.mobile.customShiftConfiguration.vertical,
+        MAX_SHIFT_VERTICAL,
+      );
+      break;
+    }
   }
+
+  // initialize desktop location based on float side, override specifics below
+  const desktopLocation =
+    config.desktop.floatSide === WalletButtonFloatSide.Right
+      ? {
+          floatLocation: FloatLocation.BottomRight,
+          bottom: 0,
+          right: 0,
+        }
+      : {
+          floatLocation: FloatLocation.BottomLeft,
+          bottom: 0,
+          left: 0,
+        };
+
+  // overrides if needed
+  switch (config.desktop.floatPlacement) {
+    case WalletButtonFloatPlacement.Ghost: {
+      desktopLocation.bottom = GHOST_SHIFT;
+      break;
+    }
+    case WalletButtonFloatPlacement.Intercom: {
+      desktopLocation.bottom = INTERCOM_SHIFT;
+      break;
+    }
+    case WalletButtonFloatPlacement.BasicShiftVertical: {
+      desktopLocation.bottom = BASIC_SHIFT_VERTICAL;
+      break;
+    }
+    case WalletButtonFloatPlacement.BasicShiftHorizontal: {
+      switch (config.desktop.floatSide) {
+        case WalletButtonFloatSide.Left: {
+          desktopLocation.left = BASIC_SHIFT_HORIZONTAL;
+          break;
+        }
+        case WalletButtonFloatSide.Right: {
+          desktopLocation.right = BASIC_SHIFT_HORIZONTAL;
+          break;
+        }
+      }
+      break;
+    }
+    case WalletButtonFloatPlacement.Custom: {
+      switch (config.desktop.floatSide) {
+        case WalletButtonFloatSide.Left: {
+          desktopLocation.left = normalizeShift(
+            config.desktop.customShiftConfiguration.horizontal,
+            MAX_SHIFT_HORIZONTAL,
+          );
+          break;
+        }
+        case WalletButtonFloatSide.Right: {
+          desktopLocation.right = normalizeShift(
+            config.desktop.customShiftConfiguration.horizontal,
+            MAX_SHIFT_HORIZONTAL,
+          );
+          break;
+        }
+      }
+      desktopLocation.bottom = normalizeShift(
+        config.desktop.customShiftConfiguration.vertical,
+        MAX_SHIFT_VERTICAL,
+      );
+      break;
+    }
+  }
+
+  return { mobile: mobileLocation, desktop: desktopLocation };
 }
