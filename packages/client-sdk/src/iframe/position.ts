@@ -136,7 +136,7 @@ function normalizeShift(value: number, max: number) {
  */
 export function toPixel(n?: number): string {
   // empty string is not set
-  return n == null ? "" : `${n}px`;
+  return n === undefined || n === null ? "" : `${n}px`;
 }
 
 /**
