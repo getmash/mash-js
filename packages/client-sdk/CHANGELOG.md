@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.14.1
+
+### Patch Changes
+
+- [#91](https://github.com/getmash/mash-js/pull/91) [`6ea7294`](https://github.com/getmash/mash-js/commit/6ea729411aeefe632a1de3f9604832b9c6ec6ed6) Thanks [@mdedys](https://github.com/mdedys)! - Adding new zIndex values for iframes
+
 ## 2.14.0
 
 ### Minor Changes
