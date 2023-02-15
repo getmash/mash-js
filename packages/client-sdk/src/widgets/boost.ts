@@ -4,8 +4,8 @@ import toAttributeStyle from "./attribute.js";
 import { pageSelected } from "./pageMatcher.js";
 
 // If on the same side as the Mash Button, need to move at least up a bit.
-const DEFAULT_MASH_BUTTON_VERTICAL_SHIFT = 110;
-const DEFAULT_MASH_BUTTON_MOBILE_VERTICAL_SHIFT = 90;
+const DEFAULT_MASH_BUTTON_VERTICAL_SHIFT = 100;
+const DEFAULT_MASH_BUTTON_MOBILE_VERTICAL_SHIFT = 80;
 /**
  * Inject floating boost buttons onto site.
  * @param pathname of the current location (e.g. /my/url) to filter configurations.
