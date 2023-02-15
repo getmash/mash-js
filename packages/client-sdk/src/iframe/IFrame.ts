@@ -9,12 +9,12 @@ import {
 import {
   EventMessage,
   Events,
-  MAX_Z_INDEX,
   OnLoadCallback,
   Targets,
   toHTMLStyle,
 } from "./blocks.js";
 import { getLocation, toPixel, WalletButtonLocation } from "./position.js";
+import zIndex from "./zIndex.js";
 
 enum Layout {
   Web = "web",
@@ -45,7 +45,7 @@ const CONTAINER_STYLE = {
   "margin-bottom": "20px",
   height: `${MIN_CONTENT_HEIGHT}px`,
   width: `${MIN_CONTENT_WIDTH}px`,
-  "z-index": MAX_Z_INDEX - 1,
+  "z-index": zIndex.buttonApp,
 
   // Defensive CSS to prevent leaking from host site
   animation: "none !important",

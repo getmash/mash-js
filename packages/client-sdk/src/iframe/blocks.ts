@@ -1,5 +1,3 @@
-export const MAX_Z_INDEX = 2147483647;
-
 export enum Events {
   PreboardingOpen = "preboarding:open",
   PreboardingClose = "preboarding:close",
