@@ -12,3 +12,5 @@ export { IFRAME_NAME as MashIFrameName } from "./iframe/IFrame.js";
 export { Events as IFrameEvents } from "./iframe/blocks.js";
 
 export { MashEvent } from "./events.js";
+
+export { WalletButtonFloatSide } from "./api/routes.js";
