@@ -3,6 +3,9 @@ import { FloatLocation, WalletButtonLocation } from "../iframe/position.js";
 import toAttributeStyle from "./attribute.js";
 import { pageSelected } from "./pageMatcher.js";
 
+// If on the same side as the Mash Button, need to move at least up a bit.
+const DEFAULT_MASH_BUTTON_VERTICAL_SHIFT = 110;
+const DEFAULT_MASH_BUTTON_MOBILE_VERTICAL_SHIFT = 90;
 /**
  * Inject floating boost buttons onto site.
  * @param pathname of the current location (e.g. /my/url) to filter configurations.
@@ -51,24 +54,28 @@ export default function injectFloatingBoosts(
       if (
         (mashButtonLocation.desktop.floatLocation ===
           FloatLocation.BottomLeft &&
-          config.desktop.position === "bottom-left") ||
+          toAttributeStyle(config.desktop.position) === "bottom-left") ||
         (mashButtonLocation.desktop.floatLocation ===
           FloatLocation.BottomRight &&
-          config.desktop.position === "bottom-right")
+          toAttributeStyle(config.desktop.position) === "bottom-right")
       ) {
-        const yOffset = mashButtonLocation.desktop.bottom ?? 0;
+        const yOffset =
+          DEFAULT_MASH_BUTTON_VERTICAL_SHIFT +
+          (mashButtonLocation.desktop.bottom ?? 0);
         boost.setAttribute("y-offset", yOffset.toString());
       }
 
       // mobile
       if (
         (mashButtonLocation.mobile.floatLocation === FloatLocation.BottomLeft &&
-          config.mobile.position === "bottom-left") ||
+          toAttributeStyle(config.mobile.position) === "bottom-left") ||
         (mashButtonLocation.mobile.floatLocation ===
           FloatLocation.BottomRight &&
-          config.mobile.position === "bottom-right")
+          toAttributeStyle(config.mobile.position) === "bottom-right")
       ) {
-        const yOffsetMobile = mashButtonLocation.mobile.bottom ?? 0;
+        const yOffsetMobile =
+          DEFAULT_MASH_BUTTON_MOBILE_VERTICAL_SHIFT +
+          (mashButtonLocation.mobile.bottom ?? 0);
         boost.setAttribute("mobile-y-offset", yOffsetMobile.toString());
       }
 
