@@ -7,6 +7,7 @@ import parseConfig, { PartialConfig, Config } from "./config.js";
 import { MashEvent } from "./events.js";
 import IFrame from "./iframe/IFrame.js";
 import { PreboardingIFrame } from "./iframe/PreboardingIFrame.js";
+import { getLocation } from "./iframe/position.js";
 import MashRPCAPI, { AutopayAuthorization } from "./rpc/RPCApi.js";
 import injectFloatingBoosts from "./widgets/boost.js";
 import injectPageRevealers from "./widgets/pageRevealer.js";
@@ -111,6 +112,7 @@ class Mash {
             injectFloatingBoosts(
               result.customization.boostConfigurations,
               window.location.pathname,
+              getLocation(result.customization.walletButtonPosition),
             );
           }
 
