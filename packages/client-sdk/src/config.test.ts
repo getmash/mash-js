@@ -15,6 +15,7 @@ describe("Config", () => {
     assert.deepEqual<Config>(result, {
       api: DefaultAPIBaseURL,
       autoHide: undefined,
+      mashButtonPosition: undefined,
       earnerID: "1",
       walletURL: DefaultWalletURL,
       preboardingURL: DefaultPreboardingURL,
@@ -32,6 +33,7 @@ describe("Config", () => {
       api: "http://test.com",
       earnerID: "1",
       autoHide: undefined,
+      mashButtonPosition: undefined,
       walletURL: "testsite",
       preboardingURL: "testpreboardingsite",
       widgets: {
