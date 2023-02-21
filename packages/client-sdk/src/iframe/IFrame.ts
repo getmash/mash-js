@@ -1,11 +1,6 @@
 import PostMessageEngine from "@getmash/post-message";
 
-import {
-  WalletButtonFloatPlacement,
-  WalletButtonFloatSide,
-  WalletButtonPosition,
-  WalletButtonShiftConfiguration,
-} from "../api/routes.js";
+import { WalletButtonPosition } from "../api/routes.js";
 import {
   EventMessage,
   Events,
@@ -23,6 +18,8 @@ enum Layout {
 
 /* MediaQuery breakpoint to trigger mobile layout for Wallet */
 const FULLSCREEN_THRESHOLD = 480;
+/* Padding for the Wallet when the height of screen isn't large enough for it */
+export const HEIGHT_PADDING = 20;
 /* Max Width for Wallet in Desktop layout */
 export const MAX_CONTENT_WIDTH = 428;
 /* Max Height for Wallet in Desktop layout */
@@ -136,6 +133,17 @@ export default class IFrame {
         this.setContainerSize(100, 100, "%", false);
         return;
       }
+
+      if (window.innerHeight < MAX_CONTENT_HEIGHT + HEIGHT_PADDING) {
+        this.setContainerSize(
+          window.innerHeight - HEIGHT_PADDING,
+          MAX_CONTENT_WIDTH,
+          "px",
+          true,
+        );
+        return;
+      }
+
       this.setContainerSize(MAX_CONTENT_HEIGHT, MAX_CONTENT_WIDTH, "px", true);
       return;
     }
@@ -200,6 +208,16 @@ export default class IFrame {
   }
 
   /**
+   * Retrieve mediaQueryList for the given mediaQuery that changes the layout
+   * of the iframe container.
+   */
+  private getMediaQueryHeight() {
+    return window.matchMedia(
+      `(max-height: ${MAX_CONTENT_HEIGHT + HEIGHT_PADDING}px)`,
+    );
+  }
+
+  /**
    * MediaQuery listener that triggers whenever a change is detected. Notify the
    * Wallet of changes and resize the iframe container as required
    * @param mq MediaQueryListEvent
@@ -214,10 +232,28 @@ export default class IFrame {
   };
 
   /**
+   * MediaQuery listener that triggers whenever the screen width crosses
+   * the max height for the wallet.
+   * Notifies the Wallet of changes and resize the iframe container as required
+   * @param mq MediaQueryListEvent
+   */
+  private onMediaQueryHeightChanged = (mq: MediaQueryListEvent) => {
+    if (mq.matches) {
+      window.addEventListener("resize", this.resize);
+    } else {
+      window.removeEventListener("resize", this.resize);
+    }
+  };
+
+  /**
    * Setup all listeners required for the iframe
    */
   private setupListeners() {
     this.getMediaQuery().addEventListener("change", this.onMediaQueryChanged);
+    this.getMediaQueryHeight().addEventListener(
+      "change",
+      this.onMediaQueryHeightChanged,
+    );
   }
 
   /**

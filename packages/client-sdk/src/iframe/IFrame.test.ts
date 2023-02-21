@@ -12,6 +12,7 @@ import {
 } from "../api/routes.js";
 import { createDOM } from "../tests/dom.js";
 import IFrame, {
+  HEIGHT_PADDING,
   IFRAME_NAME,
   MAX_CONTENT_HEIGHT,
   MAX_CONTENT_WIDTH,
@@ -761,6 +762,42 @@ describe("IFrame Mobile", () => {
     assert.equal(getIframe().parentElement?.style.bottom, "0px");
     assert.equal(getIframe().parentElement?.style.left, "");
     assert.equal(getIframe().parentElement?.style.right, "0px");
+  });
+
+  it("desktop height too small to fit iframe, should resize height", async () => {
+    // Mock media query and set the screen height so it's smaller than the Wallet when open
+    mockMatchMedia(false);
+    window.innerHeight = 600;
+
+    // mount wallet with default position
+    const iframe = new IFrame(IFRAME_SOURCE);
+    iframe.mount(
+      () => ({}),
+      getWalletPosition(
+        MASH_SETTINGS.position.desktop,
+        MASH_SETTINGS.position.mobile,
+      ),
+    );
+
+    // @ts-expect-error grabbing the private iframe to get window
+    replacePostMessage(iframe.iframe.contentWindow);
+
+    // pretend to be the app in the iframe asking the SDK to resize it
+    const wallet = new PostMessageEngine<EventMessage>({
+      name: Targets.Wallet,
+      targetName: Targets.HostSiteFrame,
+      targetWindow: window,
+      targetOrigin: "*",
+    });
+    wallet.send({ name: Events.WalletOpened, metadata: {} });
+
+    // Wait for Wallet to open and check if it's height is responsive to the screen height
+    await waitFor(() => {
+      assert.equal(
+        getIframe().parentElement?.style.height,
+        `${window.innerHeight - HEIGHT_PADDING}px`,
+      );
+    });
   });
 });
 
