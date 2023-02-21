@@ -134,17 +134,12 @@ export default class IFrame {
         return;
       }
 
-      if (window.innerHeight < MAX_CONTENT_HEIGHT + HEIGHT_PADDING) {
-        this.setContainerSize(
-          window.innerHeight - HEIGHT_PADDING,
-          MAX_CONTENT_WIDTH,
-          "px",
-          true,
-        );
-        return;
-      }
+      const contentHeight =
+        window.innerHeight < MAX_CONTENT_HEIGHT + HEIGHT_PADDING
+          ? window.innerHeight - HEIGHT_PADDING
+          : MAX_CONTENT_HEIGHT;
 
-      this.setContainerSize(MAX_CONTENT_HEIGHT, MAX_CONTENT_WIDTH, "px", true);
+      this.setContainerSize(contentHeight, MAX_CONTENT_WIDTH, "px", true);
       return;
     }
 
@@ -235,7 +230,6 @@ export default class IFrame {
    * MediaQuery listener that triggers whenever the screen width crosses
    * the max height for the wallet.
    * Notifies the Wallet of changes and resize the iframe container as required
-   * @param mq MediaQueryListEvent
    */
   private onMediaQueryHeightChanged = (mq: MediaQueryListEvent) => {
     if (mq.matches) {
