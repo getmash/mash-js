@@ -229,7 +229,7 @@ export default class IFrame {
   /**
    * MediaQuery listener that triggers whenever the screen width crosses
    * the max height for the wallet.
-   * Notifies the Wallet of changes and resize the iframe container as required
+   * Notifies the Wallet of changes and resizes the iframe container as required
    */
   private onMediaQueryHeightChanged = (mq: MediaQueryListEvent) => {
     if (mq.matches) {
