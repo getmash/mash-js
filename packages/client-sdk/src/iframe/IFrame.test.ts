@@ -764,7 +764,7 @@ describe("IFrame Mobile", () => {
     assert.equal(getIframe().parentElement?.style.right, "0px");
   });
 
-  it("desktop height too small to fit iframe, should resize height", async () => {
+  it("should reduce height if too small to fit in desktop iframe", async () => {
     // Mock media query and set the screen height so it's smaller than the Wallet when open
     mockMatchMedia(false);
     window.innerHeight = 600;
