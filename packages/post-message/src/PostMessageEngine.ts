@@ -81,9 +81,7 @@ export default class PostMessageEngine<TData> {
     }
     // checking the event source helps limit messages and can also be used as a secondary security check
     if (this._targetWindowFilter && this._targetWindow !== evt.source) {
-      this._logger(
-        `${this.name} engine ignored message due to window, message: ${evt.source} engine: ${this._targetWindow}`,
-      );
+      this._logger(`${this.name} engine ignored message due to window`);
       return true;
     }
 
