@@ -1,5 +1,14 @@
 # @getmash/client-sdk
 
+## 2.14.2
+
+### Patch Changes
+
+- [#94](https://github.com/getmash/mash-js/pull/94) [`6ddf15e`](https://github.com/getmash/mash-js/commit/6ddf15eb388404c78c1569e34c3210681a90ac4b) Thanks [@aron-mash](https://github.com/aron-mash)! - Adding listener to listen for iframe height, and resize accordingly
+
+- Updated dependencies [[`cb6df8b`](https://github.com/getmash/mash-js/commit/cb6df8bcda220d6c81256b4d0f8e1bb8383c7edc)]:
+  - @getmash/post-message@2.1.1
+
 ## 2.14.1
 
 ### Patch Changes

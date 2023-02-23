@@ -1,5 +1,11 @@
 # @getmash/post-message
 
+## 2.1.1
+
+### Patch Changes
+
+- [#96](https://github.com/getmash/mash-js/pull/96) [`cb6df8b`](https://github.com/getmash/mash-js/commit/cb6df8bcda220d6c81256b4d0f8e1bb8383c7edc) Thanks [@nyonson](https://github.com/nyonson)! - Fix log line from blowing up on ignored message
+
 ## 2.1.0
 
 ### Minor Changes

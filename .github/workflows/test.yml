@@ -15,10 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          ref: ${{github.event.pull_request.head.sha}}
-          fetch-depth: 0
+        uses: actions/checkout@v3
       
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -67,5 +64,5 @@ jobs:
         # Don't run on changeset-release branch as it does not require a changeset to update
         # package versions. Simplifies the automation of package versioning and allows
         # branch protection rules
-        if: ${{ github.ref_name != 'changeset-release/main' }}
+        if: ${{ github.head_ref != 'changeset-release/main' }}
         run: yarn release:status
