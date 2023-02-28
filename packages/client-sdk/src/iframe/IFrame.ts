@@ -195,6 +195,27 @@ export default class IFrame {
   };
 
   /**
+   * Add style settings to host site to prevent it from scrolling on mobile
+   */
+  private preventBackgroundScroll() {
+    if (this.getMediaQuery().matches) {
+      document.body.style.height = "100vh";
+      document.body.style.overflowY = "hidden";
+    }
+    
+  }
+
+  /**
+   * Clear out style settings to host site that prevent it from scrolling on mobile
+   */
+  private resetBackgroundScroll() {
+    if (this.getMediaQuery().matches) {
+      document.body.style.height = "";
+      document.body.style.overflowY = "";
+    }
+  }
+
+  /**
    * Retrieve mediaQueryList for the given mediaQuery that changes the layout
    * of the iframe container.
    */
@@ -265,12 +286,14 @@ export default class IFrame {
       switch (data.name) {
         case Events.WalletOpened: {
           this.open = true;
+          this.preventBackgroundScroll();
           this.resize();
           this.position();
           break;
         }
         case Events.WalletClosed: {
           this.open = false;
+          this.resetBackgroundScroll();
           this.resize();
           this.position();
           break;
