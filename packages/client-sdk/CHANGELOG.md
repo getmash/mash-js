@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.14.3
+
+### Patch Changes
+
+- [#99](https://github.com/getmash/mash-js/pull/99) [`1fb5d1f`](https://github.com/getmash/mash-js/commit/1fb5d1f3d6413c36b473792fa2c714e37b111a3a) Thanks [@mdedys](https://github.com/mdedys)! - [FIX]: Default placement settings for Mash Button App is now set to Right instead of Left
+
 ## 2.14.2
 
 ### Patch Changes
