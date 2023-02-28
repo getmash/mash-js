@@ -57,12 +57,12 @@ class Mash {
     const defaultConfiguration: MashWebAPI.EarnerCustomizationConfiguration = {
       walletButtonPosition: {
         desktop: {
-          floatSide: WalletButtonFloatSide.Left,
+          floatSide: WalletButtonFloatSide.Right,
           floatPlacement: WalletButtonFloatPlacement.Default,
           customShiftConfiguration: { horizontal: 0, vertical: 0 },
         },
         mobile: {
-          floatSide: WalletButtonFloatSide.Left,
+          floatSide: WalletButtonFloatSide.Right,
           floatPlacement: WalletButtonFloatPlacement.Default,
           customShiftConfiguration: { horizontal: 0, vertical: 0 },
         },
