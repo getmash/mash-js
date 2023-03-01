@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.14.4
+
+### Patch Changes
+
+- [#101](https://github.com/getmash/mash-js/pull/101) [`e54b73f`](https://github.com/getmash/mash-js/commit/e54b73fb41cc3e679b3a01b44e850ff6e408b5b4) Thanks [@cartonioh](https://github.com/cartonioh)! - Prevent background scroll by using height + overflow
+
 ## 2.14.3
 
 ### Patch Changes
