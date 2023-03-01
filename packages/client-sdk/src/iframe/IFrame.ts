@@ -202,7 +202,6 @@ export default class IFrame {
       document.body.style.height = "100vh";
       document.body.style.overflowY = "hidden";
     }
-    
   }
 
   /**
