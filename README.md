@@ -23,7 +23,7 @@ If you are a developer looking to add Mash to your site the best place to start 
 
 If you are looking for more general guides on how on how to integrate Mash, product solutions, please visit our [public guides](https://guides.getmash.com)
 
-If you are looking for pre-built UI components & widgets please visit our [UI Components Library](https://docs.getmash.com)
+If you are looking for pre-built UI components & widgets please visit our [UI Components Library](https://docs.mash.com)
 
 
 # How are people monetizing with Mash?
