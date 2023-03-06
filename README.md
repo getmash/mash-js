@@ -17,13 +17,13 @@ Mash is the monetization platform for developers, indie-hackers, creators, build
 
 # How do I get started?
 
-Set up your account, your pricing & monetization model, and more. If you haven’t set up your account or want to change your settings or monetization model, you can do so at https://wallet.getmash.com/earn.  
+Set up your account, your pricing & monetization model, and more. If you haven’t set up your account or want to change your settings or monetization model, you can do so at https://app.mash.com.com/earn.  
 
 If you are a developer looking to add Mash to your site the best place to start is to integrate the Mask SDK into your site. The SDK is bundled as a NPM pkg and can be found [here](./packages/client-sdk)
 
 If you are looking for more general guides on how on how to integrate Mash, product solutions, please visit our [public guides](https://guides.getmash.com)
 
-If you are looking for pre-built UI components & widgets please visit our [UI Components Library](https://docs.getmash.com)
+If you are looking for pre-built UI components & widgets please visit our [UI Components Library](https://docs.mash.com)
 
 
 # How are people monetizing with Mash?

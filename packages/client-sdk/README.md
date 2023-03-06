@@ -16,7 +16,7 @@ npm install @getmash/client-sdk --save
 
 ## Usage
 
-The SDK requires your earner ID to be able to initialize the wallet on your site – so that you are paid directly into your wallet. If you do not have an account yet, head over to https://wallet.getmash.com/earn to set things up.
+The SDK requires your earner ID to be able to initialize the wallet on your site – so that you are paid directly into your wallet. If you do not have an account yet, head over to https://app.mash.com.com/earn to set things up.
 
 The SDK retrieves settings from the Mash Platform to configure the position of the wallet on your site. It also supports loading the theme for web components that was selected in the Mash Platform.
 
