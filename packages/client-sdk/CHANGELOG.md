@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.15.0
+
+### Minor Changes
+
+- [#103](https://github.com/getmash/mash-js/pull/103) [`fad4da6`](https://github.com/getmash/mash-js/commit/fad4da6fc89ce7340573421e084dfeec453d8586) Thanks [@cartonioh](https://github.com/cartonioh)! - Point to app.mash.com
+
 ## 2.14.4
 
 ### Patch Changes
