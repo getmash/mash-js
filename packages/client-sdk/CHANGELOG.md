@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.15.1
+
+### Patch Changes
+
+- [#105](https://github.com/getmash/mash-js/pull/105) [`3f2abe9`](https://github.com/getmash/mash-js/commit/3f2abe9b360d91dc50b798e9f484d3af5ef9b1a2) Thanks [@cartonioh](https://github.com/cartonioh)! - Remove extra .com
+
 ## 2.15.0
 
 ### Minor Changes
