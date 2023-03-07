@@ -69,8 +69,8 @@ export type Config = {
 export type PartialConfig = PartialDeep<Config> & { earnerID: string };
 
 export const DefaultAPIBaseURL = "https://api.mash.com";
-export const DefaultWalletURL = "https://app.mash.com.com/widget";
-export const DefaultPreboardingURL = "https://app.mash.com.com/preboarding";
+export const DefaultWalletURL = "https://app.mash.com/widget";
+export const DefaultPreboardingURL = "https://app.mash.com/preboarding";
 export const DefaultWidgetBaseURL = "https://widgets.mash.com";
 
 const DEFAULT_WIDGETS_CONFIG: WidgetConfig = {
