@@ -63,30 +63,72 @@ export type Config = {
    * if no Mash elements exists on the page.
    */
   autoHide?: boolean;
+  /**
+   * Controls where on the window the Mash button will appear on
+   */
   mashButtonPosition?: MashButtonPositionConfig;
 };
 
 export type PartialConfig = PartialDeep<Config> & { earnerID: string };
 
-export const DefaultAPIBaseURL = "https://api.mash.com";
-export const DefaultWalletURL = "https://app.mash.com/widget";
-export const DefaultPreboardingURL = "https://app.mash.com/preboarding";
-export const DefaultWidgetBaseURL = "https://widgets.mash.com";
+export const DefaultMashButtonURL = "https://app.mash.com/widget";
 
-const DEFAULT_WIDGETS_CONFIG: WidgetConfig = {
-  baseURL: DefaultWidgetBaseURL,
-  injectTheme: true,
-  injectWebComponentScripts: true,
-  injectFloatingWidgets: true,
-};
+/**
+ * Takes a url and a given subdomain to build a full url with a subdomain
+ * @param url url to add subdomain to
+ * @param subdomain subdomain to add
+ * @returns full url with subdomain
+ */
+function buildSubdomainURL(url: URL, subdomain: string) {
+  // Strip subdomains out of url
+  const strippedURL = url.host.split(".").slice(-2).join(".");
+  // Build full url
+  return `${url.protocol}//${subdomain}.${strippedURL}`;
+}
+
+/**
+ * Takes a string url and converts it to a URL object
+ * Returns null if parsing fails
+ * @param url url to parse
+ * @returns a URL object or null if parsing failed
+ */
+function parseURL(url: string): URL | null {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch (e) {
+    return null;
+  }
+  return parsed;
+}
 
 export default function parse(config: PartialConfig): Config {
+  // This URL is used to build all other URLS in the config, to ensure all Mash elements live in the same domain
+  const mainURL = parseURL(config.walletURL || DefaultMashButtonURL);
+
+  if (mainURL === null) {
+    throw new Error(
+      "Not a valid URL. Expecting this format: https://example.com",
+    );
+  }
+  // Allow API URL to be overriden in case the API has a different domain
+  const apiURL = config.api || buildSubdomainURL(mainURL, "api");
+  const mashButtonURL = mainURL.href;
+  const preboardingURL = `${mainURL.protocol}//${mainURL.host}/preboarding`;
+
+  const defaultWidgetsConfig: WidgetConfig = {
+    baseURL: buildSubdomainURL(mainURL, "widgets"),
+    injectTheme: true,
+    injectWebComponentScripts: true,
+    injectFloatingWidgets: true,
+  };
+
   return {
     earnerID: config.earnerID,
-    api: config.api || DefaultAPIBaseURL,
-    walletURL: config.walletURL || DefaultWalletURL,
-    preboardingURL: config.preboardingURL || DefaultPreboardingURL,
-    widgets: { ...DEFAULT_WIDGETS_CONFIG, ...config.widgets },
+    api: apiURL,
+    walletURL: mashButtonURL,
+    preboardingURL,
+    widgets: { ...defaultWidgetsConfig, ...config.widgets },
     autoHide: config.autoHide,
     mashButtonPosition: config.mashButtonPosition,
   };
