@@ -109,7 +109,7 @@ export default function parse(config: PartialConfig): Config {
 
   if (mainURL === null) {
     throw new Error(
-      "Not a valid URL. Expecting this format: https://example.com",
+      "Not a valid URL. Expecting a format like: https://example.com, https://sub.example.com",
     );
   }
   // Allow API URL to be overriden in case the API has a different domain
