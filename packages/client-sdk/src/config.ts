@@ -105,20 +105,20 @@ function parseURL(url: string): URL | null {
 
 export default function parse(config: PartialConfig): Config {
   // This URL is used to build all other URLS in the config, to ensure all Mash elements live in the same domain
-  const mainURL = parseURL(config.walletURL || DefaultMashButtonURL);
+  const mashButtonURL = parseURL(config.walletURL || DefaultMashButtonURL);
 
-  if (mainURL === null) {
+  if (mashButtonURL === null) {
     throw new Error(
       "Not a valid URL. Expecting a format like: https://example.com, https://sub.example.com",
     );
   }
+
   // Allow API URL to be overriden in case the API has a different domain
-  const apiURL = config.api || buildSubdomainURL(mainURL, "api");
-  const mashButtonURL = mainURL.href;
-  const preboardingURL = `${mainURL.protocol}//${mainURL.host}/preboarding`;
+  const apiURL = config.api || buildSubdomainURL(mashButtonURL, "api");
+  const preboardingURL = `${mashButtonURL.protocol}//${mashButtonURL.host}/preboarding`;
 
   const defaultWidgetsConfig: WidgetConfig = {
-    baseURL: buildSubdomainURL(mainURL, "widgets"),
+    baseURL: buildSubdomainURL(mashButtonURL, "widgets"),
     injectTheme: true,
     injectWebComponentScripts: true,
     injectFloatingWidgets: true,
@@ -127,7 +127,7 @@ export default function parse(config: PartialConfig): Config {
   return {
     earnerID: config.earnerID,
     api: apiURL,
-    walletURL: mashButtonURL,
+    walletURL: mashButtonURL.href,
     preboardingURL,
     widgets: { ...defaultWidgetsConfig, ...config.widgets },
     autoHide: config.autoHide,
