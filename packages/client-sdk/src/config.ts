@@ -51,7 +51,8 @@ export type Config = {
    */
   walletURL: string;
   /**
-   * Mash Preboadring Modal App URL.
+   * Mash Preboarding Modal App URL.
+   * @deprecated url is constructed from wallet url
    */
   preboardingURL: string;
   /**
