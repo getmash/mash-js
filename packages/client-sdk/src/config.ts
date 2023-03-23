@@ -1,4 +1,4 @@
-import { WalletButtonFloatSide } from "./api/routes.js";
+import { WalletButtonPosition } from "./api/routes.js";
 
 import type { PartialDeep } from "type-fest";
 
@@ -24,15 +24,6 @@ type WidgetConfig = {
    * Controls whether to inject Mash Floating Widget such as boosts.
    */
   injectFloatingWidgets: boolean;
-};
-
-type MashButtonPosition = {
-  floatSide?: WalletButtonFloatSide;
-};
-
-type MashButtonPositionConfig = {
-  desktop?: MashButtonPosition;
-  mobile?: MashButtonPosition;
 };
 
 // Local properties that are replicated server-side in the remote config.
@@ -63,7 +54,7 @@ export type Config = {
    * if no Mash elements exists on the page.
    */
   autoHide?: boolean;
-  mashButtonPosition?: MashButtonPositionConfig;
+  mashButtonPosition?: PartialDeep<WalletButtonPosition>;
 };
 
 export type PartialConfig = PartialDeep<Config> & { earnerID: string };

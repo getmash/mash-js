@@ -1,3 +1,5 @@
+import { PartialDeep } from "type-fest";
+
 export enum WalletButtonFloatSide {
   Left = "left",
   Right = "right",
@@ -35,21 +37,15 @@ export type WalletButtonShiftConfiguration = {
   vertical: number;
 };
 
-export type WalletButtonDesktopPosition = {
-  floatSide: WalletButtonFloatSide;
-  floatPlacement: WalletButtonFloatPlacement;
-  customShiftConfiguration: WalletButtonShiftConfiguration;
-};
-
-export type WalletButtonMobilePosition = {
+export type WalletButtonDevicePosition = {
   floatSide: WalletButtonFloatSide;
   floatPlacement: WalletButtonFloatPlacement;
   customShiftConfiguration: WalletButtonShiftConfiguration;
 };
 
 export type WalletButtonPosition = {
-  desktop: WalletButtonDesktopPosition;
-  mobile: WalletButtonMobilePosition;
+  desktop: WalletButtonDevicePosition;
+  mobile: WalletButtonDevicePosition;
 };
 
 export type BoostDesktopConfiguration = {
@@ -119,4 +115,77 @@ export type Earner = {
 export function getEarner(baseURL: string, earnerID: string): Promise<Earner> {
   const request = new Request(`${baseURL}/earners/${earnerID}`);
   return fetch(request).then(data => data.json());
+}
+
+export const defaultEarnerCustomizationConfig: EarnerCustomizationConfiguration =
+  {
+    walletButtonPosition: {
+      desktop: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: { horizontal: 0, vertical: 0 },
+      },
+      mobile: {
+        floatSide: WalletButtonFloatSide.Right,
+        floatPlacement: WalletButtonFloatPlacement.Default,
+        customShiftConfiguration: { horizontal: 0, vertical: 0 },
+      },
+    },
+    theme: {
+      primaryColor: "#000",
+      fontFamily: "inherit",
+    },
+    boostConfigurations: [],
+    pageRevealers: [],
+    autoHide: false,
+  };
+
+type NotOverridableConfig = Omit<
+  EarnerCustomizationConfiguration,
+  "autoHide" | "walletButtonPosition"
+>;
+
+function mergeDeviceConfig(
+  config: WalletButtonDevicePosition,
+  override?: PartialDeep<WalletButtonDevicePosition>,
+): WalletButtonDevicePosition {
+  if (!override) return config;
+  return {
+    floatSide: override.floatSide || config.floatSide,
+    floatPlacement: override.floatPlacement || config.floatPlacement,
+    customShiftConfiguration: {
+      horizontal:
+        override.customShiftConfiguration?.horizontal ||
+        config.customShiftConfiguration.horizontal,
+      vertical:
+        override.customShiftConfiguration?.vertical ||
+        config.customShiftConfiguration.vertical,
+    },
+  };
+}
+
+export function mergeEarnerCustomizationConfig(
+  config: EarnerCustomizationConfiguration,
+  overrides: PartialDeep<EarnerCustomizationConfiguration>,
+): EarnerCustomizationConfiguration {
+  // The 3 values defined here cannot be overriden currently through SDK
+  const statik: NotOverridableConfig = {
+    theme: config.theme,
+    boostConfigurations: config.boostConfigurations,
+    pageRevealers: config.pageRevealers,
+  };
+
+  const autoHide = overrides.autoHide ?? config.autoHide;
+
+  const desktop = mergeDeviceConfig(
+    config.walletButtonPosition.desktop,
+    overrides.walletButtonPosition?.desktop,
+  );
+
+  const mobile = mergeDeviceConfig(
+    config.walletButtonPosition.mobile,
+    overrides.walletButtonPosition?.mobile,
+  );
+
+  return { ...statik, autoHide, walletButtonPosition: { desktop, mobile } };
 }
