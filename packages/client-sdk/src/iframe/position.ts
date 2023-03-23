@@ -1,4 +1,5 @@
 import { PartialDeep } from "type-fest";
+
 import {
   WalletButtonDevicePosition,
   WalletButtonFloatPlacement,
