@@ -1,8 +1,9 @@
+import { PartialDeep } from "type-fest";
+
 import {
-  WalletButtonDesktopPosition,
+  WalletButtonDevicePosition,
   WalletButtonFloatPlacement,
   WalletButtonFloatSide,
-  WalletButtonMobilePosition,
   WalletButtonPosition,
 } from "../api/routes.js";
 
@@ -79,28 +80,13 @@ function normalizeFloatPlacement(
   return location;
 }
 
-function getDesktopConfig(
-  desktop?: Partial<WalletButtonDesktopPosition>,
-): WalletButtonDesktopPosition {
+function getPositionConfig(cfg?: PartialDeep<WalletButtonDevicePosition>) {
   return {
-    floatSide: normalizeFloatSide(desktop?.floatSide),
-    floatPlacement: normalizeFloatPlacement(desktop?.floatPlacement),
+    floatSide: normalizeFloatSide(cfg?.floatSide),
+    floatPlacement: normalizeFloatPlacement(cfg?.floatPlacement),
     customShiftConfiguration: {
-      horizontal: desktop?.customShiftConfiguration?.horizontal || 0,
-      vertical: desktop?.customShiftConfiguration?.vertical || 0,
-    },
-  };
-}
-
-function getMobileConfig(
-  mobile?: Partial<WalletButtonMobilePosition>,
-): WalletButtonMobilePosition {
-  return {
-    floatSide: normalizeFloatSide(mobile?.floatSide),
-    floatPlacement: normalizeFloatPlacement(mobile?.floatPlacement),
-    customShiftConfiguration: {
-      horizontal: mobile?.customShiftConfiguration?.horizontal || 0,
-      vertical: mobile?.customShiftConfiguration?.vertical || 0,
+      horizontal: cfg?.customShiftConfiguration?.horizontal || 0,
+      vertical: cfg?.customShiftConfiguration?.vertical || 0,
     },
   };
 }
@@ -109,12 +95,12 @@ function getMobileConfig(
  * Full wallet position configuration, any missing parts have default values.
  */
 export function getWalletPosition(
-  desktop?: Partial<WalletButtonDesktopPosition> | undefined,
-  mobile?: Partial<WalletButtonMobilePosition> | undefined,
+  desktop?: Partial<WalletButtonDevicePosition> | undefined,
+  mobile?: Partial<WalletButtonDevicePosition> | undefined,
 ): WalletButtonPosition {
   return {
-    desktop: getDesktopConfig(desktop),
-    mobile: getMobileConfig(mobile),
+    desktop: getPositionConfig(desktop),
+    mobile: getPositionConfig(mobile),
   };
 }
 
