@@ -37,12 +37,14 @@ export type WalletButtonShiftConfiguration = {
   vertical: number;
 };
 
+// https://github.com/getmash/mash/blob/main/platform/api/spec/mash.yaml#L1369
 export type WalletButtonDesktopPosition = {
   floatSide: WalletButtonFloatSide;
   floatPlacement: WalletButtonFloatPlacement;
   customShiftConfiguration: WalletButtonShiftConfiguration;
 };
 
+// https://github.com/getmash/mash/blob/main/platform/api/spec/mash.yaml#L1384
 export type WalletButtonMobilePosition = Omit<
   WalletButtonDesktopPosition,
   "customShiftConfiguration"
