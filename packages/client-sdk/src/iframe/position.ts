@@ -1,9 +1,10 @@
 import { PartialDeep } from "type-fest";
 
 import {
-  WalletButtonDevicePosition,
+  WalletButtonDesktopPosition,
   WalletButtonFloatPlacement,
   WalletButtonFloatSide,
+  WalletButtonMobilePosition,
   WalletButtonPosition,
 } from "../api/routes.js";
 
@@ -80,7 +81,18 @@ function normalizeFloatPlacement(
   return location;
 }
 
-function getPositionConfig(cfg?: PartialDeep<WalletButtonDevicePosition>) {
+function getMobilePositionConfig(
+  cfg?: PartialDeep<WalletButtonMobilePosition>,
+) {
+  return {
+    floatSide: normalizeFloatSide(cfg?.floatSide),
+    floatPlacement: normalizeFloatPlacement(cfg?.floatPlacement),
+  };
+}
+
+function getDesktopPositionConfig(
+  cfg?: PartialDeep<WalletButtonDesktopPosition>,
+) {
   return {
     floatSide: normalizeFloatSide(cfg?.floatSide),
     floatPlacement: normalizeFloatPlacement(cfg?.floatPlacement),
@@ -95,12 +107,12 @@ function getPositionConfig(cfg?: PartialDeep<WalletButtonDevicePosition>) {
  * Full wallet position configuration, any missing parts have default values.
  */
 export function getWalletPosition(
-  desktop?: Partial<WalletButtonDevicePosition> | undefined,
-  mobile?: Partial<WalletButtonDevicePosition> | undefined,
+  desktop?: Partial<WalletButtonDesktopPosition> | undefined,
+  mobile?: Partial<WalletButtonMobilePosition> | undefined,
 ): WalletButtonPosition {
   return {
-    desktop: getPositionConfig(desktop),
-    mobile: getPositionConfig(mobile),
+    desktop: getDesktopPositionConfig(desktop),
+    mobile: getMobilePositionConfig(mobile),
   };
 }
 
@@ -153,13 +165,6 @@ export function getLocation(
     }
     case WalletButtonFloatPlacement.BasicShiftVertical: {
       mobileLocation.bottom = BASIC_SHIFT_VERTICAL;
-      break;
-    }
-    case WalletButtonFloatPlacement.Custom: {
-      mobileLocation.bottom = normalizeShift(
-        config.mobile.customShiftConfiguration.vertical,
-        MAX_SHIFT_VERTICAL,
-      );
       break;
     }
   }

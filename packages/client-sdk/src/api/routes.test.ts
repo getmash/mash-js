@@ -5,7 +5,8 @@ import {
   defaultEarnerCustomizationConfig,
   EarnerCustomizationConfiguration,
   mergeEarnerCustomizationConfig,
-  WalletButtonDevicePosition,
+  WalletButtonDesktopPosition,
+  WalletButtonMobilePosition,
   WalletButtonFloatPlacement,
   WalletButtonFloatSide,
 } from "./routes.js";
@@ -30,16 +31,15 @@ describe("routes", () => {
       assert.equal(result.autoHide, true);
     });
     it("merge default with position override, should match position override", () => {
-      const desktop: WalletButtonDevicePosition = {
+      const desktop: WalletButtonDesktopPosition = {
         floatPlacement: WalletButtonFloatPlacement.Intercom,
         floatSide: WalletButtonFloatSide.Left,
         customShiftConfiguration: { horizontal: 5, vertical: 10 },
       };
 
-      const mobile: WalletButtonDevicePosition = {
+      const mobile: WalletButtonMobilePosition = {
         floatPlacement: WalletButtonFloatPlacement.Ghost,
         floatSide: WalletButtonFloatSide.Left,
-        customShiftConfiguration: { horizontal: 15, vertical: 152 },
       };
 
       const result = mergeEarnerCustomizationConfig(
