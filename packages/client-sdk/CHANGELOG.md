@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.16.0
+
+### Minor Changes
+
+- [#110](https://github.com/getmash/mash-js/pull/110) [`b8f19f1`](https://github.com/getmash/mash-js/commit/b8f19f13926bb7ed096f51377a18ad996f7814ae) Thanks [@mdedys](https://github.com/mdedys)! - Add ability to override all Mash Wallet button position position through sdk config
+
 ## 2.15.1
 
 ### Patch Changes
