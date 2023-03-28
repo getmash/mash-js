@@ -150,10 +150,6 @@ describe("IFrame Events", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 100,
-        },
       },
     });
 
@@ -270,10 +266,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -298,10 +290,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -326,10 +314,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -352,10 +336,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -378,10 +358,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -407,10 +383,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -436,10 +408,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -462,10 +430,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -491,10 +455,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -520,10 +480,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -549,10 +505,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -578,10 +530,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -605,10 +553,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -634,10 +578,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -661,10 +601,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -691,10 +627,6 @@ describe("IFrame Desktop", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -724,10 +656,6 @@ describe("IFrame Mobile", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Left,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
@@ -752,10 +680,6 @@ describe("IFrame Mobile", () => {
       mobile: {
         floatSide: WalletButtonFloatSide.Right,
         floatPlacement: WalletButtonFloatPlacement.Default,
-        customShiftConfiguration: {
-          horizontal: 0,
-          vertical: 0,
-        },
       },
     });
 
