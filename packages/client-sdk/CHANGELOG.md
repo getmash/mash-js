@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.16.1
+
+### Patch Changes
+
+- [#112](https://github.com/getmash/mash-js/pull/112) [`9f1a181`](https://github.com/getmash/mash-js/commit/9f1a181c9a0971467528b39a26bdcf21358591ea) Thanks [@mdedys](https://github.com/mdedys)! - Fix mobile wallet button position expecting a customShift parameter. Mobile does not support this property"
+
 ## 2.16.0
 
 ### Minor Changes
