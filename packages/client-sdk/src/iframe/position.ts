@@ -1,3 +1,5 @@
+import { PartialDeep } from "type-fest";
+
 import {
   WalletButtonDesktopPosition,
   WalletButtonFloatPlacement,
@@ -79,28 +81,24 @@ function normalizeFloatPlacement(
   return location;
 }
 
-function getDesktopConfig(
-  desktop?: Partial<WalletButtonDesktopPosition>,
-): WalletButtonDesktopPosition {
+function getMobilePositionConfig(
+  cfg?: PartialDeep<WalletButtonMobilePosition>,
+) {
   return {
-    floatSide: normalizeFloatSide(desktop?.floatSide),
-    floatPlacement: normalizeFloatPlacement(desktop?.floatPlacement),
-    customShiftConfiguration: {
-      horizontal: desktop?.customShiftConfiguration?.horizontal || 0,
-      vertical: desktop?.customShiftConfiguration?.vertical || 0,
-    },
+    floatSide: normalizeFloatSide(cfg?.floatSide),
+    floatPlacement: normalizeFloatPlacement(cfg?.floatPlacement),
   };
 }
 
-function getMobileConfig(
-  mobile?: Partial<WalletButtonMobilePosition>,
-): WalletButtonMobilePosition {
+function getDesktopPositionConfig(
+  cfg?: PartialDeep<WalletButtonDesktopPosition>,
+) {
   return {
-    floatSide: normalizeFloatSide(mobile?.floatSide),
-    floatPlacement: normalizeFloatPlacement(mobile?.floatPlacement),
+    floatSide: normalizeFloatSide(cfg?.floatSide),
+    floatPlacement: normalizeFloatPlacement(cfg?.floatPlacement),
     customShiftConfiguration: {
-      horizontal: mobile?.customShiftConfiguration?.horizontal || 0,
-      vertical: mobile?.customShiftConfiguration?.vertical || 0,
+      horizontal: cfg?.customShiftConfiguration?.horizontal || 0,
+      vertical: cfg?.customShiftConfiguration?.vertical || 0,
     },
   };
 }
@@ -113,8 +111,8 @@ export function getWalletPosition(
   mobile?: Partial<WalletButtonMobilePosition> | undefined,
 ): WalletButtonPosition {
   return {
-    desktop: getDesktopConfig(desktop),
-    mobile: getMobileConfig(mobile),
+    desktop: getDesktopPositionConfig(desktop),
+    mobile: getMobilePositionConfig(mobile),
   };
 }
 
@@ -167,13 +165,6 @@ export function getLocation(
     }
     case WalletButtonFloatPlacement.BasicShiftVertical: {
       mobileLocation.bottom = BASIC_SHIFT_VERTICAL;
-      break;
-    }
-    case WalletButtonFloatPlacement.Custom: {
-      mobileLocation.bottom = normalizeShift(
-        config.mobile.customShiftConfiguration.vertical,
-        MAX_SHIFT_VERTICAL,
-      );
       break;
     }
   }

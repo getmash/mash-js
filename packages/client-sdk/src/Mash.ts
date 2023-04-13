@@ -1,8 +1,4 @@
 import * as MashWebAPI from "./api/routes.js";
-import {
-  WalletButtonFloatPlacement,
-  WalletButtonFloatSide,
-} from "./api/routes.js";
 import parseConfig, { PartialConfig, Config } from "./config.js";
 import { MashEvent } from "./events.js";
 import IFrame from "./iframe/IFrame.js";
@@ -42,6 +38,7 @@ class Mash {
 
   constructor(config: PartialConfig) {
     this.localConfig = parseConfig(config);
+
     this.iframe = new IFrame(this.localConfig.walletURL);
     this.preboardIFrame = new PreboardingIFrame(
       this.localConfig.preboardingURL,
@@ -54,32 +51,18 @@ class Mash {
       window.addEventListener(MashEvent.WebComponentConnected, () => res());
     });
 
-    const defaultConfiguration: MashWebAPI.EarnerCustomizationConfiguration = {
-      walletButtonPosition: {
-        desktop: {
-          floatSide: WalletButtonFloatSide.Right,
-          floatPlacement: WalletButtonFloatPlacement.Default,
-          customShiftConfiguration: { horizontal: 0, vertical: 0 },
-        },
-        mobile: {
-          floatSide: WalletButtonFloatSide.Right,
-          floatPlacement: WalletButtonFloatPlacement.Default,
-          customShiftConfiguration: { horizontal: 0, vertical: 0 },
-        },
-      },
-      theme: {
-        primaryColor: "#000",
-        fontFamily: "inherit",
-      },
-      boostConfigurations: [],
-      pageRevealers: [],
-      autoHide: false,
-    };
-
     // If localConfig doesn't have an earner ID, just set the default configuration.
     // This handles a backwards compatibility case.
     if (!this.localConfig.earnerID) {
-      this.remoteCustomizationConfig = Promise.resolve(defaultConfiguration);
+      this.remoteCustomizationConfig = Promise.resolve(
+        MashWebAPI.mergeEarnerCustomizationConfig(
+          MashWebAPI.defaultEarnerCustomizationConfig,
+          {
+            autoHide: this.localConfig.autoHide,
+            walletButtonPosition: this.localConfig.mashButtonPosition,
+          },
+        ),
+      );
       return;
     }
 
@@ -100,23 +83,20 @@ class Mash {
       this.localConfig.earnerID,
     )
       .then(result => {
-        // set local overrides
-        result.customization.walletButtonPosition.desktop.floatSide =
-          this.localConfig.mashButtonPosition?.desktop?.floatSide ??
-          result.customization.walletButtonPosition.desktop.floatSide;
-        result.customization.walletButtonPosition.mobile.floatSide =
-          this.localConfig.mashButtonPosition?.mobile?.floatSide ??
-          result.customization.walletButtonPosition.mobile.floatSide;
+        const cfg = MashWebAPI.mergeEarnerCustomizationConfig(
+          result.customization,
+          {
+            autoHide: this.localConfig.autoHide,
+            walletButtonPosition: this.localConfig.mashButtonPosition,
+          },
+        );
 
         if (this.localConfig.widgets.injectTheme) {
-          injectTheme(
-            this.localConfig.widgets.baseURL,
-            result.customization.theme,
-          );
+          injectTheme(this.localConfig.widgets.baseURL, cfg.theme);
         }
 
         if (this.localConfig.widgets.injectFloatingWidgets) {
-          if (result.customization.boostConfigurations) {
+          if (cfg.boostConfigurations) {
             injectFloatingBoosts(
               result.customization.boostConfigurations,
               window.location.pathname,
@@ -124,7 +104,7 @@ class Mash {
             );
           }
 
-          if (result.customization.pageRevealers) {
+          if (cfg.pageRevealers) {
             injectPageRevealers(
               result.customization.pageRevealers,
               window.location.pathname,
@@ -132,7 +112,7 @@ class Mash {
           }
         }
 
-        return result.customization;
+        return cfg;
       })
       .catch(err => {
         console.warn(
@@ -140,15 +120,20 @@ class Mash {
           err,
         );
 
+        const cfg = MashWebAPI.mergeEarnerCustomizationConfig(
+          MashWebAPI.defaultEarnerCustomizationConfig,
+          {
+            autoHide: this.localConfig.autoHide,
+            walletButtonPosition: this.localConfig.mashButtonPosition,
+          },
+        );
+
         // If API error, inject default theme
         if (this.localConfig.widgets.injectTheme) {
-          injectTheme(
-            this.localConfig.widgets.baseURL,
-            defaultConfiguration.theme,
-          );
+          injectTheme(this.localConfig.widgets.baseURL, cfg.theme);
         }
 
-        return defaultConfiguration;
+        return cfg;
       });
   }
 
