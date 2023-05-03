@@ -233,8 +233,9 @@ describe("IFrame Events", () => {
     });
 
     wallet.send({ name: Events.NotificationUpdate, metadata: { count: 2 } });
+
     await waitFor(() => {
-      assert.equal(getIframe().parentElement?.style.height, "432px");
+      assert.equal(getIframe().parentElement?.style.height, "540px");
     });
     await waitFor(() => {
       assert.equal(
