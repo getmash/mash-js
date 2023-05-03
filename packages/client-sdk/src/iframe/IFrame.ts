@@ -32,7 +32,7 @@ export const MAX_CONTENT_HEIGHT = 714;
 export const MIN_CONTENT_WIDTH = 100;
 export const MIN_CONTENT_HEIGHT = 100;
 /* Max Height of a notifcation */
-export const MAX_HEIGHT_NOTIFICATION = 216;
+export const MAX_HEIGHT_NOTIFICATION = 270;
 
 /**
  * Default iframe style.
