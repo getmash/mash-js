@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.16.2
+
+### Patch Changes
+
+- [#116](https://github.com/getmash/mash-js/pull/116) [`9c9d2b9`](https://github.com/getmash/mash-js/commit/9c9d2b9eec0673f85ed3ca7226fc3f5a98dde64a) Thanks [@mdedys](https://github.com/mdedys)! - Remove margins from div wrapping Mash iframe
+
 ## 2.16.1
 
 ### Patch Changes
