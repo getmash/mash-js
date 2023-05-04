@@ -24,12 +24,15 @@ export const HEIGHT_PADDING = 20;
 export const MAX_CONTENT_WIDTH = 428;
 /* Max Height for Wallet in Desktop layout */
 export const MAX_CONTENT_HEIGHT = 714;
-/* Min Width for Wallet when closed */
+/**
+ * Min Width + min Height for Wallet when closed
+ * It takes into a account a buffer for box-shadow
+ * Actual height of button is 48 by 48
+ */
 export const MIN_CONTENT_WIDTH = 100;
-/* Min Height for Wallet when closed */
 export const MIN_CONTENT_HEIGHT = 100;
 /* Max Height of a notifcation */
-export const MAX_HEIGHT_NOTIFICATION = 216;
+export const MAX_HEIGHT_NOTIFICATION = 270;
 
 /**
  * Default iframe style.
@@ -38,8 +41,6 @@ const CONTAINER_STYLE = {
   position: "fixed",
   bottom: "0",
   right: "0",
-  "margin-right": "20px",
-  "margin-bottom": "20px",
   height: `${MIN_CONTENT_HEIGHT}px`,
   width: `${MIN_CONTENT_WIDTH}px`,
   "z-index": zIndex.buttonApp,
@@ -105,20 +106,9 @@ export default class IFrame {
     height: number,
     width: number,
     unit: "%" | "px",
-    margin: boolean,
   ) => {
     this.container.style.height = `${height}${unit}`;
     this.container.style.width = `${width}${unit}`;
-
-    if (margin) {
-      this.container.style.marginRight = "20px";
-      this.container.style.marginLeft = "20px";
-      this.container.style.marginBottom = "20px";
-    } else {
-      this.container.style.marginRight = "0";
-      this.container.style.marginLeft = "0";
-      this.container.style.marginBottom = "0";
-    }
   };
 
   /**
@@ -130,7 +120,7 @@ export default class IFrame {
 
     if (this.open) {
       if (mediaQuery.matches) {
-        this.setContainerSize(100, 100, "%", false);
+        this.setContainerSize(100, 100, "%");
         return;
       }
 
@@ -139,7 +129,7 @@ export default class IFrame {
           ? window.innerHeight - HEIGHT_PADDING
           : MAX_CONTENT_HEIGHT;
 
-      this.setContainerSize(contentHeight, MAX_CONTENT_WIDTH, "px", true);
+      this.setContainerSize(contentHeight, MAX_CONTENT_WIDTH, "px");
       return;
     }
 
@@ -159,12 +149,7 @@ export default class IFrame {
     // we must make the width larger to accomodate notifications
     const width = this.notificationCount === 0 ? MIN_CONTENT_WIDTH : maxWidth;
 
-    this.setContainerSize(
-      height,
-      width,
-      "px",
-      mediaQuery.matches ? false : true,
-    );
+    this.setContainerSize(height, width, "px");
   };
 
   /**
@@ -184,7 +169,6 @@ export default class IFrame {
         this.container.style.left = toPixel(this.location?.mobile.left);
         this.container.style.right = toPixel(this.location?.mobile.right);
       }
-
       return;
     }
 
@@ -301,7 +285,6 @@ export default class IFrame {
           this.notificationCount =
             (data.metadata.count as number | undefined) || 0;
           this.resize();
-          this.position();
           break;
         }
         case Events.WalletLoaded: {
