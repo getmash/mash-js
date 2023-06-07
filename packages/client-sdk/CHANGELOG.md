@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.17.0
+
+### Minor Changes
+
+- [#118](https://github.com/getmash/mash-js/pull/118) [`386a8b0`](https://github.com/getmash/mash-js/commit/386a8b0ae54ab3a3e31bacf595e16aeda1f645bb) Thanks [@nyonson](https://github.com/nyonson)! - Standardize page matcher texts for easier inputs
+
 ## 2.16.2
 
 ### Patch Changes
