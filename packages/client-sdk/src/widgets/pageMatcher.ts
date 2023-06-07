@@ -1,15 +1,23 @@
 import { MatchType, PageMatcher, PageTarget } from "../api/routes.js";
 
 /**
+ * Ensure the match text begins with a slash for easy comparison to the pathname.
+ */
+function standardizeMatchText(matchText: string): string {
+  return matchText.startsWith("/") ? matchText : "/" + matchText;
+}
+
+/**
  * Page matched if any matcher returns true.
  */
 function pageMatched(pathname: string, matchers: PageMatcher[]): boolean {
   for (const matcher of matchers) {
     const equals =
-      matcher.matchType == MatchType.Equals && pathname === matcher.matchText;
+      matcher.matchType == MatchType.Equals &&
+      pathname === standardizeMatchText(matcher.matchText);
     const startsWith =
       matcher.matchType == MatchType.StartsWith &&
-      pathname.startsWith(matcher.matchText);
+      pathname.startsWith(standardizeMatchText(matcher.matchText));
     const contains =
       matcher.matchType == MatchType.Contains &&
       pathname.includes(matcher.matchText);
