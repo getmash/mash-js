@@ -1,5 +1,11 @@
 # @getmash/client-sdk
 
+## 2.18.0
+
+### Minor Changes
+
+- [#120](https://github.com/getmash/mash-js/pull/120) [`a3d2d60`](https://github.com/getmash/mash-js/commit/a3d2d60549fbb05d01a1d6c91b650cd267426523) Thanks [@nyonson](https://github.com/nyonson)! - Switch to dynamic viewport units
+
 ## 2.17.0
 
 ### Minor Changes
