@@ -6,7 +6,7 @@ import zIndex from "./zIndex.js";
 const CONTAINER_STYLE = {
   border: "none",
   width: "100%",
-  height: "100vh",
+  height: "100dvh",
   position: "fixed",
   top: "0",
   left: "0",
@@ -65,7 +65,7 @@ export class PreboardingIFrame {
     this.container.style.visibility = "visible";
 
     // Prevent background from scrolling
-    document.body.style.height = "100vh";
+    document.body.style.height = "100dvh";
     document.body.style.overflowY = "hidden";
   };
 

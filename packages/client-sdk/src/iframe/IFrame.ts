@@ -183,7 +183,7 @@ export default class IFrame {
    */
   private preventBackgroundScroll() {
     if (this.getMediaQuery().matches) {
-      document.body.style.height = "100vh";
+      document.body.style.height = "100dvh";
       document.body.style.overflowY = "hidden";
     }
   }
