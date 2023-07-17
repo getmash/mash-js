@@ -9,7 +9,7 @@
     "@mash/post-message": "file:../../packages/post-message"
   },
   "devDependencies": {
-    "parcel": "^2.7.0"
+    "parcel": "~2.7.0"
   },
   "resolutions": {
     "@mash/jsonrpc-engine": "file:../../packages/jsonrpc-engine",

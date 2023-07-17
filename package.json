@@ -30,8 +30,8 @@
     "release": "yarn workspaces foreach --topological --parallel run build && yarn release:publish"
   },
   "devDependencies": {
-    "@changesets/changelog-github": "^0.4.7",
-    "@changesets/cli": "^2.25.0",
-    "@monorepo-utils/workspaces-to-typescript-project-references": "^2.8.2"
+    "@changesets/changelog-github": "~0.4.7",
+    "@changesets/cli": "~2.25.0",
+    "@monorepo-utils/workspaces-to-typescript-project-references": "~2.8.2"
   }
 }
