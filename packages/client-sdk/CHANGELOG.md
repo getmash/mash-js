@@ -1,5 +1,15 @@
 # @getmash/client-sdk
 
+## 2.18.1
+
+### Patch Changes
+
+- [#124](https://github.com/getmash/mash-js/pull/124) [`eed10f1`](https://github.com/getmash/mash-js/commit/eed10f129b2a72b29f6155787a60bd8b0f267565) Thanks [@nyonson](https://github.com/nyonson)! - Upgrading build tooling
+
+- Updated dependencies [[`eed10f1`](https://github.com/getmash/mash-js/commit/eed10f129b2a72b29f6155787a60bd8b0f267565)]:
+  - @getmash/jsonrpc-engine@2.0.1
+  - @getmash/post-message@2.1.2
+
 ## 2.18.0
 
 ### Minor Changes
