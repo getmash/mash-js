@@ -1,6 +1,6 @@
 {
   "name": "@getmash/jsonrpc-engine",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "JsonRPC wrapper over window.postMessage to allow a structured method to call functions through window.postMessage",
   "keywords": [
     "post message",
@@ -24,7 +24,7 @@
     "test": "tsc --build && c8 --reporter=text --all --reporter=lcov node --enable-source-maps --test dist/"
   },
   "dependencies": {
-    "@getmash/post-message": "^2.0.0",
+    "@getmash/post-message": "^2.1.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
