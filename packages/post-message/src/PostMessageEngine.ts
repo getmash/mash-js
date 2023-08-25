@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 export type PostMessageEvent<TData = unknown> = {
   targetName: string;
   data?: TData;
+  source: MessageEventSource | null;
 };
 
 export interface PostMessageEngineOptions {
@@ -101,7 +102,7 @@ export default class PostMessageEngine<TData> {
       evt: MessageEvent<PostMessageEvent<TData>>,
     ) => {
       if (this._shouldIgnoreMessage(evt)) return;
-      listener(evt.data || null);
+      listener({ ...evt.data, source: evt.source } || null);
     };
     this._listeners[id] = wrapped;
     window.addEventListener("message", wrapped, false);
