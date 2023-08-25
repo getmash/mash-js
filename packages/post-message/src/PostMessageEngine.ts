@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 export type PostMessageEvent<TData = unknown> = {
   targetName: string;
   data?: TData;
-  source: MessageEventSource | null;
+  source?: MessageEventSource | null;
 };
 
 export interface PostMessageEngineOptions {

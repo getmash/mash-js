@@ -190,7 +190,7 @@ describe("PostMessageEngine", () => {
       // @ts-expect-error testing the private value
       const result = tester._shouldIgnoreMessage({
         ...validEvent,
-        data: { ...validEvent.data, targetName: "badddd", source: null },
+        data: { ...validEvent.data, targetName: "badddd" },
       });
       assert.ok(result);
     });
@@ -213,7 +213,7 @@ describe("PostMessageEngine", () => {
       const result = tester._shouldIgnoreMessage({
         ...validEvent,
         // @ts-expect-error testing the private value
-        data: { ...validEvent, data: undefined, source: null },
+        data: { ...validEvent, data: undefined },
       });
       assert.ok(result);
     });
