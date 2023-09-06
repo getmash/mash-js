@@ -342,8 +342,8 @@ __metadata:
   resolution: "@getmash/client-sdk@workspace:packages/client-sdk"
   dependencies:
     "@ctrl/tinycolor": ^3.4.1
-    "@getmash/jsonrpc-engine": ^2.0.1
-    "@getmash/post-message": ^2.1.2
+    "@getmash/jsonrpc-engine": ^2.1.0
+    "@getmash/post-message": ^2.2.0
     "@testing-library/dom": ^8.19.0
     "@types/eslint": ^8
     "@types/jsdom": ^20
@@ -364,11 +364,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@getmash/jsonrpc-engine@^2.0.1, @getmash/jsonrpc-engine@workspace:packages/jsonrpc-engine":
+"@getmash/jsonrpc-engine@^2.1.0, @getmash/jsonrpc-engine@workspace:packages/jsonrpc-engine":
   version: 0.0.0-use.local
   resolution: "@getmash/jsonrpc-engine@workspace:packages/jsonrpc-engine"
   dependencies:
-    "@getmash/post-message": ^2.1.2
+    "@getmash/post-message": ^2.2.0
     "@types/eslint": ^8
     "@types/jsdom": ^20
     "@types/node": ~20.4.5
@@ -388,7 +388,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@getmash/post-message@^2.1.2, @getmash/post-message@workspace:packages/post-message":
+"@getmash/post-message@^2.2.0, @getmash/post-message@workspace:packages/post-message":
   version: 0.0.0-use.local
   resolution: "@getmash/post-message@workspace:packages/post-message"
   dependencies:

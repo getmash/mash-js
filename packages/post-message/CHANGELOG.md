@@ -1,5 +1,11 @@
 # @getmash/post-message
 
+## 2.2.0
+
+### Minor Changes
+
+- [#128](https://github.com/getmash/mash-js/pull/128) [`e1b23ed`](https://github.com/getmash/mash-js/commit/e1b23ed1cd3bf065bfa608ee38b3df160f007b26) Thanks [@mdedys](https://github.com/mdedys)! - Expose event source from Message Event on PostMessageEngine
+
 ## 2.1.2
 
 ### Patch Changes
