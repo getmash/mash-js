@@ -12,9 +12,9 @@
     "mash",
     "monetize"
   ],
-  "packageManager": "yarn@3.2.3",
+  "packageManager": "yarn@3.6.1",
   "engines": {
-    "node": "=19.6.0"
+    "node": "=20.5.0"
   },
   "workspaces": [
     "packages/*"

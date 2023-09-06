@@ -21,6 +21,16 @@ describe("boosts", () => {
     );
 
     assert.ok(
+      pageSelected("/test/path", PageTarget.Include, [
+        {
+          id: "1",
+          matchType: MatchType.Equals,
+          matchText: "test/path",
+        },
+      ]),
+    );
+
+    assert.ok(
       !pageSelected("/test/path", PageTarget.Include, [
         {
           id: "1",
@@ -36,6 +46,16 @@ describe("boosts", () => {
           id: "1",
           matchType: MatchType.StartsWith,
           matchText: "/test",
+        },
+      ]),
+    );
+
+    assert.ok(
+      pageSelected("/test/path", PageTarget.Include, [
+        {
+          id: "1",
+          matchType: MatchType.StartsWith,
+          matchText: "test",
         },
       ]),
     );

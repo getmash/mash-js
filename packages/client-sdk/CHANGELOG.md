@@ -1,5 +1,33 @@
 # @getmash/client-sdk
 
+## 2.18.1
+
+### Patch Changes
+
+- [#124](https://github.com/getmash/mash-js/pull/124) [`eed10f1`](https://github.com/getmash/mash-js/commit/eed10f129b2a72b29f6155787a60bd8b0f267565) Thanks [@nyonson](https://github.com/nyonson)! - Upgrading build tooling
+
+- Updated dependencies [[`eed10f1`](https://github.com/getmash/mash-js/commit/eed10f129b2a72b29f6155787a60bd8b0f267565)]:
+  - @getmash/jsonrpc-engine@2.0.1
+  - @getmash/post-message@2.1.2
+
+## 2.18.0
+
+### Minor Changes
+
+- [#120](https://github.com/getmash/mash-js/pull/120) [`a3d2d60`](https://github.com/getmash/mash-js/commit/a3d2d60549fbb05d01a1d6c91b650cd267426523) Thanks [@nyonson](https://github.com/nyonson)! - Switch to dynamic viewport units
+
+## 2.17.0
+
+### Minor Changes
+
+- [#118](https://github.com/getmash/mash-js/pull/118) [`386a8b0`](https://github.com/getmash/mash-js/commit/386a8b0ae54ab3a3e31bacf595e16aeda1f645bb) Thanks [@nyonson](https://github.com/nyonson)! - Standardize page matcher texts for easier inputs
+
+## 2.16.2
+
+### Patch Changes
+
+- [#116](https://github.com/getmash/mash-js/pull/116) [`9c9d2b9`](https://github.com/getmash/mash-js/commit/9c9d2b9eec0673f85ed3ca7226fc3f5a98dde64a) Thanks [@mdedys](https://github.com/mdedys)! - Remove margins from div wrapping Mash iframe
+
 ## 2.16.1
 
 ### Patch Changes
