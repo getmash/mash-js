@@ -18,7 +18,10 @@ export interface PostMessageEngineOptions {
 type RawEventListener = (evt: MessageEvent) => void;
 type RawEventListenerMap = { [id: string]: RawEventListener };
 
-type EventListener<TData = unknown> = (evt: PostMessageEvent<TData>) => void;
+type EventListener<TData = unknown> = (
+  evt: PostMessageEvent<TData>,
+  source: MessageEventSource | null,
+) => void;
 type Unsubscribe = () => void;
 
 export type EngineListener<T> = (callback: EventListener<T>) => Unsubscribe;
@@ -51,6 +54,14 @@ export default class PostMessageEngine<TData> {
     this._logger = debug("mash:post-message");
     // debug logging can be enabled with env var or by the consumer
     this._logger.enabled = this._logger.enabled || (options.debug ?? false);
+  }
+
+  get targetName() {
+    return this._targetName;
+  }
+
+  get targetOrigin() {
+    return this._targetOrigin;
   }
 
   /**
@@ -101,7 +112,7 @@ export default class PostMessageEngine<TData> {
       evt: MessageEvent<PostMessageEvent<TData>>,
     ) => {
       if (this._shouldIgnoreMessage(evt)) return;
-      listener(evt.data || null);
+      listener(evt.data || null, evt.source);
     };
     this._listeners[id] = wrapped;
     window.addEventListener("message", wrapped, false);
