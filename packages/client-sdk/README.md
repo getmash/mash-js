@@ -1,3 +1,5 @@
+> **DEPRECATED**: This package is no longer relevant. To use the latest Mash SDK please visit the [earner dashboard](https://app.mash.com/earn/hub/install-instructions) installtion instructions. There is no guarantee this implementation of the Mash SDK will continue to work in the future.
+
 # Mash Client SDK
 
 The [Mash](https://getmash.com) Client SDK is a Javascript library that is used to enable your site and experiences to interact with the Mash Consumer Wallet. The SDK loads the wallet that provides users access to their funds, and exposes functionality for you to facilitate payments, donations, boosts, freebies and more between users of your site, web-app, experience and you.
@@ -157,11 +159,11 @@ This is a helper function to check if the Mash Wallet has been initialized.
 const isReady = mash.isReady();
 ```
 
-
 ## Demos & Tutorials
-We built these on Replit. 
 
-Learn more about Mash on Replit: 
+We built these on Replit.
+
+Learn more about Mash on Replit:
 https://www.getmash.com/news/building-on-replit-with-mash
 
 Complete set of guides can be found here: https://guides.getmash.com/
@@ -174,16 +176,15 @@ Follow along with the README or tutorial to get started. Discover how to get up 
 
 After walking through all the steps, you'll have a web app that instantly sends bitcoin to your Mash wallet for every user action, allowing users to pay-as-they-enjoy. The same approach can be used for any web app, game, tool, or website, allowing you to make money for your creations!
 
-* https://replit.com/@getmash/Monetize-a-web-app-with-Mash-and-Bitcoin-Pet-Rock-Simulator?v=1
-
+- https://replit.com/@getmash/Monetize-a-web-app-with-Mash-and-Bitcoin-Pet-Rock-Simulator?v=1
 
 ### Demos
+
 #### **Monetization Overview**
 
 This repl provides a list of examples, demos, widgets and guides to get monetizing with Mash. Try it out, share your feedback and let's enable a future where valuable apps and experiences are rewarded properly.
 
-* https://replit.com/@getmash/Mash-Monetization-Overview?v=1
-
+- https://replit.com/@getmash/Mash-Monetization-Overview?v=1
 
 #### **Stable Diffusion AI Art Generator with Mash**
 
@@ -191,8 +192,7 @@ A Next.js app powered by Mash that accepts a text prompt and generates a piece o
 
 It makes use of the Stability AI API to generate the images and the Mash platform to request payment for image generation. This repl can be forked to create your own AI art generator, or to earn money for another Next.js app that you've built!
 
-* https://replit.com/@getmash/Stable-Diffusion-AI-Art-Generator-with-Mash?v=1
-
+- https://replit.com/@getmash/Stable-Diffusion-AI-Art-Generator-with-Mash?v=1
 
 #### **Donation & Profile / Link-in-Bio Replacement Site**
 
@@ -200,17 +200,16 @@ This Repl provides a canvas to create a link-in-bio page with new donation featu
 
 Users that visit your site get access to their funds in their Mash Wallet, can create an account and get funds immediately to support you, or scan the QR code with another supporting wallet.
 
-* https://replit.com/@getmash/Donation-and-Profile-Link-in-Bio-Replacement-Site?v=1
-
+- https://replit.com/@getmash/Donation-and-Profile-Link-in-Bio-Replacement-Site?v=1
 
 #### **Book & Content Website Template w/ Mash Monetization**
 
 With this Gatsby Template in Replit, you can easily create a book or content based website with built in one-click monetization, donations and you can charge users for premium chapters & content with any amount. Users can auto-pay when they set a budget.
 
-You can edit the content and pricing with a few changes, and markdown, extend chapters, redesign it and more. Users can auto-pay per chapter as they read your content, paying as they enjoy. Or one-click tip boost for your content. Additionally you can add bitcoin & lightning network native donations and more! 
+You can edit the content and pricing with a few changes, and markdown, extend chapters, redesign it and more. Users can auto-pay per chapter as they read your content, paying as they enjoy. Or one-click tip boost for your content. Additionally you can add bitcoin & lightning network native donations and more!
 
 #### **The Dino Game w/ Santa Christmas Extension & Monetization**
 
 The classic Chrome Dinosaur Game repurposed to showcase how to use Mash to monetize a simple little game.
 
-* https://replit.com/@getmash/The-Dino-Game-with-Santa-Christmas-Extension-and-Monetization?v=1
+- https://replit.com/@getmash/The-Dino-Game-with-Santa-Christmas-Extension-and-Monetization?v=1
