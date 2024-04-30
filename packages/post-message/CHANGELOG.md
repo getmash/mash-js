@@ -1,5 +1,11 @@
 # @getmash/post-message
 
+## 2.2.1
+
+### Patch Changes
+
+- [#131](https://github.com/getmash/mash-js/pull/131) [`324c5ff`](https://github.com/getmash/mash-js/commit/324c5ff7ac81865447025fd27c2e922b9ab18c9c) Thanks [@mdedys](https://github.com/mdedys)! - Drop debug dependency and rely on browser console.log
+
 ## 2.2.0
 
 ### Minor Changes
